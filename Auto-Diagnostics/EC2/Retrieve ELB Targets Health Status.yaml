@@ -3,7 +3,8 @@
     \ Targets in the Load Balancer's associated Target Groups.\n\nThis Rundeck Job\
     \ uses the AWS CLI to retrieve the list of **unhealthy** instances associated\
     \ with a given Load Balancer. \nThe AWS CLI must be installed and configured on\
-    \ the Process Automation server or on the designated Runner."
+    \ the Process Automation server or on the designated Runner.\n\nBecause this Job\
+    \ uses the AWS CLI, the EC2 (targets) do not need to be added as Nodes."
   executionEnabled: true
   group: Auto-Diagnostics/EC2
   id: 3b499022-6faf-4431-bf98-94678f64ce47

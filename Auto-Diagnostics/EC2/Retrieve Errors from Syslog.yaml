@@ -1,5 +1,10 @@
 - defaultTab: nodes
-  description: ''
+  description: "Retrieve common error messages from Syslog by GREP'ing for common\
+    \ error phrases.\n\nThis Job connects to remote EC2 instances and GREPs for common\
+    \ error messages.  This is meant to assist with diagnosing common incidents on\
+    \ Linux VMs. \n\nEC2 instances must be added as Nodes in order for this Job to\
+    \ work correctly. See [here](https://docs.rundeck.com/docs/manual/projects/resource-model-sources/aws.html#amazon-ec2-node-source)\
+    \ for details on how to add your EC2 instances as Nodes."
   executionEnabled: true
   group: Auto-Diagnostics/EC2
   id: 353aeac3-e590-41c2-a7a9-32fbc4aa056b
