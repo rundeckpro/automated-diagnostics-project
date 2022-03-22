@@ -1,10 +1,17 @@
 - defaultTab: nodes
-  description: ''
+  description: |-
+    Retrieve EC2 Instance Status and Associated IAM Roles
+
+    This Job uses the AWS CLI to retrieve the targeted EC2 instance status as well as the associated IAM Roles. This can be useful when diagnosing and troubleshooting EC2 related alarms and incidents.
+
+    The EC2 is targeted using the EC2 `instanceId`. Therefore, integrations invoking this Job should supply the EC2 Instance ID as a Job Option in their payload.
+
+    This Job does **not** require the EC2 to be added as a Node.
   executionEnabled: true
   group: Auto-Diagnostics/EC2
   id: a2992d07-a8af-4127-8dfb-035f0d9bece9
   loglevel: INFO
-  name: Retrieve EC2 Instance Status & Associated IAM Roles
+  name: Instance Status & Associated IAM Roles
   nodeFilterEditable: false
   options:
   - label: EC2 Instance ID
