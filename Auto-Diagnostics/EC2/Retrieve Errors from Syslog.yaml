@@ -1,0 +1,45 @@
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  group: Auto-Diagnostics/EC2
+  id: 353aeac3-e590-41c2-a7a9-32fbc4aa056b
+  loglevel: INFO
+  name: Retrieve Errors from Syslog
+  nodeFilterEditable: true
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '3'
+    filter: 'tags: ec2 osName:Linux'
+  nodesSelectedByDefault: true
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - description: Is it out of memory?
+      exec: grep "Out\ of\ memory" /var/log/syslog || true
+    - description: Memory management update failed
+      exec: grep "ERROR:\ mmu_update\ failed" /var/log/syslog || true
+    - description: I/O Error
+      exec: grep "I/O\ error" /var/log/syslog || true
+    - description: Runaway Loop
+      exec: grep "request_module:\ runaway\ loop\ modprobe\ binfmt-464c" /var/log/syslog
+        || true
+    - description: Fatal Could Not Load
+      exec: grep "FATAL:\ Could\ not\ load" /var/log/syslog || true
+    - description: Invalid Kernel Error
+      exec: grep "ERROR\ Invalid\ kernel:" /var/log/syslog || true
+    - description: Error Mounting Filesystem
+      exec: grep "General\ error\ mounting\ filesystems" /var/log/syslog || true
+    - description: Unable to Load SELinux Policy
+      exec: grep "Unable\ to\ load\ SELinux\ Policy" /var/log/syslog || true
+    keepgoing: false
+    strategy: sequential
+  tags: 'auto-diagnostics,aws,ec2'
+  uuid: 353aeac3-e590-41c2-a7a9-32fbc4aa056b
+
