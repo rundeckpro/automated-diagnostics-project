@@ -1,0 +1,47 @@
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  group: Auto-Diagnostics/EC2
+  id: a2992d07-a8af-4127-8dfb-035f0d9bece9
+  loglevel: INFO
+  name: Retrieve EC2 Instance Status & Associated IAM Roles
+  nodeFilterEditable: false
+  options:
+  - label: EC2 Instance ID
+    name: instanceId
+    required: true
+    value: i-073260304484b4449
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - description: Get EC2 Instance Status from AWS
+      exec: aws ec2 describe-instance-status --instance-ids ${option.instanceId}
+      plugins:
+        LogFilter:
+        - config:
+            filter: .InstanceStatuses[].InstanceStatus.Details[].Status
+            logData: 'true'
+            prefix: Instance-Status
+          type: json-mapper
+        - config:
+            filter: .InstanceStatuses[].SystemStatus.Details[].Status
+            logData: 'true'
+            prefix: System-Status
+          type: json-mapper
+    - description: Get IAM Role Associated
+      exec: 'aws ec2 describe-iam-instance-profile-associations --filters Name=instance-id,Values=${option.instanceId}'
+      plugins:
+        LogFilter:
+        - config:
+            filter: .IamInstanceProfileAssociations[].IamInstanceProfile
+            logData: 'true'
+            prefix: IAM_Role
+          type: json-mapper
+    keepgoing: false
+    strategy: node-first
+  tags: 'aws,ec2'
+  uuid: a2992d07-a8af-4127-8dfb-035f0d9bece9
+
