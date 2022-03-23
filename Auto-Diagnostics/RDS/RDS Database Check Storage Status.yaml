@@ -1,0 +1,24 @@
+- defaultTab: nodes
+  description: |-
+    Checks RDS database for whether the storage-full status is present
+
+    Using the AWS CLI, this Job checks whether a given RDS instance has the `storage-full` status.
+  executionEnabled: true
+  group: Auto-Diagnostics/RDS
+  id: ae38c21a-b102-4bc5-be28-4fc51b5a4fe5
+  loglevel: INFO
+  name: RDS Database Check Storage Status
+  nodeFilterEditable: false
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - description: Check RDS Instance Status
+      exec: aws rds describe-db-instances --db-instance-identifier ${option.rds_instance}
+    keepgoing: false
+    strategy: node-first
+  tags: 'aws,rds'
+  uuid: ae38c21a-b102-4bc5-be28-4fc51b5a4fe5
+
