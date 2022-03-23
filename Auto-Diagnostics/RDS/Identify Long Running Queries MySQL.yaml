@@ -4,7 +4,7 @@
   group: Auto-Diagnostics/RDS
   id: b5c27622-3b1f-4842-b652-8cfcce39175d
   loglevel: INFO
-  name: Identify Long Running Queries MySQL RDS
+  name: Identify Long Running Queries MySQL
   nodeFilterEditable: false
   options:
   - description: The name of the RDS database.
