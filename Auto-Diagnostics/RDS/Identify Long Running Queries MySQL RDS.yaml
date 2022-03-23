@@ -6,6 +6,17 @@
   loglevel: INFO
   name: Identify Long Running Queries MySQL RDS
   nodeFilterEditable: false
+  options:
+  - description: The name of the RDS database.
+    label: Database Name
+    name: rds_db_name
+    required: true
+    value: my_database
+  - description: 'The RDS Endpoint to Query. Example: `my_rds.cyvqwbzxjvab.us-west-1.rds.amazonaws.com`'
+    label: RDS Endpoint
+    name: rds_endpoint
+    required: true
+    value: your-rds-endpoint.aws-rds-region.rds.amazonaws.com
   plugins:
     ExecutionLifecycle: {}
   scheduleEnabled: true
@@ -15,10 +26,10 @@
     - configuration:
         commit: 'false'
         jdbcDriver: org.mariadb.jdbc.Driver
-        jdbcUrl: jdbc:mysql://polling-app-cluster.cyvqwbzxjveu.us-west-1.rds.amazonaws.com:3306/polling_app
-        password: rundeckmysql
+        jdbcUrl: jdbc:mysql://${option.rds_endpoint}:3306/${option.rds_db_name}
+        password: rundecksql
         scriptBody: select * from mysql.slow_log;
-        user: rundeck
+        user: admin
       nodeStep: true
       type: org.rundeck.sqlrunner.SQLRunnerNodeStepPlugin
     keepgoing: false
