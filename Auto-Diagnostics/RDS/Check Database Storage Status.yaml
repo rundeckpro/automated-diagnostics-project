@@ -7,7 +7,7 @@
   group: Auto-Diagnostics/RDS
   id: ae38c21a-b102-4bc5-be28-4fc51b5a4fe5
   loglevel: INFO
-  name: RDS Database Check Storage Status
+  name: Check Database Storage Status
   nodeFilterEditable: false
   plugins:
     ExecutionLifecycle: {}
