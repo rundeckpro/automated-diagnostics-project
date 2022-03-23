@@ -12,9 +12,15 @@
   schedules: []
   sequence:
     commands:
-    - exec: 'aws rds-data execute-statement --resource-arn "arn:aws:rds:us-west-2:123456789012:cluster:mydbcluster"
-        --database "mydb" --secret-arn "arn:aws:secretsmanager:us-west-2:123456789012:secret:mysecret"
-        --sql "update mytable set quantity=5 where id=201" '
+    - configuration:
+        commit: 'false'
+        jdbcDriver: org.mariadb.jdbc.Driver
+        jdbcUrl: jdbc:mysql://polling-app-cluster.cyvqwbzxjveu.us-west-1.rds.amazonaws.com:3306/polling_app
+        password: rundeckmysql
+        scriptBody: select * from mysql.slow_log;
+        user: rundeck
+      nodeStep: true
+      type: org.rundeck.sqlrunner.SQLRunnerNodeStepPlugin
     keepgoing: false
     strategy: node-first
   uuid: b5c27622-3b1f-4842-b652-8cfcce39175d
