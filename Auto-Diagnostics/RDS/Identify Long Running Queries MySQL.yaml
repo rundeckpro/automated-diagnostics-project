@@ -7,31 +7,34 @@
   name: Identify Long Running Queries MySQL
   nodeFilterEditable: false
   options:
-  - description: The name of the RDS database.
-    label: Database Name
-    name: rds_db_name
+  - description: How many minutes prior to now should we retrieve logs?
+    label: Prior Minutes to Retrieve Logs
+    name: prior_minutes
+    regex: (\d+)
     required: true
-    value: my_database
-  - description: 'The RDS Endpoint to Query. Example: `my_rds.cyvqwbzxjvab.us-west-1.rds.amazonaws.com`'
-    label: RDS Endpoint
-    name: rds_endpoint
-    required: true
-    value: your-rds-endpoint.aws-rds-region.rds.amazonaws.com
+    value: '5'
   plugins:
     ExecutionLifecycle: {}
   scheduleEnabled: true
   schedules: []
   sequence:
     commands:
-    - configuration:
-        commit: 'false'
-        jdbcDriver: org.mariadb.jdbc.Driver
-        jdbcUrl: jdbc:mysql://${option.rds_endpoint}:3306/${option.rds_db_name}
-        password: rundecksql
-        scriptBody: select * from mysql.slow_log;
-        user: admin
-      nodeStep: true
-      type: org.rundeck.sqlrunner.SQLRunnerNodeStepPlugin
+    - fileExtension: sh
+      interpreterArgsQuoted: false
+      script: |-
+        now=$(date +%s%N | cut -b1-13)
+
+        retrieval_timestamp=now-@option.prior_minutes@
+
+        echo $now
+
+        echo $retrieval_timestamp
+      scriptInterpreter: /bin/bash
+    - exec: aws rds describe-db-log-files --filename-contains "slowquery" --db-instance-identifier
+        "jakesrundeckha" --file-last-written 1648100000000
+    - exec: aws rds download-db-log-file-portion --db-instance-identifier jakesrundeckha
+        --log-file-name slowquery/mysql-slowquery.log.2022-03-24.18 --output text
+        > /var/lib/rundeck/var/tmp/full.txt
     keepgoing: false
     strategy: node-first
   uuid: b5c27622-3b1f-4842-b652-8cfcce39175d
