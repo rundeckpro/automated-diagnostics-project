@@ -19,22 +19,39 @@
   schedules: []
   sequence:
     commands:
-    - fileExtension: sh
+    - description: Transform Job Option into Timestamp for AWS CLI Query
+      fileExtension: sh
       interpreterArgsQuoted: false
+      plugins:
+        LogFilter:
+        - config:
+            invalidKeyPattern: \s|\$|\{|\}|\\
+            logData: 'true'
+            name: retrieval_timestamp
+            regex: retrieval_timestamp=(\d+)
+          type: key-value-data
       script: |-
         now=$(date +%s%N | cut -b1-13)
 
-        retrieval_timestamp=now-@option.prior_minutes@
+        minutes_ago=$((@option.prior_minutes@*60000))
 
-        echo $now
+        retrieval_timestamp=$(expr $now - $minutes_ago)
 
-        echo $retrieval_timestamp
+        echo "retrieval_timestamp="$retrieval_timestamp
       scriptInterpreter: /bin/bash
-    - exec: aws rds describe-db-log-files --filename-contains "slowquery" --db-instance-identifier
-        "jakesrundeckha" --file-last-written 1648100000000
-    - exec: aws rds download-db-log-file-portion --db-instance-identifier jakesrundeckha
-        --log-file-name slowquery/mysql-slowquery.log.2022-03-24.18 --output text
-        > /var/lib/rundeck/var/tmp/full.txt
+    - description: Retrieve List of Log Files for DB Instance within Timeframe Specified
+        by Job Option
+      exec: aws rds describe-db-log-files --filename-contains "slowquery" --db-instance-identifier
+        "jakesrundeckha" --file-last-written ${data.retrieval_timestamp} --query "DescribeDBLogFiles[].LogFileName"
+        --output text
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: 'true'
+            logData: 'true'
+            name: matching_log_files
+            regex: (.*)
+          type: key-value-data-multilines
     keepgoing: false
     strategy: node-first
   uuid: b5c27622-3b1f-4842-b652-8cfcce39175d
