@@ -29,17 +29,15 @@
         '0': '1'
         accessKeyId: AKIAQMZZURQOGNY65AO6
         cloudWatchLogGroup: /ecs/first-run-task-definition
-        queryString: "fields @timestamp, @message\n  | parse @message /(?<@ip>^([0-9]{1,3}\\\
-          .[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3})[.]*)/\n  | filter @ip not like /(^10\\\
-          .0\\.[.]*)/ \n  | stats count() as requestCount by @ip\n  | sort requestCount\
-          \ desc\n  | limit 10"
+        queryString: |-
+          fields @message, @timestamp
+          | limit 10
         region: us-west-1
         secretKey: keys/project/aws_runbooks/aws_secret
         timeUnit: Days
       description: Query logs for top webserver requestors by public IP address
       nodeStep: false
       type: aws-query-cloudwatch-logs-step
-    - exec: echo "hello world"
     keepgoing: false
     strategy: node-first
   uuid: ef478d95-8c35-49e0-adb6-b34d7917775a
