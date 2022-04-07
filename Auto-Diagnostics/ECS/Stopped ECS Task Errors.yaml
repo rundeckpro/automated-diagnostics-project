@@ -1,0 +1,33 @@
+- defaultTab: nodes
+  description: This Job checks stopped ECS Tasks for errors and provides detailed
+    information on the reason for the errors.
+  executionEnabled: true
+  group: Auto-Diagnostics/ECS
+  id: bfb61231-6158-46d8-bb9b-b0d5d99f3aaa
+  loglevel: INFO
+  name: Stopped ECS Task Errors
+  nodeFilterEditable: false
+  options:
+  - description: The name of the ECS Cluster
+    label: ECS Cluster Name
+    name: cluster-name
+    required: true
+    value: default
+  - description: The AWS region of the ECS Cluster
+    label: AWS Region
+    name: region
+    required: true
+    value: us-east-1
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - description: List Stopped ECS Tasks
+      exec: aws ecs list-tasks --cluster-name ${option.cluster-name} --desired-status
+        STOPPED --region ${option.region}
+    keepgoing: false
+    strategy: node-first
+  uuid: bfb61231-6158-46d8-bb9b-b0d5d99f3aaa
+
