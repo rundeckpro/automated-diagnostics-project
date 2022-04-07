@@ -9,7 +9,7 @@
   group: Auto-Diagnostics/EC2
   id: 9d00056c-59f8-4c0a-a606-adaf667c6c34
   loglevel: INFO
-  name: 'Retrieve OS, Disk, Memory Stats'
+  name: 'Linux CPU, Memory and Disk Diagnostics'
   nodeFilterEditable: true
   nodefilters:
     dispatch:
