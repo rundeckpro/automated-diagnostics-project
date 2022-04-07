@@ -1,0 +1,46 @@
+- defaultTab: nodes
+  description: |-
+    This Job queries webserver-logs within CloudWatch to determine the top requestors by Public IP to our webserver.
+    Filter out the private-ip addresses as necessary - determined by the subnet that the webserver resides in.
+  executionEnabled: true
+  group: Auto-Diagnostics/CloudWatch Logs
+  id: ef478d95-8c35-49e0-adb6-b34d7917775a
+  loglevel: INFO
+  name: Top Web Server Requestors by Public IP
+  nodeFilterEditable: false
+  options:
+  - description: Name of the CloudWatch log group where the webserver logs reside
+    label: CloudWatch Log Group Name
+    name: cloudwatch_log_group
+    required: true
+    value: my-webserver-logs-group
+  - description: AWS Region where our web-server resides.
+    label: AWS Region
+    name: region
+    required: true
+    value: us-east-1
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - configuration:
+        '0': '1'
+        accessKeyId: AKIAQMZZURQOGNY65AO6
+        cloudWatchLogGroup: /ecs/first-run-task-definition
+        queryString: "fields @timestamp, @message\n  | parse @message /(?<@ip>^([0-9]{1,3}\\\
+          .[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3})[.]*)/\n  | filter @ip not like /(^10\\\
+          .0\\.[.]*)/ \n  | stats count() as requestCount by @ip\n  | sort requestCount\
+          \ desc\n  | limit 10"
+        region: us-west-1
+        secretKey: keys/project/aws_runbooks/aws_secret
+        timeUnit: Days
+      description: Query logs for top webserver requestors by public IP address
+      nodeStep: false
+      type: aws-query-cloudwatch-logs-step
+    - exec: echo "hello world"
+    keepgoing: false
+    strategy: node-first
+  uuid: ef478d95-8c35-49e0-adb6-b34d7917775a
+
