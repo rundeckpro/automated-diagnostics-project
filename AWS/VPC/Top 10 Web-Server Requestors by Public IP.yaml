@@ -1,7 +1,7 @@
 - defaultTab: nodes
   description: ''
   executionEnabled: true
-  group: AWS/Web Server Logs
+  group: AWS/VPC
   id: 32b0da6f-8b20-4e56-961b-7547754a845c
   loglevel: INFO
   name: Top 10 Web-Server Requestors by Public IP

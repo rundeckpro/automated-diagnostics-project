@@ -1,15 +1,15 @@
 - defaultTab: nodes
   description: |-
-    Retrieve diagnostic OS, Disk and Memory information from Linux EC2s.
+    Retrieve diagnostic OS, Disk and Memory information from Linux systems.
 
-    This Job connects to remote EC2 instances and retrieves diagnostic OS and process-level information. This is meant to assist with diagnosing common incidents on Linux VMs.
+    This Job connects to remote Linux instances and retrieves diagnostic OS and process-level information. This is meant to assist with diagnosing common incidents on Linux VMs.
 
-    EC2 instances must be added as Nodes in order for this Job to work correctly. See here for details on how to add your EC2 instances as Nodes.
+    Instances must be added as Nodes in order for this Job to work correctly. See here for details on how to add your Linux instances as Nodes.
   executionEnabled: true
-  group: AWS/EC2
+  group: Linux
   id: 9d00056c-59f8-4c0a-a606-adaf667c6c34
   loglevel: INFO
-  name: 'Linux CPU, Memory and Disk Diagnostics'
+  name: 'CPU, Memory and Disk Diagnostics'
   nodeFilterEditable: true
   nodefilters:
     dispatch:
@@ -18,7 +18,7 @@
       rankOrder: ascending
       successOnEmptyNodeFilter: false
       threadcount: '1'
-    filter: 'tags: ec2 osName:Linux'
+    filter: osName:Linux
   nodesSelectedByDefault: true
   plugins:
     ExecutionLifecycle: {}
@@ -34,6 +34,6 @@
       exec: sudo du -Shx / | sort -rh | head -10
     keepgoing: false
     strategy: node-first
-  tags: 'aws,ec2,linux'
+  tags: linux
   uuid: 9d00056c-59f8-4c0a-a606-adaf667c6c34
 

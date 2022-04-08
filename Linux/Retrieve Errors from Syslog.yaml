@@ -1,12 +1,12 @@
 - defaultTab: nodes
   description: "Retrieve common error messages from Syslog by GREP'ing for common\
-    \ error phrases.\n\nThis Job connects to remote EC2 instances and GREPs for common\
-    \ error messages.  This is meant to assist with diagnosing common incidents on\
-    \ Linux VMs. \n\nEC2 instances must be added as Nodes in order for this Job to\
-    \ work correctly. See [here](https://docs.rundeck.com/docs/manual/projects/resource-model-sources/aws.html#amazon-ec2-node-source)\
-    \ for details on how to add your EC2 instances as Nodes."
+    \ error phrases.\n\nThis Job connects to remote Linux instances and GREPs for\
+    \ common error messages.  This is meant to assist with diagnosing common incidents\
+    \ on Linux VMs. \n\nLinux instances must be added as Nodes in order for this Job\
+    \ to work correctly. See here for details on how to add your Linux instances as\
+    \ Nodes."
   executionEnabled: true
-  group: AWS/EC2
+  group: Linux
   id: 353aeac3-e590-41c2-a7a9-32fbc4aa056b
   loglevel: INFO
   name: Retrieve Errors from Syslog
@@ -18,7 +18,7 @@
       rankOrder: ascending
       successOnEmptyNodeFilter: false
       threadcount: '3'
-    filter: 'tags: ec2 osName:Linux'
+    filter: osName:Linux
   nodesSelectedByDefault: true
   plugins:
     ExecutionLifecycle: {}
@@ -45,6 +45,6 @@
       exec: grep "Unable\ to\ load\ SELinux\ Policy" /var/log/syslog || true
     keepgoing: false
     strategy: sequential
-  tags: 'auto-diagnostics,aws,ec2'
+  tags: linux
   uuid: 353aeac3-e590-41c2-a7a9-32fbc4aa056b
 
