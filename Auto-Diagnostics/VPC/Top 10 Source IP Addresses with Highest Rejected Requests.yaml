@@ -1,0 +1,31 @@
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  group: Auto-Diagnostics/VPC
+  id: 2c41ec57-35da-420a-9955-4eaa33d8cd7a
+  loglevel: INFO
+  name: Top 10 Source IP Addresses with Highest Rejected Requests
+  nodeFilterEditable: false
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - configuration:
+        '0': '1'
+        cloudWatchLogGroup: vpc-flow-logs-cloudwatch-log-group
+        queryString: |-
+          filter action="REJECT"
+          | stats count(*) as numRejections by srcAddr
+          | sort numRejections desc
+          | limit 10
+        region: us-west-1
+        timeUnit: Days
+      description: Query CloudWatch logs for top 10 IP's with rejected requests
+      nodeStep: false
+      type: aws-query-cloudwatch-logs-step
+    keepgoing: false
+    strategy: node-first
+  uuid: 2c41ec57-35da-420a-9955-4eaa33d8cd7a
+
