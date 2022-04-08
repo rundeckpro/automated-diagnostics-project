@@ -6,7 +6,7 @@
     \ the Process Automation server or on the designated Runner.\n\nBecause this Job\
     \ uses the AWS CLI, the EC2 (targets) do not need to be added as Nodes."
   executionEnabled: true
-  group: Auto-Diagnostics/EC2
+  group: AWS/EC2
   id: 3b499022-6faf-4431-bf98-94678f64ce47
   loglevel: INFO
   name: Retrieve ELB Targets Health Status

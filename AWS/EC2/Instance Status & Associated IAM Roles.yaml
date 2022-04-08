@@ -8,7 +8,7 @@
 
     This Job does **not** require the EC2 to be added as a Node.
   executionEnabled: true
-  group: Auto-Diagnostics/EC2
+  group: AWS/EC2
   id: a2992d07-a8af-4127-8dfb-035f0d9bece9
   loglevel: INFO
   name: Instance Status & Associated IAM Roles

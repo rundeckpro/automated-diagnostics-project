@@ -1,10 +1,10 @@
 - defaultTab: nodes
   description: ''
   executionEnabled: true
-  group: Auto-Diagnostics/Web Server Logs
-  id: 32b0da6f-8b20-4e56-961b-7547754a845c
+  group: AWS/VPC
+  id: 2c41ec57-35da-420a-9955-4eaa33d8cd7a
   loglevel: INFO
-  name: Top 10 Web-Server Requestors by Public IP
+  name: Top 10 Source IP Addresses with Highest Rejected Requests
   nodeFilterEditable: false
   plugins:
     ExecutionLifecycle: {}
@@ -14,17 +14,18 @@
     commands:
     - configuration:
         '0': '1'
-        accessKeyId: AKIAQMZZURQOGNY65AO6
-        cloudWatchLogGroup: /ecs/first-run-task-definition
+        cloudWatchLogGroup: vpc-flow-logs-cloudwatch-log-group
         queryString: |-
-          fields @message, @timestamp
+          filter action="REJECT"
+          | stats count(*) as numRejections by srcAddr
+          | sort numRejections desc
           | limit 10
         region: us-west-1
-        secretKey: keys/project/aws_runbooks/aws_password
         timeUnit: Days
+      description: Query CloudWatch logs for top 10 IP's with rejected requests
       nodeStep: false
       type: aws-query-cloudwatch-logs-step
     keepgoing: false
     strategy: node-first
-  uuid: 32b0da6f-8b20-4e56-961b-7547754a845c
+  uuid: 2c41ec57-35da-420a-9955-4eaa33d8cd7a
 

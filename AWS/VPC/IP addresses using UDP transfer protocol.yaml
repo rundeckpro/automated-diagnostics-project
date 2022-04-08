@@ -1,7 +1,7 @@
 - defaultTab: nodes
   description: ''
   executionEnabled: true
-  group: Auto-Diagnostics/VPC
+  group: AWS/VPC
   id: 8b8d367a-f5dc-4cda-9c95-da6ce065eae0
   loglevel: INFO
   name: IP addresses using UDP transfer protocol

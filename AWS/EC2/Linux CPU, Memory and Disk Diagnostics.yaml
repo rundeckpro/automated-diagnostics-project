@@ -6,7 +6,7 @@
 
     EC2 instances must be added as Nodes in order for this Job to work correctly. See here for details on how to add your EC2 instances as Nodes.
   executionEnabled: true
-  group: Auto-Diagnostics/EC2
+  group: AWS/EC2
   id: 9d00056c-59f8-4c0a-a606-adaf667c6c34
   loglevel: INFO
   name: 'Linux CPU, Memory and Disk Diagnostics'

@@ -6,7 +6,7 @@
     \ work correctly. See [here](https://docs.rundeck.com/docs/manual/projects/resource-model-sources/aws.html#amazon-ec2-node-source)\
     \ for details on how to add your EC2 instances as Nodes."
   executionEnabled: true
-  group: Auto-Diagnostics/EC2
+  group: AWS/EC2
   id: 353aeac3-e590-41c2-a7a9-32fbc4aa056b
   loglevel: INFO
   name: Retrieve Errors from Syslog

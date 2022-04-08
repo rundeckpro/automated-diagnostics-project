@@ -2,7 +2,7 @@
   description: Query CloudWatch logs using Logs Insights to identify the top 10 hosts
     by throughput on a given subnet
   executionEnabled: true
-  group: Auto-Diagnostics/VPC
+  group: AWS/VPC
   id: 7ce595c9-16ec-4c47-8fb1-e23af4771046
   loglevel: INFO
   name: Top 10 Hosts by Throughput on Subnet

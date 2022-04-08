@@ -2,7 +2,7 @@
   description: This Job checks stopped ECS Tasks for errors and provides detailed
     information on the reason for the errors.
   executionEnabled: true
-  group: Auto-Diagnostics/ECS
+  group: AWS/ECS
   id: bfb61231-6158-46d8-bb9b-b0d5d99f3aaa
   loglevel: INFO
   name: Stopped ECS Task Errors
