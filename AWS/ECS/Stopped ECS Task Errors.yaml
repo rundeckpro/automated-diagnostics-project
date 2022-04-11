@@ -17,7 +17,7 @@
     label: AWS Region
     name: region
     required: true
-    value: us-east-1
+    value: us-west-1
   plugins:
     ExecutionLifecycle: {}
   scheduleEnabled: true
@@ -25,8 +25,24 @@
   sequence:
     commands:
     - description: List Stopped ECS Tasks
-      exec: aws ecs list-tasks --cluster-name ${option.cluster-name} --desired-status
-        STOPPED --region ${option.region}
+      exec: aws ecs list-tasks --cluster ${option.cluster-name} --desired-status STOPPED
+        --region ${option.region} --query "taskArns[]" --output text
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: 'false'
+            logData: 'true'
+            name: stopped_tasks
+            regex: (.*)
+          type: key-value-data-multilines
+    - fileExtension: sh
+      interpreterArgsQuoted: false
+      script: "stopped_tasks=(@data.stopped_tasks*@)\n\nfor task in \"${stopped_tasks[@]}\"\
+        ; \ndo \n    echo \"Task ARN: \" $task\n    stopped_reason=$(aws ecs describe-tasks\
+        \ --cluster @option.cluster-name@  --tasks $task --region @option.region@\
+        \ --query \"tasks[].stoppedReason\" --output text)\n    echo \"Stopped Reason:\
+        \ \" $stopped_reason\n    echo \"\"\ndone"
+      scriptInterpreter: /bin/bash
     keepgoing: false
     strategy: node-first
   uuid: bfb61231-6158-46d8-bb9b-b0d5d99f3aaa
