@@ -1,5 +1,10 @@
 - defaultTab: nodes
-  description: ''
+  description: "Query CloudWatch logs to identify any hosts using the UDP transfer\
+    \ protocol.  \n\nThe Job uses the CloudWatch Logs plugin, and therefore AWS Credentials\
+    \ must be applied to the Job Step or at the Project level (`project.aws.access_key`\
+    \ and `project.aws.secret_key_path`) or at the Framework level (`aws.access_key`\
+    \ and `aws.secret_key_path`).\n\nIf the self-hosted Process Automation server\
+    \ is running in AWS, you can alternatively assign an IAM Role to the EC2 or container."
   executionEnabled: true
   group: AWS/VPC
   id: 8b8d367a-f5dc-4cda-9c95-da6ce065eae0
@@ -13,10 +18,11 @@
     required: true
     value: cloudwatch-log-group-name
   - description: AWS region where the CloudWatch logs reside.
+    enforced: true
     label: Region
     name: region
+    optionValuesPluginType: aws-regions-job-options
     required: true
-    value: us-west-1
   plugins:
     ExecutionLifecycle: {}
   scheduleEnabled: true
