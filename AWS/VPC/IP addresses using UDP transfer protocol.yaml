@@ -6,6 +6,17 @@
   loglevel: INFO
   name: IP addresses using UDP transfer protocol
   nodeFilterEditable: false
+  options:
+  - description: The CloudWatch Log Group to query
+    label: CloudWatch Log Group
+    name: cloudwatch-log-group
+    required: true
+    value: cloudwatch-log-group-name
+  - description: AWS region where the CloudWatch logs reside.
+    label: Region
+    name: region
+    required: true
+    value: us-west-1
   plugins:
     ExecutionLifecycle: {}
   scheduleEnabled: true
@@ -14,10 +25,12 @@
     commands:
     - configuration:
         '0': '1'
-        cloudWatchLogGroup: my-vpc-flow-logs-cloudwatch-group
+        cloudWatchLogGroup: ${option.cloudwatch-log-group}
         queryString: |-
           filter protocol=17
           | stats count(*) by srcAddr
+          | limit 10
+        region: ${option.region}
         timeUnit: Days
       nodeStep: false
       type: aws-query-cloudwatch-logs-step
