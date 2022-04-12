@@ -1,11 +1,26 @@
 - defaultTab: nodes
-  description: ''
+  description: |-
+    Query CloudWatch logs to identify the top 10 public-IP requestors to our web-server (e.g. Nginx).
+
+    The Job uses the CloudWatch Logs plugin, and therefore AWS Credentials must be applied to the Job Step or at the Project level (`project.aws.access_key` and `project.aws.secret_key_path`) or at the Framework level (`aws.access_key` and `aws.secret_key_path`).
+
+    If the self-hosted Process Automation server is running in AWS, you can alternatively assign an IAM Role to the EC2 or container.
   executionEnabled: true
   group: AWS/VPC
   id: 32b0da6f-8b20-4e56-961b-7547754a845c
   loglevel: INFO
   name: Top 10 Web-Server Requestors by Public IP
   nodeFilterEditable: false
+  options:
+  - description: The CloudWatch log group where the VPC logs reside
+    label: CloudWatch Log Group
+    name: cloudwatch-log-group
+    required: true
+  - enforced: true
+    label: region
+    name: region
+    optionValuesPluginType: aws-regions-job-options
+    required: true
   plugins:
     ExecutionLifecycle: {}
   scheduleEnabled: true
@@ -14,17 +29,16 @@
     commands:
     - configuration:
         '0': '1'
-        accessKeyId: AKIAQMZZURQOGNY65AO6
-        cloudWatchLogGroup: /ecs/first-run-task-definition
+        cloudWatchLogGroup: ${option.cloudwatch-log-group}
         queryString: |-
           fields @message, @timestamp
           | limit 10
-        region: us-west-1
-        secretKey: keys/project/aws_runbooks/aws_password
+        region: ${option.region}
         timeUnit: Days
       nodeStep: false
       type: aws-query-cloudwatch-logs-step
     keepgoing: false
     strategy: node-first
+  tags: 'aws,vpc'
   uuid: 32b0da6f-8b20-4e56-961b-7547754a845c
 
