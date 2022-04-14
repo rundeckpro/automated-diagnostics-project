@@ -31,10 +31,15 @@
         '0': '1'
         cloudWatchLogGroup: ${option.cloudwatch-log-group}
         queryString: |-
-          fields @message, @timestamp
-          | limit 10
+          fields @timestamp, @message
+            | parse @message /(?<@ip>^([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})[.]*)/
+            | stats count() as requestCount by @ip
+            | filter @ip not like /(^172\.31\.[.]*)/
+            | sort requestCount desc
         region: ${option.region}
         timeUnit: Days
+      description: Query web-server logs in CloudWatch for top requestors by Public
+        IP address
       nodeStep: false
       type: aws-query-cloudwatch-logs-step
     keepgoing: false
