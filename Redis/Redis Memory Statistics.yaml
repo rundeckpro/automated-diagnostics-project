@@ -1,0 +1,34 @@
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  group: Redis
+  id: c9e7c553-e955-4c33-951e-579a38e25941
+  loglevel: INFO
+  name: Redis Memory Statistics
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: 'name: polling_surveys_app '
+  nodesSelectedByDefault: true
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - description: Run the "memory stats" Command
+      exec: redis-cli memory stats
+    - description: Run the "memory malloc-stats" Command
+      exec: redis-cli memory malloc-stats
+    - description: SLOWLOG GET command returns entries from the slow log in chronological
+        order
+      exec: redis-cli SLOWLOG GET
+    keepgoing: false
+    strategy: node-first
+  uuid: c9e7c553-e955-4c33-951e-579a38e25941
+

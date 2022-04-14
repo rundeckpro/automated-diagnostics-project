@@ -1,0 +1,33 @@
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  group: Redis
+  id: 29c123f1-45c1-491d-a3eb-4fe534903c66
+  loglevel: INFO
+  name: Intrinsic Latency
+  nodeFilterEditable: false
+  options:
+  - description: Number of seconds that the `--intrinsic-latency` test should run.
+    enforced: true
+    label: Duration (Seconds) of Test
+    name: test_seconds
+    required: true
+    value: '60'
+    values:
+    - '30'
+    - '60'
+    - '100'
+    - '150'
+    valuesListDelimiter: ','
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - description: Run the --intrinsic-latency Test for Specified Duration
+      exec: redis-cli --intrinsic-latency ${option.test_seconds}
+    keepgoing: false
+    strategy: node-first
+  uuid: 29c123f1-45c1-491d-a3eb-4fe534903c66
+
