@@ -1,0 +1,29 @@
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  group: Redis
+  id: 5dadbac9-55c0-4391-84d9-93a5f3387538
+  loglevel: INFO
+  name: Check Port 6379 is Listening
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: 'name: polling_surveys_app '
+  nodesSelectedByDefault: true
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - description: Check Port 6379 is Listening on Remote Host
+      exec: sudo lsof -i:6379
+    keepgoing: false
+    strategy: node-first
+  uuid: 5dadbac9-55c0-4391-84d9-93a5f3387538
+
