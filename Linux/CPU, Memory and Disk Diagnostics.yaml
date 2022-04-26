@@ -1,10 +1,18 @@
 - defaultTab: nodes
-  description: |-
-    Retrieve diagnostic OS, Disk and Memory information from Linux systems.
-
-    This Job connects to remote Linux instances and retrieves diagnostic OS and process-level information. This is meant to assist with diagnosing common incidents on Linux VMs.
-
-    Instances must be added as Nodes in order for this Job to work correctly. See here for details on how to add your Linux instances as Nodes.
+  description: "Retrieve diagnostic CPU, Disk and Memory information from Linux systems.\n\
+    \nThis Job executes commands on remote Linux instances and retrieves diagnostic\
+    \ OS and process-level information.\n\nInstances must be added as Nodes in order\
+    \ for this Job to work correctly. \n\nInstructions for adding various VM's - such\
+    \ as EC2's, Azure VM's and Google Compute Instances - can be found in [this section\
+    \ of documentation](https://docs.rundeck.com/docs/manual/projects/resource-model-sources/).\n\
+    \nClick on the **ReadMe** for details on the various ways to execute remote-commands\
+    \ on Nodes using Runbook Automation.\n---\nIf connecting to Nodes using SSH, follow\
+    \ [this documentation](https://docs.rundeck.com/docs/learning/howto/ssh-on-linux-nodes.html#using-ssh-on-linux-unix-nodes)\
+    \ \nto set up your Nodes and SSH Credentials and - if using Runbook Automation\
+    \ SaaS - also use [this documentation](https://docs.rundeck.com/docs/administration/runner/#architecture)\
+    \ to set up a Runner for this Project.\n\nIf connecting to Nodes using Amazon's\
+    \ Systems Manager (formerly known as SSM), following [this documentation](https://docs.rundeck.com/docs/manual/projects/node-execution/aws-ssm.html#description)\
+    \ to configure the integration."
   executionEnabled: true
   group: Linux
   id: 9d00056c-59f8-4c0a-a606-adaf667c6c34
