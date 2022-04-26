@@ -1,5 +1,5 @@
 - defaultTab: nodes
-  description: ''
+  description: Simple check if port 6379 is listening on the Redis host.
   executionEnabled: true
   group: Redis
   id: 5dadbac9-55c0-4391-84d9-93a5f3387538
@@ -25,5 +25,6 @@
       exec: sudo lsof -i:6379
     keepgoing: false
     strategy: node-first
+  tags: redis
   uuid: 5dadbac9-55c0-4391-84d9-93a5f3387538
 

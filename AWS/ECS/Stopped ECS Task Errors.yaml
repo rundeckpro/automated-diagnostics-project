@@ -1,6 +1,29 @@
 - defaultTab: nodes
-  description: This Job checks stopped ECS Tasks for errors and provides detailed
-    information on the reason for the errors.
+  description: "This Job checks stopped ECS Tasks for errors and provides detailed\
+    \ information on the reason for the errors.\n\nThis Job uses the AWS CLI to retrieve\
+    \ the list of **stopped** ECS Tasks and lists the associated reasons for their\
+    \ Stopped status. \n\nBecause this Job uses the AWS CLI, the ECS Containers do\
+    \ not need to be added as Nodes.\n\nSee the **ReadMe** for more details on how\
+    \ to use the AWS CLI within the Runbook & Process Automation products.\n---\n\
+    #### How to use the AWS CLI within the Runbook & Process Automation Products\n\
+    \nBelow you will find instructions on how to configure the AWS CLI to work with\
+    \ this automation.\n\n##### Runbook Automation\n1. Install an Enterprise Runner.\
+    \ Documentation for that can be found [here](https://docs.rundeck.com/docs/administration/runner/#enterprise-runner).\
+    \ Assign that Runner to this Project.\n2. Install the [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)\
+    \ on either the Enterprise Runner, or on a remote-node that the Enterprise Runner\
+    \ can communicate with via SSH.\n3. Navigate to the **Nodes** tab within this\
+    \ Job and make sure that the toggle is set to **Execute Locally**.\n\n##### Process\
+    \ Automation\nBecause the Process Automation is self-hosted, there are two options\
+    \ for executing the AWS CLI: install on the Process Automation server (or entire\
+    \ cluster) or install on a remote-node that can be reached via SSH from Process\
+    \ Automation.\nIf the AWS CLI is installed on the Process Automation server, then\
+    \ you can skip these steps and this Job should execute successfully.\n\n1. If\
+    \ the CLI was installed on a remote-node, add it to the Node Inventory as described\
+    \ in **Step 3** above.\n2. Navigate to the **Nodes** tab within this Job and change\
+    \ the setting to **Dispatch to Nodes** and use the Node Filter Syntax to filter\
+    \ on either the Enterprise Runner or remote-node added in **Step 1**.\n\n#####\
+    \ Permissions required by the IAM Role or AWS credentials to execute this job:\n\
+    \n**ecs:ListTasks**<br>\n**ecs:DescribeTasks**<br>"
   executionEnabled: true
   group: AWS/ECS
   id: bfb61231-6158-46d8-bb9b-b0d5d99f3aaa
@@ -45,5 +68,6 @@
       scriptInterpreter: /bin/bash
     keepgoing: false
     strategy: node-first
+  tags: 'aws,ecs'
   uuid: bfb61231-6158-46d8-bb9b-b0d5d99f3aaa
 

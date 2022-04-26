@@ -1,5 +1,11 @@
 - defaultTab: nodes
-  description: ''
+  description: "Retrieve memory statistics from Redis server using the redis-cli.\n\
+    \nThis Job uses `redis-cli` commands such as `memory malloc-stats` and others\
+    \ to provide information useful for debugging issues related to redis instances.\n\
+    \nThe steps in the Job are **Remote Command** steps, so they execute on the Node\
+    \ (or Nodes) targeted by the Job.  \n\nTo dictate which Node is targeted by the\
+    \ Job, navigate to the **Nodes** tab in this Job definition and change the **Node\
+    \ Filter** to align with your specific use-case. "
   executionEnabled: true
   group: Redis
   id: c9e7c553-e955-4c33-951e-579a38e25941
@@ -25,10 +31,8 @@
       exec: redis-cli memory stats
     - description: Run the "memory malloc-stats" Command
       exec: redis-cli memory malloc-stats
-    - description: SLOWLOG GET command returns entries from the slow log in chronological
-        order
-      exec: redis-cli SLOWLOG GET
     keepgoing: false
     strategy: node-first
+  tags: redis
   uuid: c9e7c553-e955-4c33-951e-579a38e25941
 
