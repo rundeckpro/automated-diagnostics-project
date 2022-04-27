@@ -13,6 +13,15 @@
   loglevel: INFO
   name: Intrinsic Latency Diagnostic Test
   nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: polling_surveys.*
+  nodesSelectedByDefault: true
   options:
   - description: Number of seconds that the `--intrinsic-latency` test should run.
     enforced: true
@@ -27,7 +36,7 @@
     - '150'
     valuesListDelimiter: ','
   plugins:
-    ExecutionLifecycle: null
+    ExecutionLifecycle: {}
   scheduleEnabled: true
   schedules: []
   sequence:
