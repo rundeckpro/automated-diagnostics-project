@@ -1,0 +1,38 @@
+- defaultTab: nodes
+  description: |-
+    Returns entries from the slow log in chronological order.
+
+    This Job executes the `SLOWLOG GET` command on the Redis server to retrieve queries that exceed the duration (in microseconds) set by the `slowlog-log-slower-than` configuration parameter.
+
+    The **Number of Entries** Job Option dictates how many entries to retrieve from the `SLOWLOG`.  If retrieving _all_ entries is desired, simply remove the Job Option from the command.
+  executionEnabled: true
+  group: Redis
+  id: 3709544e-0755-4a85-862c-8b951d55060a
+  loglevel: INFO
+  name: Slow Log Entries
+  nodeFilterEditable: false
+  options:
+  - enforced: true
+    label: Number of Entries
+    name: number-of-entries
+    required: true
+    value: '5'
+    values:
+    - '5'
+    - '10'
+    - '25'
+    - '50'
+    - '100'
+    valuesListDelimiter: ','
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - description: Retrieve N entires from the Redis Slowlog
+      exec: redis-cli slowlog get ${option.number-of-entries}
+    keepgoing: false
+    strategy: node-first
+  uuid: 3709544e-0755-4a85-862c-8b951d55060a
+

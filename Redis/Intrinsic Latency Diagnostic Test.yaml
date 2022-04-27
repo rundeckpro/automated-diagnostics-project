@@ -1,0 +1,41 @@
+- defaultTab: nodes
+  description: "Runs an Intrinsic Latency test on the Redis Server using the Redis-CLI.\n\
+    \nThis Job runs an intrinsic-latency test on the Redis Server to determine baseline\
+    \ latency of Redis in your specific environment. \nRead more about diagnosing\
+    \ Redis latency issues [here](https://redis.io/docs/reference/optimization/latency/).\n\
+    \nThe steps in the Job are Remote Command steps, so they execute on the Node (or\
+    \ Nodes) targeted by the Job.\n\nTo dictate which Node is targeted by the Job,\
+    \ navigate to the Nodes tab in this Job definition and change the Node Filter\
+    \ to align with your specific use-case.\n\n"
+  executionEnabled: true
+  group: Redis
+  id: 29c123f1-45c1-491d-a3eb-4fe534903c66
+  loglevel: INFO
+  name: Intrinsic Latency Diagnostic Test
+  nodeFilterEditable: false
+  options:
+  - description: Number of seconds that the `--intrinsic-latency` test should run.
+    enforced: true
+    label: Duration (Seconds) of Test
+    name: test_seconds
+    required: true
+    value: '60'
+    values:
+    - '30'
+    - '60'
+    - '100'
+    - '150'
+    valuesListDelimiter: ','
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - description: Run the --intrinsic-latency Test for Specified Duration
+      exec: redis-cli --intrinsic-latency ${option.test_seconds}
+    keepgoing: false
+    strategy: node-first
+  tags: redis
+  uuid: 29c123f1-45c1-491d-a3eb-4fe534903c66
+

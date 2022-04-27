@@ -2,11 +2,31 @@
   description: "Using an AWS Load Balancer's name, retrieve the list of unhealthy\
     \ Targets in the Load Balancer's associated Target Groups.\n\nThis Rundeck Job\
     \ uses the AWS CLI to retrieve the list of **unhealthy** instances associated\
-    \ with a given Load Balancer. \nThe AWS CLI must be installed and configured on\
-    \ the Process Automation server or on the designated Runner.\n\nBecause this Job\
-    \ uses the AWS CLI, the EC2 (targets) do not need to be added as Nodes."
+    \ with a given Load Balancer. \n\nBecause this Job uses the AWS CLI, the EC2 (targets)\
+    \ do not need to be added as Nodes.\n\nSee the **ReadMe** for more details on\
+    \ how to use the AWS CLI within the Runbook & Process Automation products.\n---\n\
+    #### How to use the AWS CLI within the Runbook & Process Automation Products\n\
+    \nBelow you will find instructions on how to configure the AWS CLI to work with\
+    \ this automation.\n\n##### Runbook Automation\n1. Install an Enterprise Runner.\
+    \ Documentation for that can be found [here](https://docs.rundeck.com/docs/administration/runner/#enterprise-runner).\
+    \ Assign that Runner to this Project.\n2. Install the [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)\
+    \ on either the Enterprise Runner, or on a remote-node that the Enterprise Runner\
+    \ can communicate with via SSH.\n3. Navigate to the **Nodes** tab within this\
+    \ Job and make sure that the toggle is set to **Execute Locally**.\n\n##### Process\
+    \ Automation\nBecause the Process Automation is self-hosted, there are two options\
+    \ for executing the AWS CLI: install on the Process Automation server (or entire\
+    \ cluster) or install on a remote-node that can be reached via SSH from Process\
+    \ Automation.\nIf the AWS CLI is installed on the Process Automation server, then\
+    \ you can skip these steps and this Job should execute successfully.\n\n1. If\
+    \ the CLI was installed on a remote-node, add it to the Node Inventory as described\
+    \ in **Step 3** above.\n2. Navigate to the **Nodes** tab within this Job and change\
+    \ the setting to **Dispatch to Nodes** and use the Node Filter Syntax to filter\
+    \ on either the Enterprise Runner or remote-node added in **Step 1**.\n\n#####\
+    \ Permissions required by the IAM Role or AWS credentials to execute this job:\n\
+    \n**elasticloadbalancing:DescribeLoadBalancers**<br>\n**elasticloadbalancing:DescribeTargetHealth**<br>\n\
+    **elasticloadbalancing:DescribeTargetGroups**<br>"
   executionEnabled: true
-  group: Auto-Diagnostics/EC2
+  group: AWS/ELB
   id: 3b499022-6faf-4431-bf98-94678f64ce47
   loglevel: INFO
   name: Retrieve ELB Targets Health Status
@@ -60,6 +80,6 @@
       scriptInterpreter: /bin/bash
     keepgoing: false
     strategy: node-first
-  tags: 'aws,ec2'
+  tags: 'aws,elb'
   uuid: 3b499022-6faf-4431-bf98-94678f64ce47
 
