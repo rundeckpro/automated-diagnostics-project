@@ -7,7 +7,7 @@
     If the self-hosted Process Automation server is running in AWS, you can alternatively assign an IAM Role to the EC2 or container.
   executionEnabled: true
   group: AWS/VPC
-  id: 2c41ec57-35da-420a-9955-4eaa33d8cd7a
+  id: 1a63d774-7664-4047-afca-e98c52498ee3
   loglevel: INFO
   name: Top 10 Source IP Addresses with Highest Rejected Requests
   nodeFilterEditable: false
@@ -23,7 +23,7 @@
     optionValuesPluginType: aws-regions-job-options
     required: true
   plugins:
-    ExecutionLifecycle: {}
+    ExecutionLifecycle: null
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -44,5 +44,5 @@
     keepgoing: false
     strategy: node-first
   tags: 'aws,vpc'
-  uuid: 2c41ec57-35da-420a-9955-4eaa33d8cd7a
+  uuid: 1a63d774-7664-4047-afca-e98c52498ee3
 

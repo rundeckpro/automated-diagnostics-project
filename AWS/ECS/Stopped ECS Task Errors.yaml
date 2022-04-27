@@ -26,7 +26,7 @@
     \n**ecs:ListTasks**<br>\n**ecs:DescribeTasks**<br>"
   executionEnabled: true
   group: AWS/ECS
-  id: bfb61231-6158-46d8-bb9b-b0d5d99f3aaa
+  id: edbcfa0c-ade4-4fbc-b0fc-7e52a35431ab
   loglevel: INFO
   name: Stopped ECS Task Errors
   nodeFilterEditable: false
@@ -42,7 +42,7 @@
     required: true
     value: us-west-1
   plugins:
-    ExecutionLifecycle: {}
+    ExecutionLifecycle: null
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -69,5 +69,5 @@
     keepgoing: false
     strategy: node-first
   tags: 'aws,ecs'
-  uuid: bfb61231-6158-46d8-bb9b-b0d5d99f3aaa
+  uuid: edbcfa0c-ade4-4fbc-b0fc-7e52a35431ab
 

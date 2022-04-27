@@ -7,7 +7,7 @@
     If the self-hosted Process Automation server is running in AWS, you can alternatively assign an IAM Role to the EC2 or container.
   executionEnabled: true
   group: AWS/VPC
-  id: 7ce595c9-16ec-4c47-8fb1-e23af4771046
+  id: ceaf75ae-164b-4b6e-ba52-f0faed087155
   loglevel: INFO
   name: Top 10 Hosts by Throughput on Subnet
   nodeFilterEditable: false
@@ -30,7 +30,7 @@
     name: subnet
     value: 192.0.2.0/24
   plugins:
-    ExecutionLifecycle: {}
+    ExecutionLifecycle: null
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -49,5 +49,5 @@
     keepgoing: false
     strategy: node-first
   tags: 'aws,vpc'
-  uuid: 7ce595c9-16ec-4c47-8fb1-e23af4771046
+  uuid: ceaf75ae-164b-4b6e-ba52-f0faed087155
 

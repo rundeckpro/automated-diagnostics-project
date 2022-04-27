@@ -15,7 +15,7 @@
     \ to configure the integration."
   executionEnabled: true
   group: Linux
-  id: 353aeac3-e590-41c2-a7a9-32fbc4aa056b
+  id: 552c918c-4bc8-48b6-850c-00e4622daa10
   loglevel: INFO
   name: Retrieve Errors from Syslog
   nodeFilterEditable: true
@@ -29,7 +29,7 @@
     filter: osName:Linux
   nodesSelectedByDefault: true
   plugins:
-    ExecutionLifecycle: {}
+    ExecutionLifecycle: null
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -54,5 +54,5 @@
     keepgoing: false
     strategy: sequential
   tags: linux
-  uuid: 353aeac3-e590-41c2-a7a9-32fbc4aa056b
+  uuid: 552c918c-4bc8-48b6-850c-00e4622daa10
 

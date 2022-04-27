@@ -15,7 +15,7 @@
     \ to configure the integration."
   executionEnabled: true
   group: Linux
-  id: 9d00056c-59f8-4c0a-a606-adaf667c6c34
+  id: e47c49d8-4b38-4aa0-a178-07ada8637c6b
   loglevel: INFO
   name: 'CPU, Memory and Disk Diagnostics'
   nodeFilterEditable: true
@@ -29,7 +29,7 @@
     filter: osName:Linux
   nodesSelectedByDefault: true
   plugins:
-    ExecutionLifecycle: {}
+    ExecutionLifecycle: null
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -43,5 +43,5 @@
     keepgoing: false
     strategy: node-first
   tags: linux
-  uuid: 9d00056c-59f8-4c0a-a606-adaf667c6c34
+  uuid: e47c49d8-4b38-4aa0-a178-07ada8637c6b
 
