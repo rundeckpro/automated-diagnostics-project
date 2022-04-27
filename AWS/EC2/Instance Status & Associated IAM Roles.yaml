@@ -33,7 +33,7 @@
     **ec2:DescribeInstanceStatus**"
   executionEnabled: true
   group: AWS/EC2
-  id: a2992d07-a8af-4127-8dfb-035f0d9bece9
+  id: 4bae3f47-f14d-41d2-b0c8-089c4edc5dab
   loglevel: INFO
   name: Instance Status & Associated IAM Roles
   nodeFilterEditable: false
@@ -43,7 +43,7 @@
     required: true
     value: i-073260304484b4449
   plugins:
-    ExecutionLifecycle: {}
+    ExecutionLifecycle: null
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -74,5 +74,5 @@
     keepgoing: false
     strategy: node-first
   tags: 'aws,ec2'
-  uuid: a2992d07-a8af-4127-8dfb-035f0d9bece9
+  uuid: 4bae3f47-f14d-41d2-b0c8-089c4edc5dab
 

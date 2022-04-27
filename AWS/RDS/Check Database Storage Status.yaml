@@ -5,12 +5,12 @@
     Using the AWS CLI, this Job checks whether a given RDS instance has the `storage-full` status.
   executionEnabled: true
   group: AWS/RDS
-  id: ae38c21a-b102-4bc5-be28-4fc51b5a4fe5
+  id: a2f3fd6e-54df-4f3f-b4eb-06b667aa0493
   loglevel: INFO
   name: Check Database Storage Status
   nodeFilterEditable: false
   plugins:
-    ExecutionLifecycle: {}
+    ExecutionLifecycle: null
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -20,5 +20,5 @@
     keepgoing: false
     strategy: node-first
   tags: 'aws,rds'
-  uuid: ae38c21a-b102-4bc5-be28-4fc51b5a4fe5
+  uuid: a2f3fd6e-54df-4f3f-b4eb-06b667aa0493
 

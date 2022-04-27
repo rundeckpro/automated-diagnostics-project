@@ -7,7 +7,7 @@
     \ is running in AWS, you can alternatively assign an IAM Role to the EC2 or container."
   executionEnabled: true
   group: AWS/VPC
-  id: 8b8d367a-f5dc-4cda-9c95-da6ce065eae0
+  id: 516f94f6-0383-42df-8062-7cd7f0367a06
   loglevel: INFO
   name: IP addresses using UDP transfer protocol
   nodeFilterEditable: false
@@ -28,7 +28,7 @@
     required: true
     value: cloudwatch-log-group-name
   plugins:
-    ExecutionLifecycle: {}
+    ExecutionLifecycle: null
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -47,5 +47,5 @@
     keepgoing: false
     strategy: node-first
   tags: 'aws,vpc'
-  uuid: 8b8d367a-f5dc-4cda-9c95-da6ce065eae0
+  uuid: 516f94f6-0383-42df-8062-7cd7f0367a06
 

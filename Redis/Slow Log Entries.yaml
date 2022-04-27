@@ -7,7 +7,7 @@
     The **Number of Entries** Job Option dictates how many entries to retrieve from the `SLOWLOG`.  If retrieving _all_ entries is desired, simply remove the Job Option from the command.
   executionEnabled: true
   group: Redis
-  id: 3709544e-0755-4a85-862c-8b951d55060a
+  id: 28dbd976-5c83-4932-a66e-c3eb8b3154ea
   loglevel: INFO
   name: Slow Log Entries
   nodeFilterEditable: false
@@ -25,7 +25,7 @@
     - '100'
     valuesListDelimiter: ','
   plugins:
-    ExecutionLifecycle: {}
+    ExecutionLifecycle: null
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -34,5 +34,6 @@
       exec: redis-cli slowlog get ${option.number-of-entries}
     keepgoing: false
     strategy: node-first
-  uuid: 3709544e-0755-4a85-862c-8b951d55060a
+  tags: redis
+  uuid: 28dbd976-5c83-4932-a66e-c3eb8b3154ea
 

@@ -9,7 +9,7 @@
     \ to align with your specific use-case.\n\n"
   executionEnabled: true
   group: Redis
-  id: 29c123f1-45c1-491d-a3eb-4fe534903c66
+  id: 9ab3efa1-9860-4f1a-8e96-85a8278041a4
   loglevel: INFO
   name: Intrinsic Latency Diagnostic Test
   nodeFilterEditable: false
@@ -27,7 +27,7 @@
     - '150'
     valuesListDelimiter: ','
   plugins:
-    ExecutionLifecycle: {}
+    ExecutionLifecycle: null
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -37,5 +37,5 @@
     keepgoing: false
     strategy: node-first
   tags: redis
-  uuid: 29c123f1-45c1-491d-a3eb-4fe534903c66
+  uuid: 9ab3efa1-9860-4f1a-8e96-85a8278041a4
 

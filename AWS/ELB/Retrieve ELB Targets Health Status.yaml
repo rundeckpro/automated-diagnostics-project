@@ -27,7 +27,7 @@
     **elasticloadbalancing:DescribeTargetGroups**<br>"
   executionEnabled: true
   group: AWS/ELB
-  id: 3b499022-6faf-4431-bf98-94678f64ce47
+  id: 2dc2ade9-6b8d-4446-8247-92facdbe20cd
   loglevel: INFO
   name: Retrieve ELB Targets Health Status
   nodeFilterEditable: false
@@ -36,7 +36,7 @@
     name: load_balancer_name
     value: polling-cluster
   plugins:
-    ExecutionLifecycle: {}
+    ExecutionLifecycle: null
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -81,5 +81,5 @@
     keepgoing: false
     strategy: node-first
   tags: 'aws,elb'
-  uuid: 3b499022-6faf-4431-bf98-94678f64ce47
+  uuid: 2dc2ade9-6b8d-4446-8247-92facdbe20cd
 
