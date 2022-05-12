@@ -1,0 +1,30 @@
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  group: Linux
+  id: cd5aab19-f7d4-4413-b69b-b3e0f0bd4641
+  loglevel: INFO
+  name: Top Disk Consuming Files
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: 'osName: Linux'
+  nodesSelectedByDefault: true
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - description: Retrieve top 10 Disk Consuming Files
+      exec: sudo du -Shx / | sort -rh | head -10
+    keepgoing: false
+    strategy: node-first
+  tags: linux
+  uuid: cd5aab19-f7d4-4413-b69b-b3e0f0bd4641
+
