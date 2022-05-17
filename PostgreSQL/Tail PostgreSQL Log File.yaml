@@ -1,0 +1,43 @@
+- defaultTab: nodes
+  description: |-
+    Retrieve recent logs from the PostgreSQL log file
+
+    This Job identifies the main PostgreSQL log file and then retrieves the most recent logs using `tail`.
+  executionEnabled: true
+  group: PostgreSQL
+  id: 69b61aa3-fcd4-431b-aef7-307c3e568b9b
+  loglevel: INFO
+  name: Tail PostgreSQL Log File
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: 'name: service-testing-instance '
+  nodesSelectedByDefault: true
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - description: Retrieve PostgreSQL Log File Name
+      exec: ls /var/log/postgresql
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: 'true'
+            logData: 'true'
+            name: log_file_name
+            regex: (.*)
+          type: key-value-data-multilines
+    - description: Tail Log File
+      exec: tail -n 10 /var/log/postgresql/${data.log_file_name*}
+    keepgoing: false
+    strategy: node-first
+  tags: postgresql
+  uuid: 69b61aa3-fcd4-431b-aef7-307c3e568b9b
+

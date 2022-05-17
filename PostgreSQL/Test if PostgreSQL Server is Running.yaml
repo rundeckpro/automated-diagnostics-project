@@ -29,7 +29,7 @@
   sequence:
     commands:
     - description: Execute psql command on remote node
-      exec: sudo -u postgres psql
+      exec: sudo -u postgres psql -l
     keepgoing: false
     strategy: node-first
   tags: postgresql
