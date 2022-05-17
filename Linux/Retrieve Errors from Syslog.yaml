@@ -5,9 +5,8 @@
     \ order for this Job to work correctly. \n\nInstructions for adding various VM's\
     \ - such as EC2's, Azure VM's and Google Compute Instances - can be found in [this\
     \ section of documentation](https://docs.rundeck.com/docs/manual/projects/resource-model-sources/).\n\
-    \nClick on the **ReadMe** for details on the various ways to execute remote-commands\
-    \ on Nodes using Runbook Automation.\n---\nIf connecting to Nodes using SSH, follow\
-    \ [this documentation](https://docs.rundeck.com/docs/learning/howto/ssh-on-linux-nodes.html#using-ssh-on-linux-unix-nodes)\
+    \nClick on the ReadMe for additional details on connecting to Nodes using Runbook\
+    \ Automation.\n---\nIf connecting to Nodes using SSH, follow [this documentation](https://docs.rundeck.com/docs/learning/howto/ssh-on-linux-nodes.html#using-ssh-on-linux-unix-nodes)\
     \ \nto set up your Nodes and SSH Credentials and - if using Runbook Automation\
     \ SaaS - also use [this documentation](https://docs.rundeck.com/docs/administration/runner/#architecture)\
     \ to set up a Runner for this Project.\n\nIf connecting to Nodes using Amazon's\
@@ -29,7 +28,7 @@
     filter: osName:Linux
   nodesSelectedByDefault: true
   plugins:
-    ExecutionLifecycle: null
+    ExecutionLifecycle: {}
   scheduleEnabled: true
   schedules: []
   sequence:
