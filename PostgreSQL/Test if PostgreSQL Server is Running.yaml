@@ -1,0 +1,37 @@
+- defaultTab: nodes
+  description: |-
+    Performs simple test using the psql command
+
+    This Job performs a simple test on the remote Linux host by executing the `psql` command.
+
+    The full command used in the job is `sudo -u postgresql psql`.  As this may not address your specific setup, you may need to modify this command so that it works for your environment.
+
+    Simply executing `psql` can validate whether the PostgreSQL service is running and accepting connections.
+  executionEnabled: true
+  group: PostgreSQL
+  id: 42a2e089-f48e-4564-85ca-87f859663e37
+  loglevel: INFO
+  name: Test if PostgreSQL Server is Running
+  nodeFilterEditable: true
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: 'osName: Linux'
+  nodesSelectedByDefault: true
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - description: Execute psql command on remote node
+      exec: sudo -u postgres psql
+    keepgoing: false
+    strategy: node-first
+  tags: postgresql
+  uuid: 42a2e089-f48e-4564-85ca-87f859663e37
+
