@@ -8,7 +8,7 @@
   id: 69b61aa3-fcd4-431b-aef7-307c3e568b9b
   loglevel: INFO
   name: Tail PostgreSQL Log File
-  nodeFilterEditable: false
+  nodeFilterEditable: true
   nodefilters:
     dispatch:
       excludePrecedence: true
@@ -16,7 +16,7 @@
       rankOrder: ascending
       successOnEmptyNodeFilter: false
       threadcount: '1'
-    filter: 'name: service-testing-instance '
+    filter: osName:Linux
   nodesSelectedByDefault: true
   plugins:
     ExecutionLifecycle: {}
