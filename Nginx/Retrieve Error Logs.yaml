@@ -1,0 +1,31 @@
+- defaultTab: nodes
+  description: "Tail the Error Logs file for Nginx\n\nThis Job retrieves recent logs\
+    \ from the Nginx Error-Logs file.  \n\nThe directory used for this is `/var/log/nginx/error.log`"
+  executionEnabled: true
+  group: Nginx
+  id: 986494bd-eb20-49aa-b831-7057dd1dfbc8
+  loglevel: INFO
+  name: Retrieve Error Logs
+  nodeFilterEditable: true
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: osName:Linux
+  nodesSelectedByDefault: true
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - description: Retrieve Nginx Error Logs
+      exec: tail -n ${option.tail_lines} /var/log/nginx/error.log
+    keepgoing: false
+    strategy: node-first
+  tags: nginx
+  uuid: 986494bd-eb20-49aa-b831-7057dd1dfbc8
+

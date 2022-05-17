@@ -1,0 +1,33 @@
+- defaultTab: nodes
+  description: |-
+    Test the Nginx configuration syntax
+
+    This Job tests the Nginx configuration syntax using the command `nginx -t` on a remote Linux node.
+  executionEnabled: true
+  group: Nginx
+  id: 46e4295c-a873-4dc9-8d21-ef605d7e73b5
+  loglevel: INFO
+  name: Test Nginx Configuration
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: osName:Linux
+  nodesSelectedByDefault: true
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - description: Check Configuration Syntax on Remote Node
+      exec: nginx -t
+    keepgoing: false
+    strategy: node-first
+  tags: nginx
+  uuid: 46e4295c-a873-4dc9-8d21-ef605d7e73b5
+
