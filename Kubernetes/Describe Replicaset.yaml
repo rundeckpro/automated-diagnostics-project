@@ -4,6 +4,7 @@
 
     This Job describes a Replicaset in a specified namespace.  This is useful for scenarios where the Resource Quotes have been exceeded.
   executionEnabled: true
+  group: Kubernetes
   id: 9e3ebf00-aede-479e-a649-b7476b6626e3
   loglevel: INFO
   name: Describe Replicaset

@@ -1,0 +1,34 @@
+- defaultTab: nodes
+  description: |-
+    Describe specific Deployment in a particular Namespace
+
+    This Job describes a particular Deployment.  This is useful for troubleshooting events when a deployment fails because there is not enough CPU or Memory to deplopy additional pods.
+  executionEnabled: true
+  group: Kubernetes
+  id: 7b958185-6ce0-4112-98d9-00cb63cc3abd
+  loglevel: INFO
+  name: Describe Deployment
+  nodeFilterEditable: false
+  options:
+  - description: Name of the Deployment in the Kubernetes Namespace.
+    label: Deployment Name
+    name: deployment_name
+    required: true
+  - description: Namespace where the particular Deployment resides.
+    label: Namespace
+    name: namespace
+    required: true
+    value: default
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - description: Describe Deployment in Namespace
+      exec: 'kubectl describe -n ${option.namespace} deployment/${option.deployment_name} '
+    keepgoing: false
+    strategy: node-first
+  tags: kubernetes
+  uuid: 7b958185-6ce0-4112-98d9-00cb63cc3abd
+
