@@ -1,0 +1,33 @@
+- defaultTab: nodes
+  description: |-
+    Describe a Replicaset in a specified Namespace
+
+    This Job describes a Replicaset in a specified namespace.  This is useful for scenarios where the Resource Quotes have been exceeded.
+  executionEnabled: true
+  id: 9e3ebf00-aede-479e-a649-b7476b6626e3
+  loglevel: INFO
+  name: Describe Replicaset
+  nodeFilterEditable: false
+  options:
+  - description: Namespace where the Replicaset Resides
+    label: Namespace
+    name: namespace
+    required: true
+    value: default
+  - description: Name of the Replicaset in the specified Namespace.
+    label: Replicaset Name
+    name: replicaset_name
+    required: true
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - description: Describe Replicaset in specified Namespace
+      exec: 'kubectl describe replicaset ${option.replicaset_name} -n ${option.namespace} '
+    keepgoing: false
+    strategy: node-first
+  tags: kubernetes
+  uuid: 9e3ebf00-aede-479e-a649-b7476b6626e3
+
