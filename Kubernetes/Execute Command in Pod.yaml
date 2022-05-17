@@ -1,0 +1,43 @@
+- defaultTab: nodes
+  description: |
+    Send command to be run on an individual pod in a specific namespace
+
+    This Job sends a command to a pod in a specified namespace.  The command is executed by the following syntax:
+    ```
+    kubectl exec -it {{pod_name}} -n {{namespace}} -- /bin/bash -c {{command}}
+    ```
+  executionEnabled: true
+  group: Kubernetes
+  id: 23da4939-354b-4225-bdf4-03877c64e45c
+  loglevel: INFO
+  name: Execute Command in Pod
+  nodeFilterEditable: false
+  options:
+  - description: Command to send to pod.  This will be executed after `kubectl exec
+      -it {{pod_name}} -n {{namespace}} --  /bin/bash -c {{commands}}`
+    label: Command
+    name: command
+    required: true
+  - description: Namespace where the Pod resides
+    label: Namespace
+    name: namespace
+    required: true
+    value: default
+  - description: Pod to send specific command to.
+    label: Pod Name
+    name: pod_name
+    required: true
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - description: Send command to pod
+      exec: kubectl exec -it ${option.pod_name} -n ${option.namespace} -- /bin/bash
+        -c ${option.commands}
+    keepgoing: false
+    strategy: node-first
+  tags: kubernetes
+  uuid: 23da4939-354b-4225-bdf4-03877c64e45c
+
