@@ -1,6 +1,6 @@
 - defaultTab: nodes
   description: |-
-    Retrieves last 10 logs from a specific Kubernetes Pod.
+    Retrieves last 10 logs from an individual Pod in a specific Namespace.
 
     This Job retrieves the most recent logs from a specific Kubernetes Pod.  You can change the number of log-lines by modifying the `--tail` flag in the **Remote Command** step.
   executionEnabled: true
@@ -10,6 +10,11 @@
   name: Tail Logs from Individual Kubernetes Pod
   nodeFilterEditable: false
   options:
+  - description: Namespace within the Kubernetes Cluster where the Pod resides.
+    label: Kubernetes Namespace
+    name: namespace
+    required: true
+    value: default
   - description: Name of the kubernetes pod
     label: Pod Name
     name: pod_name
@@ -21,7 +26,7 @@
   sequence:
     commands:
     - description: 'Retrieve Logs '
-      exec: kubectl logs pod ${option.pod_name} --tail=10
+      exec: kubectl logs pod ${option.pod_name} -n ${option.namespace} --tail=10
     keepgoing: false
     strategy: node-first
   tags: kubernetes
