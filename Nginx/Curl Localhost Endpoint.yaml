@@ -1,0 +1,30 @@
+- defaultTab: nodes
+  description: "Check if Nginx is processing requests using Curl\n\nThis Job executes\
+    \ `curl` on a remote node to see if Nginx is processesing requests.  \n\nThe default\
+    \ endpoint checked is:\n```\nhttp://127.0.0.1/nginx_status\n```\nThis default\
+    \ endpoint can be changed using the `Endpoint` field below."
+  executionEnabled: true
+  group: Nginx
+  id: 8acb5d0c-aef1-43ef-b366-869e7a3f629b
+  loglevel: INFO
+  name: Curl Localhost Endpoint
+  nodeFilterEditable: false
+  options:
+  - description: Endpoint to execute `curl` command against.
+    label: Endpoint
+    name: endpoint
+    required: true
+    value: http://127.0.0.1/nginx_status
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - description: Execute curl against specified endpoint
+      exec: curl -i ${option.endpoint}
+    keepgoing: false
+    strategy: node-first
+  tags: nginx
+  uuid: 8acb5d0c-aef1-43ef-b366-869e7a3f629b
+
