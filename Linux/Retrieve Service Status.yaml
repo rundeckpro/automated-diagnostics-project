@@ -1,11 +1,23 @@
 - defaultTab: nodes
-  description: ''
+  description: |-
+    Retrieve the status of a specific service running a remote Linux host.
+
+    This Job uses `systemctl` to retrieve the status of an individual service running on a remote linux node.
   executionEnabled: true
   group: Linux
   id: eae2db60-f9b9-4e28-901e-0585ddc53687
   loglevel: INFO
   name: Retrieve Service Status
   nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ''
+  nodesSelectedByDefault: true
   options:
   - description: The name of the service running on the remote node. For example `sshd`
     label: Service Name
