@@ -1,0 +1,34 @@
+- defaultTab: nodes
+  description: |-
+    Describe an individual Pod in a specified namespace.
+
+    This Job uses `kubectl` to retrieve the status of an individual Pod in a particular namespace.
+  executionEnabled: true
+  group: Kubernetes
+  id: 66b21b75-8523-4e23-8e5a-ce1ed75cd54e
+  loglevel: INFO
+  name: Describe Specific Pod
+  nodeFilterEditable: false
+  options:
+  - description: Specify the Kubernetes Namespace
+    label: Kubernetes Namespace
+    name: namespace
+    required: true
+    value: default
+  - description: The name of the individual Pod to describe.
+    label: Pod Name
+    name: pod_name
+    required: true
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - description: Describe Pod in Namespace
+      exec: kubectl describe pod ${option.pod_name} -n ${option.namespace}
+    keepgoing: false
+    strategy: node-first
+  tags: kubernetes
+  uuid: 66b21b75-8523-4e23-8e5a-ce1ed75cd54e
+
