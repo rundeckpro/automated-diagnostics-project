@@ -1,0 +1,26 @@
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  group: Linux
+  id: eae2db60-f9b9-4e28-901e-0585ddc53687
+  loglevel: INFO
+  name: Retrieve Service Status
+  nodeFilterEditable: false
+  options:
+  - description: The name of the service running on the remote node. For example `sshd`
+    label: Service Name
+    name: service_name
+    required: true
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - description: Retrieve Service Name
+      exec: systemctl status ${option.service_name}
+    keepgoing: false
+    strategy: node-first
+  tags: linux
+  uuid: eae2db60-f9b9-4e28-901e-0585ddc53687
+

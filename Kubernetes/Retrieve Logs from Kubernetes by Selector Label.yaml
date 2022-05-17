@@ -1,0 +1,44 @@
+- defaultTab: nodes
+  description: "Retrieve the most recent logs for all pods filtered by label selector.\n\
+    \nThis Job retrieves logs from pods that match a given label selector.  \n\nFor\
+    \ example: `environment=production,tier=frontend`. This will pull logs from pods\
+    \ that have the labels `environment=production` and `tier=frontend`.\n\nFor more\
+    \ information on Labels and Selectors, see [here](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/)."
+  executionEnabled: true
+  group: Kubernetes
+  id: e4836755-0219-4e7b-a126-bac4aef8338e
+  loglevel: INFO
+  name: Retrieve Logs from Kubernetes by Selector Label
+  nodeFilterEditable: false
+  options:
+  - description: 'For example, `environment=product,tier=frontend`'
+    label: Label Selector
+    name: kubernetes_selector
+    required: true
+  - description: Choose the Number of Lines to tail from all pods that match the Selector
+      syntax.
+    enforced: true
+    label: Number of Lines to Tail
+    name: tail_lines
+    required: true
+    value: '10'
+    values:
+    - '1'
+    - '5'
+    - '10'
+    - '25'
+    - '50'
+    valuesListDelimiter: ','
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - description: Retrieve Logs from Pods that Match Label Selector
+      exec: kubectl logs -l ${option.kubernetes_selector} --tail ${option.tail_lines}
+    keepgoing: false
+    strategy: node-first
+  tags: kubernetes
+  uuid: e4836755-0219-4e7b-a126-bac4aef8338e
+

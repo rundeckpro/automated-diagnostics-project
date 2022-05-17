@@ -1,0 +1,26 @@
+- defaultTab: nodes
+  description: Retrieves last 10 logs from a specific Kubernetes Pod
+  executionEnabled: true
+  group: Kubernetes
+  id: 8f9cfa59-8d50-4d46-9dc4-ab3ce01c255e
+  loglevel: INFO
+  name: Tail Logs from Individual Kubernetes Pod
+  nodeFilterEditable: false
+  options:
+  - description: Name of the kubernetes pod
+    label: Pod Name
+    name: pod_name
+    required: true
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - description: 'Retrieve Logs '
+      exec: kubectl logs pod ${option.pod_name} --tail=10
+    keepgoing: false
+    strategy: node-first
+  tags: kubernetes
+  uuid: 8f9cfa59-8d50-4d46-9dc4-ab3ce01c255e
+
