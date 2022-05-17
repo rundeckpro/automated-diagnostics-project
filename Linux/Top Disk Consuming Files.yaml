@@ -1,5 +1,6 @@
 - defaultTab: nodes
-  description: ''
+  description: "List the top disk-consuming files on a remote Linux node\n\nThis Job\
+    \ retrieves and lists the top disk-consuming files on a remote Linux node.  "
   executionEnabled: true
   group: Linux
   id: cd5aab19-f7d4-4413-b69b-b3e0f0bd4641
