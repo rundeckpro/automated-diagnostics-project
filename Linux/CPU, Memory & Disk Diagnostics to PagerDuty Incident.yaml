@@ -1,10 +1,15 @@
 - defaultTab: nodes
-  description: ''
+  description: "Send diagnostics of a Linux Node's CPU, Memory & Disk to a PagerDuty\
+    \ incident.\n\nThis Job retrieves CPU, Memory and Disk diagnostics an individual\
+    \ Linux Node and then sends those diagnostics to PagerDuty.\n\nSee the **Configuring\
+    \ Systems Manager** or **Configure SSH Connectivity** for guides on how to invoke\
+    \ the commands in this Job on remote Nodes. \n\nAnd see the **Send Diagnostics\
+    \ to PagerDuty** tour for configuring the PagerDuty integration."
   executionEnabled: true
   group: Linux
   id: eaa8efeb-4a06-4e4e-b292-a0b4fa084358
   loglevel: INFO
-  name: All Diagnostics to PagerDuty Incident
+  name: 'CPU, Memory & Disk Diagnostics to PagerDuty Incident'
   nodeFilterEditable: true
   nodefilters:
     dispatch:
