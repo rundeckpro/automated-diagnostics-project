@@ -1,0 +1,69 @@
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  group: Linux
+  id: eaa8efeb-4a06-4e4e-b292-a0b4fa084358
+  loglevel: INFO
+  name: All Diagnostics to PagerDuty Incident
+  nodeFilterEditable: true
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ${option.node_filter}
+  nodesSelectedByDefault: true
+  options:
+  - label: Node Filter
+    name: node_filter
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - description: Top 5 CPU Consuming Processes
+      exec: 'ps -eo pcpu,pid,cmd | sort -k 1 -nr | head -5'
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: 'true'
+            logData: 'true'
+            name: top_cpu
+            regex: (.*)
+          type: key-value-data-multilines
+    - description: Top 5 Memory Consuming Processes
+      exec: 'ps -eo pmem,pid,cmd | sort -k 1 -nr | head -5'
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: 'true'
+            logData: 'true'
+            name: top_memory
+            regex: (.*)
+          type: key-value-data-multilines
+    - description: Top 10 Disk Consuming Files
+      exec: sudo du -Shx / | sort -rh | head -10
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: 'true'
+            logData: 'true'
+            name: top_disk
+            regex: (.*)
+          type: key-value-data-multilines
+    - configuration:
+        email: rundeck@rundeck.com
+        incident_id: Q1KDTAV8UP2P8J
+        note: Top CPU Processes:\n${data.top_cpu*}\n Top Memory Processes:\n${data.top_memory*}\n
+          Top Disk Consuming Files:\n${data.top_disk*}
+      description: Send Diagnostics to PagerDuty
+      nodeStep: false
+      type: pd-note-step
+    keepgoing: false
+    strategy: node-first
+  tags: linux
+  uuid: eaa8efeb-4a06-4e4e-b292-a0b4fa084358
+

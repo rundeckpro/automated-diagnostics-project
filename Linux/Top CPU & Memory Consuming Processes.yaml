@@ -25,8 +25,11 @@
       rankOrder: ascending
       successOnEmptyNodeFilter: false
       threadcount: '1'
-    filter: osName:Linux
+    filter: ${option.node_filter}
   nodesSelectedByDefault: true
+  options:
+  - label: Node Filter
+    name: node_filter
   plugins:
     ExecutionLifecycle: {}
   scheduleEnabled: true

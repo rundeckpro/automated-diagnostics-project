@@ -6,7 +6,7 @@
   id: cd5aab19-f7d4-4413-b69b-b3e0f0bd4641
   loglevel: INFO
   name: Top Disk Consuming Files
-  nodeFilterEditable: false
+  nodeFilterEditable: true
   nodefilters:
     dispatch:
       excludePrecedence: true
@@ -14,8 +14,11 @@
       rankOrder: ascending
       successOnEmptyNodeFilter: false
       threadcount: '1'
-    filter: 'osName: Linux'
+    filter: ${option.my_node}
   nodesSelectedByDefault: true
+  options:
+  - label: My Node
+    name: my_node
   plugins:
     ExecutionLifecycle: {}
   scheduleEnabled: true
