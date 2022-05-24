@@ -1,5 +1,11 @@
 - defaultTab: nodes
-  description: Simple check if port 6379 is listening on the Redis host.
+  description: "Simple check if port 6379 is listening on the Redis host.\n\nSee the\
+    \ **Readme** for instructions on how to add remote-nodes and configure connectivity\
+    \ to them using methods such as SSH or Systems Manager (SSM).\n---\nFor adding\
+    \ remote-nodes, see the **Configure EC2 Inventory** tour.\n\nSee the **Configuring\
+    \ Systems Manager** or **Configure SSH Connectivity** tours for guides on how\
+    \ to invoke the commands in this Job on remote Nodes. \n\nAnd see the **Send Diagnostics\
+    \ to PagerDuty** tour for sending the output of the Job to PagerDuty incidents."
   executionEnabled: true
   group: Redis
   id: 583370dc-482c-4740-ae3e-05a0a25cb44f

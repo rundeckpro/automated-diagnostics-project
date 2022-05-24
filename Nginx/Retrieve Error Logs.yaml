@@ -1,6 +1,13 @@
 - defaultTab: nodes
   description: "Tail the Error Logs file for Nginx\n\nThis Job retrieves recent logs\
-    \ from the Nginx Error-Logs file.  \n\nThe directory used for this is `/var/log/nginx/error.log`"
+    \ from the Nginx Error-Logs file.  \n\nThe directory used for this is `/var/log/nginx/error.log`\n\
+    \nSee the **Readme** for instructions on how to add remote-nodes and configure\
+    \ connectivity to them using methods such as SSH or Systems Manager (SSM).\n---\n\
+    For adding remote-nodes, see the **Configure EC2 Inventory** tour.\n\nSee the\
+    \ **Configuring Systems Manager** or **Configure SSH Connectivity** tours for\
+    \ guides on how to invoke the commands in this Job on remote Nodes. \n\nAnd see\
+    \ the **Send Diagnostics to PagerDuty** tour for sending the output of the Job\
+    \ to PagerDuty incidents."
   executionEnabled: true
   group: Nginx
   id: 986494bd-eb20-49aa-b831-7057dd1dfbc8

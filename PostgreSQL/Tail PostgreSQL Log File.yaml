@@ -1,8 +1,13 @@
 - defaultTab: nodes
-  description: |-
-    Retrieve recent logs from the PostgreSQL log file
-
-    This Job identifies the main PostgreSQL log file and then retrieves the most recent logs using `tail`.
+  description: "Retrieve recent logs from the PostgreSQL log file\n\nThis Job identifies\
+    \ the main PostgreSQL log file and then retrieves the most recent logs using `tail`.\n\
+    \nSee the **Readme** for instructions on how to add remote-nodes and configure\
+    \ connectivity to them using methods such as SSH or Systems Manager (SSM).\n---\n\
+    For adding remote-nodes, see the **Configure EC2 Inventory** tour.\n\nSee the\
+    \ **Configuring Systems Manager** or **Configure SSH Connectivity** tours for\
+    \ guides on how to invoke the commands in this Job on remote Nodes. \n\nAnd see\
+    \ the **Send Diagnostics to PagerDuty** tour for sending the output of the Job\
+    \ to PagerDuty incidents."
   executionEnabled: true
   group: PostgreSQL
   id: 69b61aa3-fcd4-431b-aef7-307c3e568b9b

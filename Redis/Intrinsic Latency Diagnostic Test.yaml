@@ -3,10 +3,13 @@
     \nThis Job runs an intrinsic-latency test on the Redis Server to determine baseline\
     \ latency of Redis in your specific environment. \nRead more about diagnosing\
     \ Redis latency issues [here](https://redis.io/docs/reference/optimization/latency/).\n\
-    \nThe steps in the Job are Remote Command steps, so they execute on the Node (or\
-    \ Nodes) targeted by the Job.\n\nTo dictate which Node is targeted by the Job,\
-    \ navigate to the Nodes tab in this Job definition and change the Node Filter\
-    \ to align with your specific use-case.\n\n"
+    \nSee the **Readme** for instructions on how to add remote-nodes and configure\
+    \ connectivity to them using methods such as SSH or Systems Manager (SSM).\n---\n\
+    For adding remote-nodes, see the **Configure EC2 Inventory** tour.\n\nSee the\
+    \ **Configuring Systems Manager** or **Configure SSH Connectivity** tours for\
+    \ guides on how to invoke the commands in this Job on remote Nodes. \n\nAnd see\
+    \ the **Send Diagnostics to PagerDuty** tour for sending the output of the Job\
+    \ to PagerDuty incidents."
   executionEnabled: true
   group: Redis
   id: 9ab3efa1-9860-4f1a-8e96-85a8278041a4

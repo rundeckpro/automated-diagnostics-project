@@ -1,8 +1,12 @@
 - defaultTab: nodes
-  description: |-
-    Test the Nginx configuration syntax
-
-    This Job tests the Nginx configuration syntax using the command `nginx -t` on a remote Linux node.
+  description: "Test the Nginx configuration syntax\n\nThis Job tests the Nginx configuration\
+    \ syntax using the command `nginx -t` on a remote Linux node.\n\nSee the **Readme**\
+    \ for instructions on how to add remote-nodes and configure connectivity to them\
+    \ using methods such as SSH or Systems Manager (SSM).\n---\nFor adding remote-nodes,\
+    \ see the **Configure EC2 Inventory** tour.\n\nSee the **Configuring Systems Manager**\
+    \ or **Configure SSH Connectivity** tours for guides on how to invoke the commands\
+    \ in this Job on remote Nodes. \n\nAnd see the **Send Diagnostics to PagerDuty**\
+    \ tour for sending the output of the Job to PagerDuty incidents."
   executionEnabled: true
   group: Nginx
   id: 46e4295c-a873-4dc9-8d21-ef605d7e73b5

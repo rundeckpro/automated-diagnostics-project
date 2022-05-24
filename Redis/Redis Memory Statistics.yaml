@@ -2,10 +2,13 @@
   description: "Retrieve memory statistics from Redis server using the redis-cli.\n\
     \nThis Job uses `redis-cli` commands such as `memory malloc-stats` and others\
     \ to provide information useful for debugging issues related to redis instances.\n\
-    \nThe steps in the Job are **Remote Command** steps, so they execute on the Node\
-    \ (or Nodes) targeted by the Job.  \n\nTo dictate which Node is targeted by the\
-    \ Job, navigate to the **Nodes** tab in this Job definition and change the **Node\
-    \ Filter** to align with your specific use-case. "
+    \nSee the **Readme** for instructions on how to add remote-nodes and configure\
+    \ connectivity to them using methods such as SSH or Systems Manager (SSM).\n---\n\
+    For adding remote-nodes, see the **Configure EC2 Inventory** tour.\n\nSee the\
+    \ **Configuring Systems Manager** or **Configure SSH Connectivity** tours for\
+    \ guides on how to invoke the commands in this Job on remote Nodes. \n\nAnd see\
+    \ the **Send Diagnostics to PagerDuty** tour for sending the output of the Job\
+    \ to PagerDuty incidents."
   executionEnabled: true
   group: Redis
   id: 7952f9ba-8eff-449d-b917-a93d649a5c25
