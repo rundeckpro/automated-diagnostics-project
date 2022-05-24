@@ -3,6 +3,8 @@
     Describe a Replicaset in a specified Namespace
 
     This Job describes a Replicaset in a specified namespace.  This is useful for scenarios where the Resource Quotes have been exceeded.
+
+    This Job is designed to be run on an [**Enterprise Runner**](https://docs.rundeck.com/docs/administration/runner/#architecture). Follow the documentation and install the Runner in a location that can communicate with your Kubernetes cluster.
   executionEnabled: true
   group: Kubernetes
   id: 9e3ebf00-aede-479e-a649-b7476b6626e3

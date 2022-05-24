@@ -3,6 +3,8 @@
     Retrieves last 10 logs from an individual Pod in a specific Namespace.
 
     This Job retrieves the most recent logs from a specific Kubernetes Pod.  You can change the number of log-lines by modifying the `--tail` flag in the **Remote Command** step.
+
+    This Job is designed to be run on an [**Enterprise Runner**](https://docs.rundeck.com/docs/administration/runner/#architecture). Follow the documentation and install the Runner in a location that can communicate with your Kubernetes cluster.
   executionEnabled: true
   group: Kubernetes
   id: 8f9cfa59-8d50-4d46-9dc4-ab3ce01c255e

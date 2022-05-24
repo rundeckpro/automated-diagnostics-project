@@ -3,6 +3,8 @@
     Describe specific Deployment in a particular Namespace
 
     This Job describes a particular Deployment.  This is useful for troubleshooting events when a deployment fails because there is not enough CPU or Memory to deplopy additional pods.
+
+    This Job is designed to be run on an [**Enterprise Runner**](https://docs.rundeck.com/docs/administration/runner/#architecture). Follow the documentation and install the Runner in a location that can communicate with your Kubernetes cluster.
   executionEnabled: true
   group: Kubernetes
   id: 7b958185-6ce0-4112-98d9-00cb63cc3abd
