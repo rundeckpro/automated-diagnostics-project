@@ -1,17 +1,13 @@
 - defaultTab: nodes
   description: "Retrieve common error messages from Syslog by searching for common\
     \ error phrases.\n\nThis Job executes commands on remote Linux instances and retrieves\
-    \ common error messages from Syslog.\n\nVM instances must be added as Nodes in\
-    \ order for this Job to work correctly. \n\nInstructions for adding various VM's\
-    \ - such as EC2's, Azure VM's and Google Compute Instances - can be found in [this\
-    \ section of documentation](https://docs.rundeck.com/docs/manual/projects/resource-model-sources/).\n\
-    \nClick on the ReadMe for additional details on connecting to Nodes using Runbook\
-    \ Automation.\n---\nIf connecting to Nodes using SSH, follow [this documentation](https://docs.rundeck.com/docs/learning/howto/ssh-on-linux-nodes.html#using-ssh-on-linux-unix-nodes)\
-    \ \nto set up your Nodes and SSH Credentials and - if using Runbook Automation\
-    \ SaaS - also use [this documentation](https://docs.rundeck.com/docs/administration/runner/#architecture)\
-    \ to set up a Runner for this Project.\n\nIf connecting to Nodes using Amazon's\
-    \ Systems Manager (formerly known as SSM), following [this documentation](https://docs.rundeck.com/docs/manual/projects/node-execution/aws-ssm.html#description)\
-    \ to configure the integration."
+    \ common error messages from Syslog.\n\nSee the **Readme** for instruction on\
+    \ how to add remote-nodes and configure connectivity to them using methods such\
+    \ as SSH or Systems Manager (SSM).\n---\nFor adding remote-nodes, see the **Configure\
+    \ EC2 Inventory** tour.\n\nSee the **Configuring Systems Manager** or **Configure\
+    \ SSH Connectivity** tours for guides on how to invoke the commands in this Job\
+    \ on remote Nodes. \n\nAnd see the **Send Diagnostics to PagerDuty** tour for\
+    \ sending the output of the Job to PagerDuty incidents."
   executionEnabled: true
   group: Linux
   id: 552c918c-4bc8-48b6-850c-00e4622daa10

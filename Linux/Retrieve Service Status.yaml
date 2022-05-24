@@ -1,8 +1,13 @@
 - defaultTab: nodes
-  description: |-
-    Retrieve the status of a specific service running a remote Linux host.
-
-    This Job uses `systemctl` to retrieve the status of an individual service running on a remote linux node.
+  description: "Retrieve the status of a specific service running a remote Linux host.\n\
+    \nThis Job uses `systemctl` to retrieve the status of an individual service running\
+    \ on a remote linux node.\n\nSee the **Readme** for instruction on how to add\
+    \ remote-nodes and configure connectivity to them using methods such as SSH or\
+    \ Systems Manager (SSM).\n---\nFor adding remote-nodes, see the **Configure EC2\
+    \ Inventory** tour.\n\nSee the **Configuring Systems Manager** or **Configure\
+    \ SSH Connectivity** tours for guides on how to invoke the commands in this Job\
+    \ on remote Nodes. \n\nAnd see the **Send Diagnostics to PagerDuty** tour for\
+    \ sending the output of the Job to PagerDuty incidents."
   executionEnabled: true
   group: Linux
   id: eae2db60-f9b9-4e28-901e-0585ddc53687
