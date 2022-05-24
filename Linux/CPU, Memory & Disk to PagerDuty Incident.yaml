@@ -21,8 +21,10 @@
     filter: ${option.node_filter}
   nodesSelectedByDefault: true
   options:
-  - label: Node Filter
+  - hidden: true
+    label: Node Filter
     name: node_filter
+    value: hostname
   - description: Incident ID where Runbook Automation will send the diagnostic data
       to on the Incident Timeline.
     label: PagerDuty Incident ID

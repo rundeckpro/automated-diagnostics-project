@@ -14,11 +14,13 @@
       rankOrder: ascending
       successOnEmptyNodeFilter: false
       threadcount: '1'
-    filter: ${option.my_node}
+    filter: ${option.node_filter}
   nodesSelectedByDefault: true
   options:
-  - label: My Node
-    name: my_node
+  - hidden: true
+    label: Node Filter
+    name: node_filter
+    value: hostname
   plugins:
     ExecutionLifecycle: {}
   scheduleEnabled: true

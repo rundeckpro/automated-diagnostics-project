@@ -8,7 +8,7 @@
   id: eae2db60-f9b9-4e28-901e-0585ddc53687
   loglevel: INFO
   name: Retrieve Service Status
-  nodeFilterEditable: false
+  nodeFilterEditable: true
   nodefilters:
     dispatch:
       excludePrecedence: true
@@ -16,9 +16,13 @@
       rankOrder: ascending
       successOnEmptyNodeFilter: false
       threadcount: '1'
-    filter: ''
+    filter: ${option.node_filter}
   nodesSelectedByDefault: true
   options:
+  - hidden: true
+    label: Node Filter
+    name: node_filter
+    value: hostname
   - description: The name of the service running on the remote node. For example `sshd`
     label: Service Name
     name: service_name
