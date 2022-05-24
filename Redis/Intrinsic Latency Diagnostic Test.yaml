@@ -7,7 +7,8 @@
     \ connectivity to them using methods such as SSH or Systems Manager (SSM).\n---\n\
     For adding remote-nodes, see the **Configure EC2 Inventory** tour.\n\nSee the\
     \ **Configuring Systems Manager** or **Configure SSH Connectivity** tours for\
-    \ guides on how to invoke the commands in this Job on remote Nodes. \n\nAnd see\
+    \ guides on how to invoke the commands in this Job on remote Nodes.  These will\
+    \ also walk you through how to target specific nodes upon execution.\n\nAnd see\
     \ the **Send Diagnostics to PagerDuty** tour for sending the output of the Job\
     \ to PagerDuty incidents."
   executionEnabled: true

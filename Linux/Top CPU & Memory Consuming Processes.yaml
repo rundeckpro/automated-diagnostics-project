@@ -1,13 +1,16 @@
 - defaultTab: nodes
-  description: "Retrieve diagnostic CPU and Memory information from Linux systems.\n\
-    \nThis Job executes commands on remote Linux instances and retrieves diagnostic\
-    \ OS and process-level information.\n\nSee the **Readme** for instruction on how\
-    \ to add remote-nodes and configure connectivity to them using methods such as\
-    \ SSH or Systems Manager (SSM).\n---\nFor adding remote-nodes, see the **Configure\
-    \ EC2 Inventory** tour.\n\nSee the **Configuring Systems Manager** or **Configure\
-    \ SSH Connectivity** tours for guides on how to invoke the commands in this Job\
-    \ on remote Nodes. \n\nAnd see the **Send Diagnostics to PagerDuty** tour for\
-    \ sending the output of the Job to PagerDuty incidents."
+  description: |-
+    Retrieve diagnostic CPU and Memory information from Linux systems.
+
+    This Job executes commands on remote Linux instances and retrieves diagnostic OS and process-level information.
+
+    See the **Readme** for instructions on how to add remote-nodes and configure connectivity to them using methods such as SSH or Systems Manager (SSM).
+    ---
+    For adding remote-nodes, see the **Configure EC2 Inventory** tour.
+
+    See the **Configuring Systems Manager** or **Configure SSH Connectivity** tours for guides on how to invoke the commands in this Job on remote Nodes.  These will also walk you through how to target specific nodes upon execution.
+
+    And see the **Send Diagnostics to PagerDuty** tour for sending the output of the Job to PagerDuty incidents.
   executionEnabled: true
   group: Linux
   id: e47c49d8-4b38-4aa0-a178-07ada8637c6b

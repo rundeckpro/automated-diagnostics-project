@@ -1,16 +1,18 @@
 - defaultTab: nodes
-  description: "Returns entries from the slow log in chronological order.\n\nThis\
-    \ Job executes the `SLOWLOG GET` command on the Redis server to retrieve queries\
-    \ that exceed the duration (in microseconds) set by the `slowlog-log-slower-than`\
-    \ configuration parameter.\n\nThe **Number of Entries** Job Option dictates how\
-    \ many entries to retrieve from the `SLOWLOG`.  If retrieving _all_ entries is\
-    \ desired, simply remove the Job Option from the command.\n\nSee the **Readme**\
-    \ for instructions on how to add remote-nodes and configure connectivity to them\
-    \ using methods such as SSH or Systems Manager (SSM).\n---\nFor adding remote-nodes,\
-    \ see the **Configure EC2 Inventory** tour.\n\nSee the **Configuring Systems Manager**\
-    \ or **Configure SSH Connectivity** tours for guides on how to invoke the commands\
-    \ in this Job on remote Nodes. \n\nAnd see the **Send Diagnostics to PagerDuty**\
-    \ tour for sending the output of the Job to PagerDuty incidents."
+  description: |-
+    Returns entries from the slow log in chronological order.
+
+    This Job executes the `SLOWLOG GET` command on the Redis server to retrieve queries that exceed the duration (in microseconds) set by the `slowlog-log-slower-than` configuration parameter.
+
+    The **Number of Entries** Job Option dictates how many entries to retrieve from the `SLOWLOG`.  If retrieving _all_ entries is desired, simply remove the Job Option from the command.
+
+    See the **Readme** for instructions on how to add remote-nodes and configure connectivity to them using methods such as SSH or Systems Manager (SSM).
+    ---
+    For adding remote-nodes, see the **Configure EC2 Inventory** tour.
+
+    See the **Configuring Systems Manager** or **Configure SSH Connectivity** tours for guides on how to invoke the commands in this Job on remote Nodes.  These will also walk you through how to target specific nodes upon execution.
+
+    And see the **Send Diagnostics to PagerDuty** tour for sending the output of the Job to PagerDuty incidents.
   executionEnabled: true
   group: Redis
   id: 28dbd976-5c83-4932-a66e-c3eb8b3154ea
