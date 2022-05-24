@@ -9,7 +9,7 @@
   group: Linux
   id: eaa8efeb-4a06-4e4e-b292-a0b4fa084358
   loglevel: INFO
-  name: 'CPU, Memory & Disk Diagnostics to PagerDuty Incident'
+  name: 'CPU, Memory & Disk to PagerDuty Incident'
   nodeFilterEditable: true
   nodefilters:
     dispatch:
@@ -23,6 +23,15 @@
   options:
   - label: Node Filter
     name: node_filter
+  - description: Incident ID where Runbook Automation will send the diagnostic data
+      to on the Incident Timeline.
+    label: PagerDuty Incident ID
+    name: pd-incident-id
+    required: true
+  - description: 'If a **General Access** API Token was used, provide a valid PagerDuty
+      user''s email address here.'
+    label: PagerDuty User Email
+    name: user-email
   plugins:
     ExecutionLifecycle: {}
   scheduleEnabled: true
@@ -60,8 +69,8 @@
             regex: (.*)
           type: key-value-data-multilines
     - configuration:
-        email: rundeck@rundeck.com
-        incident_id: Q1KDTAV8UP2P8J
+        email: ${option.user-email}
+        incident_id: ${option.pd-incident-id}
         note: Top CPU Processes:\n${data.top_cpu*}\n Top Memory Processes:\n${data.top_memory*}\n
           Top Disk Consuming Files:\n${data.top_disk*}
       description: Send Diagnostics to PagerDuty
