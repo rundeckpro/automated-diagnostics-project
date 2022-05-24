@@ -8,13 +8,26 @@
   id: 8acb5d0c-aef1-43ef-b366-869e7a3f629b
   loglevel: INFO
   name: Curl Localhost Endpoint
-  nodeFilterEditable: false
+  nodeFilterEditable: true
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ${option.node_filter}
+  nodesSelectedByDefault: true
   options:
   - description: Endpoint to execute `curl` command against.
     label: Endpoint
     name: endpoint
     required: true
     value: http://127.0.0.1/nginx_status
+  - hidden: true
+    label: Node Filter
+    name: node_filter
+    value: hostname
   plugins:
     ExecutionLifecycle: {}
   scheduleEnabled: true

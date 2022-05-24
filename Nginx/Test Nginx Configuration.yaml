@@ -8,7 +8,7 @@
   id: 46e4295c-a873-4dc9-8d21-ef605d7e73b5
   loglevel: INFO
   name: Test Nginx Configuration
-  nodeFilterEditable: false
+  nodeFilterEditable: true
   nodefilters:
     dispatch:
       excludePrecedence: true
@@ -16,8 +16,13 @@
       rankOrder: ascending
       successOnEmptyNodeFilter: false
       threadcount: '1'
-    filter: osName:Linux
+    filter: ${option.node_filter}
   nodesSelectedByDefault: true
+  options:
+  - hidden: true
+    label: Node Filter
+    name: node_filter
+    value: hostname
   plugins:
     ExecutionLifecycle: {}
   scheduleEnabled: true
