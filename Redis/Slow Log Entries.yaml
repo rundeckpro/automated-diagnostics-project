@@ -10,7 +10,16 @@
   id: 28dbd976-5c83-4932-a66e-c3eb8b3154ea
   loglevel: INFO
   name: Slow Log Entries
-  nodeFilterEditable: false
+  nodeFilterEditable: true
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ${option.node_filter}
+  nodesSelectedByDefault: true
   options:
   - enforced: true
     label: Number of Entries
@@ -24,8 +33,12 @@
     - '50'
     - '100'
     valuesListDelimiter: ','
+  - hidden: true
+    label: Node Filter
+    name: node_filter
+    value: hostname
   plugins:
-    ExecutionLifecycle: null
+    ExecutionLifecycle: {}
   scheduleEnabled: true
   schedules: []
   sequence:

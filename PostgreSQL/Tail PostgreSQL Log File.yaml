@@ -16,8 +16,13 @@
       rankOrder: ascending
       successOnEmptyNodeFilter: false
       threadcount: '1'
-    filter: osName:Linux
+    filter: ${option.node_filter}
   nodesSelectedByDefault: true
+  options:
+  - hidden: true
+    label: Node Filter
+    name: node_filter
+    value: hostname
   plugins:
     ExecutionLifecycle: {}
   scheduleEnabled: true

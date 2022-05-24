@@ -11,7 +11,7 @@
   id: 7952f9ba-8eff-449d-b917-a93d649a5c25
   loglevel: INFO
   name: Redis Memory Statistics
-  nodeFilterEditable: false
+  nodeFilterEditable: true
   nodefilters:
     dispatch:
       excludePrecedence: true
@@ -19,10 +19,15 @@
       rankOrder: ascending
       successOnEmptyNodeFilter: false
       threadcount: '1'
-    filter: 'name: polling_surveys_app '
+    filter: ${option.node_filter}
   nodesSelectedByDefault: true
+  options:
+  - hidden: true
+    label: Node Filter
+    name: node_filter
+    value: hostname
   plugins:
-    ExecutionLifecycle: null
+    ExecutionLifecycle: {}
   scheduleEnabled: true
   schedules: []
   sequence:

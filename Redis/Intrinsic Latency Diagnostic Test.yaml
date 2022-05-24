@@ -12,7 +12,7 @@
   id: 9ab3efa1-9860-4f1a-8e96-85a8278041a4
   loglevel: INFO
   name: Intrinsic Latency Diagnostic Test
-  nodeFilterEditable: false
+  nodeFilterEditable: true
   nodefilters:
     dispatch:
       excludePrecedence: true
@@ -20,7 +20,7 @@
       rankOrder: ascending
       successOnEmptyNodeFilter: false
       threadcount: '1'
-    filter: polling_surveys.*
+    filter: ${option.node_filter}
   nodesSelectedByDefault: true
   options:
   - description: Number of seconds that the `--intrinsic-latency` test should run.
@@ -35,6 +35,10 @@
     - '100'
     - '150'
     valuesListDelimiter: ','
+  - hidden: true
+    label: Node Filter
+    name: node_filter
+    value: hostname
   plugins:
     ExecutionLifecycle: {}
   scheduleEnabled: true
