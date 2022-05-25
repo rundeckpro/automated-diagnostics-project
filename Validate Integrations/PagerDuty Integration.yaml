@@ -1,0 +1,47 @@
+- defaultTab: nodes
+  description: "Validates whether the credentials set can add a note to a PagerDuty\
+    \ Incident.  \n\nThe API Token is retrieved from the Project Configuration.\n\n\
+    For more information on this Job, see the **Send Diagnostic Data to PagerDuty**\
+    \ tour."
+  executionEnabled: true
+  group: Validate Integrations
+  id: 00006846-4e6c-45cc-9878-560058d7911f
+  loglevel: INFO
+  name: PagerDuty Integration
+  nodeFilterEditable: false
+  options:
+  - description: Optional.  This field is only required if a **General Access API
+      Token** was used to integrate with PagerDuty.
+    label: PagerDuty User's Email
+    name: pd-email
+  - description: |-
+      ID of the PagerDuty incident.  This can be retrieved from the URL when viewing an incident:
+      `https://your-company.pagerduty.com/incidents/PD-INCIDENT-ID` (the `PD-INCIDENT-ID` portion of the URL for your incident).
+    label: Incident ID
+    name: pd_incident_id
+    required: true
+  - description: This is the text that will be added to the timeline of the chosen
+      incident.
+    label: Test Note
+    name: test-note
+    required: true
+    value: This is a note to test the integration between Runbook Automation and PagerDuty
+      Incidents.
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - configuration:
+        email: ${option.pd-email}
+        incident_id: ${option.pd_incident_id}
+        note: ${option.test-note}
+      description: Send Test Note to PagerDuty Incident
+      nodeStep: false
+      type: pd-note-step
+    keepgoing: false
+    strategy: node-first
+  tags: pagerduty
+  uuid: 00006846-4e6c-45cc-9878-560058d7911f
+

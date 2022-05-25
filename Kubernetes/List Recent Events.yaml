@@ -1,0 +1,37 @@
+- defaultTab: nodes
+  description: |-
+    List recent events for resources within the Kubernetes cluster
+
+    This Job retrieves recent events for resources within the cluster that match the particular `field-selector`.
+
+    Common examples:
+    `type=warning` Warning events only
+    `involvedObject.kind!=Pod` Exclude Pod events
+    `type!=Normal` Exclude nomral events
+
+    This Job is designed to be run on an [**Enterprise Runner**](https://docs.rundeck.com/docs/administration/runner/#architecture). Follow the documentation and install the Runner in a location that can communicate with your Kubernetes cluster.
+  executionEnabled: true
+  group: Kubernetes
+  id: 0322471a-6949-4791-a7eb-96f5a09a68e6
+  loglevel: INFO
+  name: List Recent Events
+  nodeFilterEditable: false
+  options:
+  - description: Field Selector used for the `kubectl` command.
+    label: Field Selector
+    name: field_selector
+    required: true
+    value: type=Warning
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - description: Retrieve events matching field selector
+      exec: kubectl get events --field-selector ${option.field_selector}
+    keepgoing: false
+    strategy: node-first
+  tags: kubernetes
+  uuid: 0322471a-6949-4791-a7eb-96f5a09a68e6
+

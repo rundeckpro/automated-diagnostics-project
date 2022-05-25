@@ -1,10 +1,12 @@
 - defaultTab: nodes
   description: |-
-    Returns entries from the slow log in chronological order.
+    Performs simple test using the psql command
 
-    This Job executes the `SLOWLOG GET` command on the Redis server to retrieve queries that exceed the duration (in microseconds) set by the `slowlog-log-slower-than` configuration parameter.
+    This Job performs a simple test on the remote Linux host by executing the `psql` command.
 
-    The **Number of Entries** Job Option dictates how many entries to retrieve from the `SLOWLOG`.  If retrieving _all_ entries is desired, simply remove the Job Option from the command.
+    The full command used in the job is `sudo -u postgresql psql`.  As this may not address your specific setup, you may need to modify this command so that it works for your environment.
+
+    Simply executing `psql` can validate whether the PostgreSQL service is running and accepting connections.
 
     See the **Readme** for instructions on how to add remote-nodes and configure connectivity to them using methods such as SSH or Systems Manager (SSM).
     ---
@@ -14,10 +16,10 @@
 
     And see the **Send Diagnostics to PagerDuty** tour for sending the output of the Job to PagerDuty incidents.
   executionEnabled: true
-  group: Redis
-  id: 28dbd976-5c83-4932-a66e-c3eb8b3154ea
+  group: PostgreSQL
+  id: 42a2e089-f48e-4564-85ca-87f859663e37
   loglevel: INFO
-  name: Slow Log Entries
+  name: Test if PostgreSQL Server is Running
   nodeFilterEditable: true
   nodefilters:
     dispatch:
@@ -29,18 +31,6 @@
     filter: ${option.node_filter}
   nodesSelectedByDefault: true
   options:
-  - enforced: true
-    label: Number of Entries
-    name: number-of-entries
-    required: true
-    value: '5'
-    values:
-    - '5'
-    - '10'
-    - '25'
-    - '50'
-    - '100'
-    valuesListDelimiter: ','
   - hidden: true
     label: Node Filter
     name: node_filter
@@ -51,10 +41,10 @@
   schedules: []
   sequence:
     commands:
-    - description: Retrieve N entires from the Redis Slowlog
-      exec: redis-cli slowlog get ${option.number-of-entries}
+    - description: Execute psql command on remote node
+      exec: sudo -u postgres psql -l
     keepgoing: false
     strategy: node-first
-  tags: redis
-  uuid: 28dbd976-5c83-4932-a66e-c3eb8b3154ea
+  tags: postgresql
+  uuid: 42a2e089-f48e-4564-85ca-87f859663e37
 

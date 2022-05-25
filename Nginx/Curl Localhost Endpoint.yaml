@@ -1,0 +1,50 @@
+- defaultTab: nodes
+  description: "Check if Nginx is processing requests using Curl\n\nThis Job executes\
+    \ `curl` on a remote node to see if Nginx is processesing requests.  \n\nThe default\
+    \ endpoint checked is:\n```\nhttp://127.0.0.1/nginx_status\n```\nThis default\
+    \ endpoint can be changed using the `Endpoint` field below.\n\nSee the **Readme**\
+    \ for instructions on how to add remote-nodes and configure connectivity to them\
+    \ using methods such as SSH or Systems Manager (SSM).\n---\nFor adding remote-nodes,\
+    \ see the **Configure EC2 Inventory** tour.\n\nSee the **Configuring Systems Manager**\
+    \ or **Configure SSH Connectivity** tours for guides on how to invoke the commands\
+    \ in this Job on remote Nodes.  These will also walk you through how to target\
+    \ specific nodes upon execution.\n\nAnd see the **Send Diagnostics to PagerDuty**\
+    \ tour for sending the output of the Job to PagerDuty incidents."
+  executionEnabled: true
+  group: Nginx
+  id: 8acb5d0c-aef1-43ef-b366-869e7a3f629b
+  loglevel: INFO
+  name: Curl Localhost Endpoint
+  nodeFilterEditable: true
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ${option.node_filter}
+  nodesSelectedByDefault: true
+  options:
+  - description: Endpoint to execute `curl` command against.
+    label: Endpoint
+    name: endpoint
+    required: true
+    value: http://127.0.0.1/nginx_status
+  - hidden: true
+    label: Node Filter
+    name: node_filter
+    value: hostname
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - description: Execute curl against specified endpoint
+      exec: curl -i ${option.endpoint}
+    keepgoing: false
+    strategy: node-first
+  tags: nginx
+  uuid: 8acb5d0c-aef1-43ef-b366-869e7a3f629b
+

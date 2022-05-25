@@ -1,10 +1,8 @@
 - defaultTab: nodes
   description: |-
-    Returns entries from the slow log in chronological order.
+    Retrieve recent logs from the PostgreSQL log file
 
-    This Job executes the `SLOWLOG GET` command on the Redis server to retrieve queries that exceed the duration (in microseconds) set by the `slowlog-log-slower-than` configuration parameter.
-
-    The **Number of Entries** Job Option dictates how many entries to retrieve from the `SLOWLOG`.  If retrieving _all_ entries is desired, simply remove the Job Option from the command.
+    This Job identifies the main PostgreSQL log file and then retrieves the most recent logs using `tail`.
 
     See the **Readme** for instructions on how to add remote-nodes and configure connectivity to them using methods such as SSH or Systems Manager (SSM).
     ---
@@ -14,10 +12,10 @@
 
     And see the **Send Diagnostics to PagerDuty** tour for sending the output of the Job to PagerDuty incidents.
   executionEnabled: true
-  group: Redis
-  id: 28dbd976-5c83-4932-a66e-c3eb8b3154ea
+  group: PostgreSQL
+  id: 69b61aa3-fcd4-431b-aef7-307c3e568b9b
   loglevel: INFO
-  name: Slow Log Entries
+  name: Tail PostgreSQL Log File
   nodeFilterEditable: true
   nodefilters:
     dispatch:
@@ -29,18 +27,6 @@
     filter: ${option.node_filter}
   nodesSelectedByDefault: true
   options:
-  - enforced: true
-    label: Number of Entries
-    name: number-of-entries
-    required: true
-    value: '5'
-    values:
-    - '5'
-    - '10'
-    - '25'
-    - '50'
-    - '100'
-    valuesListDelimiter: ','
   - hidden: true
     label: Node Filter
     name: node_filter
@@ -51,10 +37,20 @@
   schedules: []
   sequence:
     commands:
-    - description: Retrieve N entires from the Redis Slowlog
-      exec: redis-cli slowlog get ${option.number-of-entries}
+    - description: Retrieve PostgreSQL Log File Name
+      exec: ls /var/log/postgresql
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: 'true'
+            logData: 'true'
+            name: log_file_name
+            regex: (.*)
+          type: key-value-data-multilines
+    - description: Tail Log File
+      exec: tail -n 10 /var/log/postgresql/${data.log_file_name*}
     keepgoing: false
     strategy: node-first
-  tags: redis
-  uuid: 28dbd976-5c83-4932-a66e-c3eb8b3154ea
+  tags: postgresql
+  uuid: 69b61aa3-fcd4-431b-aef7-307c3e568b9b
 

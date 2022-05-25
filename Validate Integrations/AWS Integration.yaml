@@ -1,0 +1,33 @@
+- defaultTab: nodes
+  description: |-
+    Test that AWS credentials have been configured correctly.
+
+    This Job performs a simple test to ensure that the AWS credentials provided in the Project, Job or Framework have been configured correctly.
+
+    The credentials used by this Job do not require any specific permissions. This Job simply checks that these credentials exist in your AWS account and are active.
+
+    For more information on this Job, see the **Configure AWS Credentials** tour.
+  executionEnabled: true
+  group: Validate Integrations
+  id: d354cc6f-9e98-4b99-b114-02317d58b444
+  loglevel: INFO
+  name: AWS Integration
+  nodeFilterEditable: false
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - configuration:
+        region: us-east-1
+      description: Validate Credentials
+      nodeStep: false
+      plugins:
+        LogFilter: []
+      type: aws-validate-credentials-step
+    keepgoing: false
+    strategy: node-first
+  tags: aws
+  uuid: d354cc6f-9e98-4b99-b114-02317d58b444
+

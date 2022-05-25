@@ -1,10 +1,8 @@
 - defaultTab: nodes
   description: |-
-    Returns entries from the slow log in chronological order.
+    Test the Nginx configuration syntax
 
-    This Job executes the `SLOWLOG GET` command on the Redis server to retrieve queries that exceed the duration (in microseconds) set by the `slowlog-log-slower-than` configuration parameter.
-
-    The **Number of Entries** Job Option dictates how many entries to retrieve from the `SLOWLOG`.  If retrieving _all_ entries is desired, simply remove the Job Option from the command.
+    This Job tests the Nginx configuration syntax using the command `nginx -t` on a remote Linux node.
 
     See the **Readme** for instructions on how to add remote-nodes and configure connectivity to them using methods such as SSH or Systems Manager (SSM).
     ---
@@ -14,10 +12,10 @@
 
     And see the **Send Diagnostics to PagerDuty** tour for sending the output of the Job to PagerDuty incidents.
   executionEnabled: true
-  group: Redis
-  id: 28dbd976-5c83-4932-a66e-c3eb8b3154ea
+  group: Nginx
+  id: 46e4295c-a873-4dc9-8d21-ef605d7e73b5
   loglevel: INFO
-  name: Slow Log Entries
+  name: Test Nginx Configuration
   nodeFilterEditable: true
   nodefilters:
     dispatch:
@@ -29,18 +27,6 @@
     filter: ${option.node_filter}
   nodesSelectedByDefault: true
   options:
-  - enforced: true
-    label: Number of Entries
-    name: number-of-entries
-    required: true
-    value: '5'
-    values:
-    - '5'
-    - '10'
-    - '25'
-    - '50'
-    - '100'
-    valuesListDelimiter: ','
   - hidden: true
     label: Node Filter
     name: node_filter
@@ -51,10 +37,10 @@
   schedules: []
   sequence:
     commands:
-    - description: Retrieve N entires from the Redis Slowlog
-      exec: redis-cli slowlog get ${option.number-of-entries}
+    - description: Check Configuration Syntax on Remote Node
+      exec: nginx -t
     keepgoing: false
     strategy: node-first
-  tags: redis
-  uuid: 28dbd976-5c83-4932-a66e-c3eb8b3154ea
+  tags: nginx
+  uuid: 46e4295c-a873-4dc9-8d21-ef605d7e73b5
 
