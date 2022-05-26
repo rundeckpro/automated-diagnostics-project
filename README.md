@@ -2,6 +2,9 @@
 The Automated Diagnostics Solution is a collection of prebuilt Automation Jobs that retrieve data for investigation, debugging and diagnosing of incidents. 
 These are built to work with PagerDuty's [Runbook Automation](https://www.pagerduty.com/platform/automation/runbook/) or the self-hosted [Process Automation](https://www.pagerduty.com/platform/automation/process-software/) - FKA Rundeck Enterprise.
 
+![Screen Shot 2022-05-25 at 8 24 45 PM](https://user-images.githubusercontent.com/11511251/170409853-389138d7-c665-44d8-a3fa-532411201ec2.png)
+
+
 ## Getting Started
 
 ### Import the Project
