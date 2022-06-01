@@ -8,13 +8,7 @@
 
     Simply executing `psql` can validate whether the PostgreSQL service is running and accepting connections.
 
-    See the **Readme** for instructions on how to add remote-nodes and configure connectivity to them using methods such as SSH or Systems Manager (SSM).
-    ---
-    For adding remote-nodes, see the **Configure EC2 Inventory** tour.
-
-    See the **Configuring Systems Manager** or **Configure SSH Connectivity** tours for guides on how to invoke the commands in this Job on remote Nodes.  These will also walk you through how to target specific nodes upon execution.
-
-    And see the **Send Diagnostics to PagerDuty** tour for sending the output of the Job to PagerDuty incidents.
+    See the [**Project Readme**](/project/automated-diagnostics/home) for recommended tours on how to add remote-nodes and configure connectivity to them using methods such as SSH or Systems Manager (SSM).
   executionEnabled: true
   group: PostgreSQL
   id: 42a2e089-f48e-4564-85ca-87f859663e37

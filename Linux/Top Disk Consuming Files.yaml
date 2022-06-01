@@ -1,14 +1,12 @@
 - defaultTab: nodes
-  description: "List the top disk-consuming files on a remote Linux node\n\nThis Job\
-    \ retrieves and lists the top disk-consuming files on a remote Linux node.  \n\
-    \nSee the **Readme** for instructions on how to add remote-nodes and configure\
-    \ connectivity to them using methods such as SSH or Systems Manager (SSM).\n---\n\
-    For adding remote-nodes, see the **Configure EC2 Inventory** tour.\n\nSee the\
-    \ **Configuring Systems Manager** or **Configure SSH Connectivity** tours for\
-    \ guides on how to invoke the commands in this Job on remote Nodes.  These will\
-    \ also walk you through how to target specific nodes upon execution.\n\nAnd see\
-    \ the **Send Diagnostics to PagerDuty** tour for sending the output of the Job\
-    \ to PagerDuty incidents."
+  description: |-
+    List the top disk-consuming files on a remote Linux node
+
+    This Job retrieves and lists the top disk-consuming files on a remote Linux node.
+
+    Click on **Definition** to see the specific command used in this Job.
+
+    See the [**Project Readme**](/project/automated-diagnostics/home) for recommended tours on how to add remote-nodes and configure connectivity to them using methods such as SSH or Systems Manager (SSM).
   executionEnabled: true
   group: Linux
   id: cd5aab19-f7d4-4413-b69b-b3e0f0bd4641
@@ -36,7 +34,7 @@
   sequence:
     commands:
     - description: Retrieve top 10 Disk Consuming Files
-      exec: sudo du -Shx / | sort -rh | head -10
+      exec: du -Shx / | sort -rh | head -10
     keepgoing: false
     strategy: node-first
   tags: linux
