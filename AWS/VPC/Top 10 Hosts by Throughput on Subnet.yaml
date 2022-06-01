@@ -2,9 +2,12 @@
   description: |-
     Query CloudWatch logs to identify the top 10 hosts by throughput on a given subnet.
 
-    The Job uses the CloudWatch Logs plugin, and therefore AWS Credentials must be applied to the Job Step or at the Project level (`project.aws.access_key` and `project.aws.secret_key_path`) or at the Framework level (`aws.access_key` and `aws.secret_key_path`).
+    The Job uses the CloudWatch Logs plugin to send a query using the Logs Insights syntax.
 
-    If the self-hosted Process Automation server is running in AWS, you can alternatively assign an IAM Role to the EC2 or container.
+    Click on **Definition** on the right to see the specific query used for this Job.
+
+    Click [here](https://docs.rundeck.com/docs/manual/workflow-steps/aws-cloudwatch.html) for more details on the CloudWatch Logs plugin.
+    For authenticating AWS plugins, follow the **Configure AWS Credentials** Tour.
   executionEnabled: true
   group: AWS/VPC
   id: ceaf75ae-164b-4b6e-ba52-f0faed087155
@@ -30,7 +33,7 @@
     name: subnet
     value: 192.0.2.0/24
   plugins:
-    ExecutionLifecycle: null
+    ExecutionLifecycle: {}
   scheduleEnabled: true
   schedules: []
   sequence:

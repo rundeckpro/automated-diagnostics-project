@@ -1,10 +1,10 @@
 - defaultTab: nodes
   description: "Query CloudWatch logs to identify any hosts using the UDP transfer\
-    \ protocol.  \n\nThe Job uses the CloudWatch Logs plugin, and therefore AWS Credentials\
-    \ must be applied to the Job Step or at the Project level (`project.aws.access_key`\
-    \ and `project.aws.secret_key_path`) or at the Framework level (`aws.access_key`\
-    \ and `aws.secret_key_path`).\n\nIf the self-hosted Process Automation server\
-    \ is running in AWS, you can alternatively assign an IAM Role to the EC2 or container."
+    \ protocol.  \n\nThe Job uses the CloudWatch Logs plugin to send a query using\
+    \ the Logs Insights syntax.\n\nClick on **Definition** on the right to see the\
+    \ specific query used for this Job.\n\nClick [here](https://docs.rundeck.com/docs/manual/workflow-steps/aws-cloudwatch.html)\
+    \ for more details on the CloudWatch Logs plugin.\nFor authenticating AWS plugins,\
+    \ follow the **Configure AWS Credentials** Tour."
   executionEnabled: true
   group: AWS/VPC
   id: 516f94f6-0383-42df-8062-7cd7f0367a06
@@ -28,7 +28,7 @@
     required: true
     value: cloudwatch-log-group-name
   plugins:
-    ExecutionLifecycle: null
+    ExecutionLifecycle: {}
   scheduleEnabled: true
   schedules: []
   sequence:
