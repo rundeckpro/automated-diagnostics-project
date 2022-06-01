@@ -2,9 +2,9 @@
   description: |-
     Performs simple test using the psql command
 
-    This Job performs a simple test on the remote Linux host by executing the `psql` command.
+    This Job performs a simple test on the remote Linux host by executing the **`psql`** command.
 
-    The full command used in the job is `sudo -u postgresql psql`.  As this may not address your specific setup, you may need to modify this command so that it works for your environment.
+    The full command used in the job is **`sudo -u postgresql psql`**.  As this may not address your specific setup, you may need to modify this command so that it works for your environment.
 
     Simply executing `psql` can validate whether the PostgreSQL service is running and accepting connections.
 
