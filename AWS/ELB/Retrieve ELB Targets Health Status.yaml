@@ -19,7 +19,7 @@
   options:
   - label: Load Balancer Name
     name: load_balancer_name
-    value: polling-cluster
+    required: true
   - label: AWS Region
     name: region
     optionValuesPluginType: aws-regions-job-options

@@ -19,6 +19,7 @@
   - description: Name of the specific RDS instance to check
     label: RDS Instance
     name: rds_instance
+    required: true
   - label: AWS Region
     name: region
     optionValuesPluginType: aws-regions-job-options
