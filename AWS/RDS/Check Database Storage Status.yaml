@@ -1,10 +1,14 @@
 - defaultTab: nodes
-  description: |-
-    Checks RDS database for whether the storage-full status is present
+  description: |+
+    Checks RDS database for the instance status.
 
-    Using the AWS CLI, this Job checks whether a given RDS instance has the `storage-full` status.
+    This Job queries for the RDS instance status and description.  This can be especially useful if the RDS instance has run out of storage.
+    More details on working with RDS Storage can be found [here](https://docs.amazonaws.cn/en_us/AmazonRDS/latest/UserGuide/USER_PIOPS.StorageTypes.html).
 
-    Specify the RDS Instance in the Job Option below.
+    #### Permissions required by the IAM Role or AWS credentials to execute this job:
+
+    **rds:DescribeDBInstances**
+
   executionEnabled: true
   group: AWS/RDS
   id: a2f3fd6e-54df-4f3f-b4eb-06b667aa0493
