@@ -15,14 +15,21 @@
   - description: Name of the specific RDS instance to check
     label: RDS Instance
     name: rds_instance
+  - label: AWS Region
+    name: region
+    optionValuesPluginType: aws-regions-job-options
   plugins:
     ExecutionLifecycle: {}
   scheduleEnabled: true
   schedules: []
   sequence:
     commands:
-    - description: Check RDS Instance Status
-      exec: aws rds describe-db-instances --db-instance-identifier ${option.rds_instance}
+    - configuration:
+        region: ${option.region}
+        target: ${option.rds_instance}
+      description: Retrieve RDS Instance Status
+      nodeStep: false
+      type: aws-rds-status
     keepgoing: false
     strategy: node-first
   tags: 'aws,rds'

@@ -35,49 +35,21 @@
   - label: Load Balancer Name
     name: load_balancer_name
     value: polling-cluster
+  - label: AWS Region
+    name: region
+    optionValuesPluginType: aws-regions-job-options
   plugins:
-    ExecutionLifecycle: null
+    ExecutionLifecycle: {}
   scheduleEnabled: true
   schedules: []
   sequence:
     commands:
-    - description: Retrieve Load Balancer ARN
-      exec: aws elbv2 describe-load-balancers --names ${option.load_balancer_name}
-        --query 'LoadBalancers[0].LoadBalancerArn' --output text
-      plugins:
-        LogFilter:
-        - config:
-            invalidKeyPattern: \s|\$|\{|\}|\\
-            logData: 'true'
-            name: elb_arn
-            regex: (.*)
-          type: key-value-data
-    - exec: aws elbv2 describe-target-groups --load-balancer-arn ${data.elb_arn*}
-        --query 'TargetGroups[*].TargetGroupArn' --output text
-      plugins:
-        LogFilter:
-        - config:
-            hideOutput: 'true'
-            logData: 'true'
-            name: target_groups_arns
-            regex: (.*)
-          type: key-value-data-multilines
-    - fileExtension: sh
-      interpreterArgsQuoted: false
-      plugins:
-        LogFilter:
-        - config:
-            hideOutput: 'true'
-            logData: 'true'
-            name: unhealthy_instances
-            regex: (.*)
-          type: key-value-data-multilines
-      script: "#Set argument as data variable from previous step\ntarget_groups=(@data.target_groups_arns*@)\n\
-        \nquery=\"TargetHealthDescriptions[?TargetHealth.State!=\\`healthy\\`].{Instance_Id:Target.Id,Health_Check_Port:HealthCheckPort,Target_Health_State:TargetHealth.State,Target_Health_Description:TargetHealth.Description}\"\
-        \n\n#Loop over Target Groups to retrieve Health Checks from all instances\n\
-        for target_group in \"${target_groups[@]}\"; \ndo \n    aws elbv2 describe-target-health\
-        \ --target-group-arn $target_group --query $query;\ndone"
-      scriptInterpreter: /bin/bash
+    - configuration:
+        region: ${option.region}
+        target: ${option.load_balancer_name}
+      description: Retrieve Unhealthy ELB Targets
+      nodeStep: false
+      type: aws-target-elb
     keepgoing: false
     strategy: node-first
   tags: 'aws,elb'

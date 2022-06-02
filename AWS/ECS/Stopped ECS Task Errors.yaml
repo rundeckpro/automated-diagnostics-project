@@ -42,30 +42,17 @@
     required: true
     value: us-west-1
   plugins:
-    ExecutionLifecycle: null
+    ExecutionLifecycle: {}
   scheduleEnabled: true
   schedules: []
   sequence:
     commands:
-    - description: List Stopped ECS Tasks
-      exec: aws ecs list-tasks --cluster ${option.cluster-name} --desired-status STOPPED
-        --region ${option.region} --query "taskArns[]" --output text
-      plugins:
-        LogFilter:
-        - config:
-            hideOutput: 'false'
-            logData: 'true'
-            name: stopped_tasks
-            regex: (.*)
-          type: key-value-data-multilines
-    - fileExtension: sh
-      interpreterArgsQuoted: false
-      script: "stopped_tasks=(@data.stopped_tasks*@)\n\nfor task in \"${stopped_tasks[@]}\"\
-        ; \ndo \n    echo \"Task ARN: \" $task\n    stopped_reason=$(aws ecs describe-tasks\
-        \ --cluster @option.cluster-name@  --tasks $task --region @option.region@\
-        \ --query \"tasks[].stoppedReason\" --output text)\n    echo \"Stopped Reason:\
-        \ \" $stopped_reason\n    echo \"\"\ndone"
-      scriptInterpreter: /bin/bash
+    - configuration:
+        clusterName: ${option.cluster_name}
+        region: ${option.region}
+      description: Stopped ECS Task Error
+      nodeStep: false
+      type: aws-ecs-stopped-tasks
     keepgoing: false
     strategy: node-first
   tags: 'aws,ecs'
