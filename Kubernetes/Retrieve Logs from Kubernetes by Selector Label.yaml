@@ -4,7 +4,8 @@
     \ example: `environment=production,tier=frontend`. This will pull logs from pods\
     \ that have the labels `environment=production` and `tier=frontend`.\n\nFor more\
     \ information on Labels and Selectors, see [here](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/).\n\
-    \nThis Job is designed to be run on an [**Enterprise Runner**](https://docs.rundeck.com/docs/administration/runner/#architecture).\
+    \nIf using PagerDuty Runbook Automation (SaaS), then this Job is designed to be\
+    \ run on an [**Enterprise Runner**](https://docs.rundeck.com/docs/administration/runner/#architecture).\
     \ Follow the documentation and install the Runner in a location that can communicate\
     \ with your Kubernetes cluster."
   executionEnabled: true
