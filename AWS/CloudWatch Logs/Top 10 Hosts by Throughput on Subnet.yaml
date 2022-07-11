@@ -9,7 +9,7 @@
     Click [here](https://docs.rundeck.com/docs/manual/workflow-steps/aws-cloudwatch.html) for more details on the CloudWatch Logs plugin.
     For authenticating AWS plugins, follow the **Configure AWS Credentials** Tour.
   executionEnabled: true
-  group: AWS/VPC
+  group: AWS/CloudWatch Logs
   id: ceaf75ae-164b-4b6e-ba52-f0faed087155
   loglevel: INFO
   name: Top 10 Hosts by Throughput on Subnet

@@ -6,7 +6,7 @@
     \ for more details on the CloudWatch Logs plugin.\nFor authenticating AWS plugins,\
     \ follow the **Configure AWS Credentials** Tour."
   executionEnabled: true
-  group: AWS/VPC
+  group: AWS/CloudWatch Logs
   id: 516f94f6-0383-42df-8062-7cd7f0367a06
   loglevel: INFO
   name: IP addresses using UDP transfer protocol

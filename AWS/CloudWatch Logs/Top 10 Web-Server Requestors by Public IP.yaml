@@ -9,7 +9,7 @@
     Click [here](https://docs.rundeck.com/docs/manual/workflow-steps/aws-cloudwatch.html) for more details on the CloudWatch Logs plugin.
     For authenticating AWS plugins, follow the **Configure AWS Credentials** Tour.
   executionEnabled: true
-  group: AWS/VPC
+  group: AWS/CloudWatch Logs
   id: 85409f77-a9d7-43f6-9f1d-2ac9bf2f93c6
   loglevel: INFO
   name: Top 10 Web-Server Requestors by Public IP

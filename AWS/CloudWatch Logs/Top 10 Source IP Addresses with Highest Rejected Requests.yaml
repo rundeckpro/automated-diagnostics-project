@@ -9,7 +9,7 @@
     Click [here](https://docs.rundeck.com/docs/manual/workflow-steps/aws-cloudwatch.html) for more details on the CloudWatch Logs plugin.
     For authenticating AWS plugins, follow the **Configure AWS Credentials** Tour.
   executionEnabled: true
-  group: AWS/VPC
+  group: AWS/CloudWatch Logs
   id: 1a63d774-7664-4047-afca-e98c52498ee3
   loglevel: INFO
   name: Top 10 Source IP Addresses with Highest Rejected Requests
