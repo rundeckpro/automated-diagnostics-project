@@ -9,7 +9,7 @@
   group: AWS/CloudWatch Logs
   id: 516f94f6-0383-42df-8062-7cd7f0367a06
   loglevel: INFO
-  name: IP addresses using UDP transfer protocol
+  name: UDP transfer protocol IP Address Identification
   nodeFilterEditable: false
   options:
   - enforced: true
