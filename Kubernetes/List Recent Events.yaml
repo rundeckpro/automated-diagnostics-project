@@ -4,12 +4,12 @@
 
     This Job retrieves recent events for resources within the cluster that match the particular `field-selector`.
 
-    Common examples:
-    `type=warning` Warning events only
-    `involvedObject.kind!=Pod` Exclude Pod events
-    `type!=Normal` Exclude nomral events
+    Common examples:<br>
+    `type=warning` Warning events only<br>
+    `involvedObject.kind!=Pod` Exclude Pod events<br>
+    `type!=Normal` Exclude normal events
 
-    This Job is designed to be run on an [**Enterprise Runner**](https://docs.rundeck.com/docs/administration/runner/#architecture). Follow the documentation and install the Runner in a location that can communicate with your Kubernetes cluster.
+    If using PagerDuty Runbook Automation (SaaS), then this Job is designed to be run on an [**Enterprise Runner**](https://docs.rundeck.com/docs/administration/runner/#architecture). Follow the documentation and install the Runner in a location that can communicate with your Kubernetes cluster.
   executionEnabled: true
   group: Kubernetes
   id: 0322471a-6949-4791-a7eb-96f5a09a68e6

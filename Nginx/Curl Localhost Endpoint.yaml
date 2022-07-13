@@ -2,14 +2,10 @@
   description: "Check if Nginx is processing requests using Curl\n\nThis Job executes\
     \ `curl` on a remote node to see if Nginx is processesing requests.  \n\nThe default\
     \ endpoint checked is:\n```\nhttp://127.0.0.1/nginx_status\n```\nThis default\
-    \ endpoint can be changed using the `Endpoint` field below.\n\nSee the **Readme**\
-    \ for instructions on how to add remote-nodes and configure connectivity to them\
-    \ using methods such as SSH or Systems Manager (SSM).\n---\nFor adding remote-nodes,\
-    \ see the **Configure EC2 Inventory** tour.\n\nSee the **Configuring Systems Manager**\
-    \ or **Configure SSH Connectivity** tours for guides on how to invoke the commands\
-    \ in this Job on remote Nodes.  These will also walk you through how to target\
-    \ specific nodes upon execution.\n\nAnd see the **Send Diagnostics to PagerDuty**\
-    \ tour for sending the output of the Job to PagerDuty incidents."
+    \ endpoint can be changed using the **`Endpoint`** field below.\n\nSee the [**Project\
+    \ Readme**](/project/automated-diagnostics/home) for recommended tours on how\
+    \ to add remote-nodes and configure connectivity to them using methods such as\
+    \ SSH or Systems Manager (SSM)."
   executionEnabled: true
   group: Nginx
   id: 8acb5d0c-aef1-43ef-b366-869e7a3f629b

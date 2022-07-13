@@ -1,13 +1,13 @@
 - defaultTab: nodes
   description: |-
-    Send command to be run on an individual pod in a specific namespace
+    Send a command to an individual pod in a specific namespace.
 
     This Job sends a command to a pod in a specified namespace.  The command is executed by the following syntax:
     ```
     kubectl exec -it {{pod_name}} -n {{namespace}} -- /bin/bash -c {{command}}
     ```
 
-    This Job is designed to be run on an [**Enterprise Runner**](https://docs.rundeck.com/docs/administration/runner/#architecture). Follow the documentation and install the Runner in a location that can communicate with your Kubernetes cluster.
+    If using PagerDuty Runbook Automation (SaaS), then this Job is designed to be run on an [**Enterprise Runner**](https://docs.rundeck.com/docs/administration/runner/#architecture). Follow the documentation and install the Runner in a location that can communicate with your Kubernetes cluster.
   executionEnabled: true
   group: Kubernetes
   id: 23da4939-354b-4225-bdf4-03877c64e45c

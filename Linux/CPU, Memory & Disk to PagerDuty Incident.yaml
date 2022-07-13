@@ -4,13 +4,9 @@
 
     This Job retrieves CPU, Memory and Disk diagnostics an individual Linux Node and then sends those diagnostics to PagerDuty.
 
-    See the **Readme** for instructions on how to add remote-nodes and configure connectivity to them using methods such as SSH or Systems Manager (SSM).
-    ---
-    For adding remote-nodes, see the **Configure EC2 Inventory** tour.
+    Click on **Definition** to see the specific commands used in this Job.
 
-    See the **Configuring Systems Manager** or **Configure SSH Connectivity** tours for guides on how to invoke the commands in this Job on remote Nodes.  These will also walk you through how to target specific nodes upon execution.
-
-    And see the **Send Diagnostics to PagerDuty** tour for sending the output of the Job to PagerDuty incidents.
+    See the [**Project Readme**](/project/automated-diagnostics/home) for recommended tours on how to add remote-nodes and configure connectivity to them using methods such as SSH or Systems Manager (SSM).
   executionEnabled: true
   group: Linux
   id: eaa8efeb-4a06-4e4e-b292-a0b4fa084358

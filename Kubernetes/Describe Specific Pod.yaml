@@ -4,7 +4,7 @@
 
     This Job uses `kubectl` to retrieve the status of an individual Pod in a particular namespace.
 
-    This Job is designed to be run on an [**Enterprise Runner**](https://docs.rundeck.com/docs/administration/runner/#architecture). Follow the documentation and install the Runner in a location that can communicate with your Kubernetes cluster.
+    If using PagerDuty Runbook Automation (SaaS), then this Job is designed to be run on an [**Enterprise Runner**](https://docs.rundeck.com/docs/administration/runner/#architecture). Follow the documentation and install the Runner in a location that can communicate with your Kubernetes cluster.
   executionEnabled: true
   group: Kubernetes
   id: 66b21b75-8523-4e23-8e5a-ce1ed75cd54e
