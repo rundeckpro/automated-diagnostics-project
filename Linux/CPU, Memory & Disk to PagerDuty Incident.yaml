@@ -20,7 +20,7 @@
       rankOrder: ascending
       successOnEmptyNodeFilter: false
       threadcount: '1'
-    filter: ${option.node_filter}
+    filter: 'name: polling_surveys_app '
   nodesSelectedByDefault: true
   options:
   - hidden: true
