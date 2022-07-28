@@ -30,7 +30,7 @@
   - description: Incident ID where Runbook Automation will send the diagnostic data
       to on the Incident Timeline.
     label: PagerDuty Incident ID
-    name: pd-incident-id
+    name: pd_incident_id
     required: true
   - description: 'If a **General Access** API Token was used, provide a valid PagerDuty
       user''s email address here.'
@@ -74,7 +74,7 @@
           type: key-value-data-multilines
     - configuration:
         email: ${option.user-email}
-        incident_id: ${option.pd-incident-id}
+        incident_id: ${option.pd_incident_id}
         note: Top CPU Processes:\n${data.top_cpu*}\n Top Memory Processes:\n${data.top_memory*}\n
           Top Disk Consuming Files:\n${data.top_disk*}
       description: Send Diagnostics to PagerDuty

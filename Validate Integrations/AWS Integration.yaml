@@ -1,4 +1,4 @@
-- defaultTab: nodes
+- defaultTab: output
   description: |-
     Test that AWS credentials have been configured correctly.
 
@@ -10,7 +10,7 @@
   executionEnabled: true
   group: Validate Integrations
   id: d354cc6f-9e98-4b99-b114-02317d58b444
-  loglevel: INFO
+  loglevel: DEBUG
   name: AWS Integration
   nodeFilterEditable: false
   plugins:
