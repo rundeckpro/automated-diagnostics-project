@@ -76,12 +76,13 @@
         eventPayload: '{"Key1":"Value1","Key2":"Value2"}'
         executionRoleArn: arn:aws:iam::027501300764:role/send-full-diagnostics-s3
         functionCode: "import time\nimport boto3\n\ndef lambda_handler(event,context):\n\
-          \n    jstack_output=\"\"\"${data.jstack_output}\"\"\"\n    \n    s3=boto3.resource('s3')\n\
-          \    \n    try:\n        object=s3.Object('automated-diagnostics', 'jstack-output.txt')\n\
+          \n    #Captured data-variable from prior step\n    jstack_output=\"\"\"\
+          ${data.jstack_output}\"\"\"\n    \n    s3=boto3.resource('s3')\n    \n \
+          \   try:\n        object=s3.Object('automated-diagnostics', 'jstack-output.txt')\n\
           \        object.put(Body=jstack_output)\n        result=\"Successfully sent\
           \ Jstack Output to S3\"\n        \n    except:\n        result=\"Could Not\
           \ Send Data to S3\"\n        \n    \n    return {\n        \"Result\":result\n\
-          \    }"
+          \    }\n    \n    "
         handlerFunctionName: lambda_handler
         region: ${option.aws-region}
         runtime: python3.9
