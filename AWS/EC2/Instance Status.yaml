@@ -35,15 +35,16 @@
   group: AWS/EC2
   id: 4bae3f47-f14d-41d2-b0c8-089c4edc5dab
   loglevel: INFO
-  name: Instance Status & Associated IAM Roles
+  name: Instance Status
   nodeFilterEditable: false
   options:
-  - label: EC2 Instance ID
+  - description: The instance ID of the EC2 to check status.
+    label: EC2 Instance ID
     name: instanceId
     required: true
-    value: i-073260304484b4449
+    value: EC2 instance ID
   plugins:
-    ExecutionLifecycle: null
+    ExecutionLifecycle: {}
   scheduleEnabled: true
   schedules: []
   sequence:
