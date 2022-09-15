@@ -35,15 +35,21 @@
   group: AWS/EC2
   id: 4bae3f47-f14d-41d2-b0c8-089c4edc5dab
   loglevel: INFO
-  name: Instance Status & Associated IAM Roles
+  name: Instance Status
   nodeFilterEditable: false
   options:
-  - label: EC2 Instance ID
+  - description: The instance ID of the EC2 to check status.
+    label: EC2 Instance ID
     name: instanceId
     required: true
-    value: i-073260304484b4449
+    value: EC2 instance ID
+  - description: |-
+      ID of the PagerDuty incident that should receive the diagnostics queried from this automation.
+      This field is **_not_** required to invoke this Job.
+    label: PagerDuty Incident ID
+    name: pd_incident_id
   plugins:
-    ExecutionLifecycle: null
+    ExecutionLifecycle: {}
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -71,6 +77,26 @@
             logData: 'true'
             prefix: IAM_Role
           type: json-mapper
+        - config:
+            captureMultipleKeysValues: 'false'
+            hideOutput: 'false'
+            logData: 'true'
+            name: instance_diagnostics
+            regex: (.*)
+          type: key-value-data-multilines
+    - configuration:
+        api_token: keys/project/automated-diagnostics/pd-api-token
+        incident_id: ${option.pd_incident_id}
+        note: ${data.instance_diagnostics*}
+      description: Send Diagnostics to PagerDuty
+      errorhandler:
+        configuration:
+          text: Please provide PagerDuty API token to send diagnostics to Incident.
+        keepgoingOnSuccess: true
+        nodeStep: false
+        type: progress-badge
+      nodeStep: false
+      type: pd-note-step
     keepgoing: false
     strategy: node-first
   tags: 'aws,ec2'

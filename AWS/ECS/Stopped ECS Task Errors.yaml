@@ -26,6 +26,11 @@
     name: region
     required: true
     value: us-west-1
+  - description: |-
+      ID of the PagerDuty incident that should receive the diagnostics queried from this automation.
+      This field is **_not_** required to invoke this Job.
+    label: PagerDuty Incident ID
+    name: pd_incident_id
   plugins:
     ExecutionLifecycle: {}
   scheduleEnabled: true
@@ -37,7 +42,29 @@
         region: ${option.region}
       description: Stopped ECS Task Error
       nodeStep: false
+      plugins:
+        LogFilter:
+        - config:
+            captureMultipleKeysValues: 'false'
+            hideOutput: 'false'
+            logData: 'true'
+            name: ecs_task_errors
+            regex: (.*)
+          type: key-value-data-multilines
       type: aws-ecs-stopped-tasks
+    - configuration:
+        api_token: keys/project/automated-diagnostics/pd-api-token
+        incident_id: ${option.pd_incident_id}
+        note: 'Stopped ECS Tasks: ${data.ecs_task_errors}'
+      description: Send Diagnostics to PagerDuty
+      errorhandler:
+        configuration:
+          text: Please provide PagerDuty API token to send diagnostics to Incident.
+        keepgoingOnSuccess: true
+        nodeStep: false
+        type: progress-badge
+      nodeStep: false
+      type: pd-note-step
     keepgoing: false
     strategy: node-first
   tags: 'aws,ecs'

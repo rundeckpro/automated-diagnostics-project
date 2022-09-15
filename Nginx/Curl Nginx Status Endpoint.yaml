@@ -10,7 +10,7 @@
   group: Nginx
   id: 8acb5d0c-aef1-43ef-b366-869e7a3f629b
   loglevel: INFO
-  name: Curl Localhost Endpoint
+  name: Curl Nginx Status Endpoint
   nodeFilterEditable: true
   nodefilters:
     dispatch:

@@ -19,6 +19,11 @@
     label: Label Selector
     name: kubernetes_selector
     required: true
+  - description: |-
+      ID of the PagerDuty incident that should receive the diagnostics queried from this automation.
+      This field is **_not_** required to invoke this Job.
+    label: PagerDuty Incident ID
+    name: pd_incident_id
   - description: Choose the Number of Lines to tail from all pods that match the Selector
       syntax.
     enforced: true
@@ -41,6 +46,29 @@
     commands:
     - description: Retrieve Logs from Pods that Match Label Selector
       exec: kubectl logs -l ${option.kubernetes_selector} --tail ${option.tail_lines}
+      plugins:
+        LogFilter:
+        - config:
+            captureMultipleKeysValues: 'false'
+            hideOutput: 'false'
+            logData: 'true'
+            name: recent_k8s_logs
+            regex: (.*)
+          type: key-value-data-multilines
+    - configuration:
+        api_token: keys/project/automated-diagnostics/pd-api-token
+        incident_id: ${option.pd_incident_id}
+        note: Recent Kubernetes Logs:\n ${data.recent_k8s_logs*}
+      description: Send Diagnostics to PagerDuty
+      errorhandler:
+        configuration:
+          text: Please provide PagerDuty API token and Incident ID to send diagnostics
+            to Incident.
+        keepgoingOnSuccess: true
+        nodeStep: false
+        type: progress-badge
+      nodeStep: false
+      type: pd-note-step
     keepgoing: false
     strategy: node-first
   tags: kubernetes

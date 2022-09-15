@@ -25,6 +25,11 @@
     label: Container Name
     name: container-name
     required: true
+  - description: |-
+      ID of the PagerDuty incident that should receive the diagnostics queried from this automation.
+      This field is **_not_** required to invoke this Job.
+    label: PagerDuty Incident ID
+    name: pd_incident_id
   - description: The ID of the ECS Task where the container is running
     label: Task ID
     name: task-id
@@ -74,21 +79,46 @@
     - configuration:
         deleteFuncAfter: 'true'
         eventPayload: '{"Key1":"Value1","Key2":"Value2"}'
-        executionRoleArn: arn:aws:iam::027501300764:role/send-full-diagnostics-s3
+        executionRoleArn: lambda-execution-role-arn
         functionCode: "import time\nimport boto3\n\ndef lambda_handler(event,context):\n\
-          \n    jstack_output=\"\"\"${data.jstack_output}\"\"\"\n    \n    s3=boto3.resource('s3')\n\
-          \    \n    try:\n        object=s3.Object('automated-diagnostics', 'jstack-output.txt')\n\
-          \        object.put(Body=jstack_output)\n        result=\"Successfully sent\
-          \ Jstack Output to S3\"\n        \n    except:\n        result=\"Could Not\
-          \ Send Data to S3\"\n        \n    \n    return {\n        \"Result\":result\n\
-          \    }"
+          \n    #Captured data-variable from prior step\n    jstack_output=\"\"\"\
+          ${data.jstack_output}\"\"\"\n    \n    #Change 'automated-diagnostics' to\
+          \ specify your S3 bucket\n    s3_bucket = 'automated-diagnostics'\n    \n\
+          \    s3=boto3.resource('s3')\n    \n    try:\n        object=s3.Object(s3_bucket,\
+          \ 'jstack-output.txt')\n        object.put(Body=jstack_output)\n       \
+          \ result=\"Successfully sent Jstack Output to S3 bucket: \" + s3_bucket\n\
+          \        \n    except:\n        result=\"Could Not Send Data to S3\"\n \
+          \       \n    \n    return {\n        \"Result\":result\n    }\n    \n \
+          \   "
         handlerFunctionName: lambda_handler
         region: ${option.aws-region}
         runtime: python3.9
         tags: '{"Key1":"Value1","Key2":"Value2"}'
       description: Send Jstack Output to S3
       nodeStep: false
+      plugins:
+        LogFilter:
+        - config:
+            captureMultipleKeysValues: 'false'
+            hideOutput: 'false'
+            logData: 'true'
+            name: jstack_status
+            regex: (.*)
+          type: key-value-data-multilines
       type: aws-lambda-custom-code-execution
+    - configuration:
+        api_token: keys/project/automated-diagnostics/pd-api-token
+        incident_id: ${option.pd_incident_id}
+        note: 'Jstack Status: ${data.jstack_status}'
+      description: Send Diagnostics to PagerDuty
+      errorhandler:
+        configuration:
+          text: Please provide PagerDuty API token to send diagnostics to Incident.
+        keepgoingOnSuccess: true
+        nodeStep: false
+        type: progress-badge
+      nodeStep: false
+      type: pd-note-step
     keepgoing: false
     strategy: node-first
   tags: 'aws,ecs,lambda'
