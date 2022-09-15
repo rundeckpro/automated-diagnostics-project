@@ -125,7 +125,8 @@
       description: Send Diagnostics to PagerDuty
       errorhandler:
         configuration:
-          text: Please provide PagerDuty API token to send diagnostics to Incident.
+          text: Please provide PagerDuty API token and Incident ID to send diagnostics
+            to Incident.
         keepgoingOnSuccess: true
         nodeStep: false
         type: progress-badge

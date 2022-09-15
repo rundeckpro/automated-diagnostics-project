@@ -29,6 +29,11 @@
     label: Node Filter
     name: node_filter
     value: hostname
+  - description: |-
+      ID of the PagerDuty incident that should receive the diagnostics queried from this automation.
+      This field is **_not_** required to invoke this Job.
+    label: PagerDuty Incident ID
+    name: pd_incident_id
   plugins:
     ExecutionLifecycle: {}
   scheduleEnabled: true
@@ -37,6 +42,29 @@
     commands:
     - description: Execute psql command on remote node
       exec: sudo -u postgres psql -l
+      plugins:
+        LogFilter:
+        - config:
+            captureMultipleKeysValues: 'false'
+            hideOutput: 'false'
+            logData: 'true'
+            name: postgres_status
+            regex: (.*)
+          type: key-value-data-multilines
+    - configuration:
+        api_token: keys/project/automated-diagnostics/pd-api-token
+        incident_id: ${option.pd_incident_id}
+        note: PostgreSQL Test:\n ${data.postgres_status*}
+      description: Send Diagnostics to PagerDuty
+      errorhandler:
+        configuration:
+          text: Please provide PagerDuty API token and Incident ID to send diagnostics
+            to Incident.
+        keepgoingOnSuccess: true
+        nodeStep: false
+        type: progress-badge
+      nodeStep: false
+      type: pd-note-step
     keepgoing: false
     strategy: node-first
   tags: postgresql
