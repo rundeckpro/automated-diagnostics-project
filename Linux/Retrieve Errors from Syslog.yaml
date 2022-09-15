@@ -27,6 +27,11 @@
     label: Node Filter
     name: node_filter
     value: hostname
+  - description: |-
+      ID of the PagerDuty incident that should receive the diagnostics queried from this automation.
+      This field is _not_ required to invoke this Job.
+    label: Incident ID
+    name: pd_incident_id
   plugins:
     ExecutionLifecycle: {}
   scheduleEnabled: true
@@ -35,21 +40,97 @@
     commands:
     - description: Is it out of memory?
       exec: grep "Out\ of\ memory" /var/log/syslog || true
+      plugins:
+        LogFilter:
+        - config:
+            captureMultipleKeysValues: 'false'
+            hideOutput: 'false'
+            logData: 'true'
+            name: out_of_memory
+            regex: (.*)
+          type: key-value-data-multilines
     - description: Memory management update failed
       exec: grep "ERROR:\ mmu_update\ failed" /var/log/syslog || true
+      plugins:
+        LogFilter:
+        - config:
+            captureMultipleKeysValues: 'false'
+            hideOutput: 'false'
+            logData: 'true'
+            name: memory_management
+            regex: (.*)
+          type: key-value-data-multilines
     - description: I/O Error
       exec: grep "I/O\ error" /var/log/syslog || true
+      plugins:
+        LogFilter:
+        - config:
+            captureMultipleKeysValues: 'false'
+            hideOutput: 'false'
+            logData: 'true'
+            name: io_error
+            regex: (.*)
+          type: key-value-data-multilines
     - description: Runaway Loop
       exec: grep "request_module:\ runaway\ loop\ modprobe\ binfmt-464c" /var/log/syslog
         || true
+      plugins:
+        LogFilter:
+        - config:
+            captureMultipleKeysValues: 'false'
+            hideOutput: 'false'
+            logData: 'true'
+            name: runaway_loop
+            regex: (.*)
+          type: key-value-data-multilines
     - description: Fatal Could Not Load
       exec: grep "FATAL:\ Could\ not\ load" /var/log/syslog || true
+      plugins:
+        LogFilter:
+        - config:
+            captureMultipleKeysValues: 'false'
+            hideOutput: 'false'
+            logData: 'true'
+            name: could_not_load
+            regex: (.*)
+          type: key-value-data-multilines
     - description: Invalid Kernel Error
       exec: grep "ERROR\ Invalid\ kernel:" /var/log/syslog || true
+      plugins:
+        LogFilter:
+        - config:
+            captureMultipleKeysValues: 'false'
+            hideOutput: 'false'
+            logData: 'true'
+            name: kernel_error
+            regex: (.*)
+          type: key-value-data-multilines
     - description: Error Mounting Filesystem
       exec: grep "General\ error\ mounting\ filesystems" /var/log/syslog || true
-    - description: Unable to Load SELinux Policy
-      exec: grep "Unable\ to\ load\ SELinux\ Policy" /var/log/syslog || true
+      plugins:
+        LogFilter:
+        - config:
+            captureMultipleKeysValues: 'false'
+            hideOutput: 'false'
+            logData: 'true'
+            name: filesystem_mount_error
+            regex: (.*)
+          type: key-value-data-multilines
+    - configuration:
+        api_token: keys/project/automated-diagnostics/pd-api-token
+        incident_id: ${option.pd_incident_id}
+        note: ${data.out_of_memory*}\n ${data.memory_management*}\n ${data.io_error*}\n
+          ${data.runaway_loop*}\n ${data.could_not_load*}\n ${data.kernel_error*}\n
+          ${data.filesystem_mount_error*}
+      description: Send Diagnostics to PagerDuty
+      errorhandler:
+        configuration:
+          text: Please provide PagerDuty API token to send diagnostics to Incident.
+        keepgoingOnSuccess: true
+        nodeStep: false
+        type: progress-badge
+      nodeStep: false
+      type: pd-note-step
     keepgoing: false
     strategy: sequential
   tags: linux
