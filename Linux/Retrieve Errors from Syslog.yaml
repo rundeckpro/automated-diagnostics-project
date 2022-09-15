@@ -29,7 +29,7 @@
     value: hostname
   - description: |-
       ID of the PagerDuty incident that should receive the diagnostics queried from this automation.
-      This field is _not_ required to invoke this Job.
+      This field is **_not_** required to invoke this Job.
     label: Incident ID
     name: pd_incident_id
   plugins:
