@@ -17,6 +17,11 @@
     name: namespace
     required: true
     value: default
+  - description: |-
+      ID of the PagerDuty incident that should receive the diagnostics queried from this automation.
+      This field is **_not_** required to invoke this Job.
+    label: PagerDuty Incident ID
+    name: pd_incident_id
   - description: Name of the kubernetes pod
     label: Pod Name
     name: pod_name
@@ -29,6 +34,29 @@
     commands:
     - description: 'Retrieve Logs '
       exec: kubectl logs pod ${option.pod_name} -n ${option.namespace} --tail=10
+      plugins:
+        LogFilter:
+        - config:
+            captureMultipleKeysValues: 'false'
+            hideOutput: 'false'
+            logData: 'true'
+            name: recent_pod_logs
+            regex: (.*)
+          type: key-value-data-multilines
+    - configuration:
+        api_token: keys/project/automated-diagnostics/pd-api-token
+        incident_id: ${option.pd_incident_id}
+        note: Recent Kubernetes Pod Logs:\n ${data.recent_pod_logs*}
+      description: Send Diagnostics to PagerDuty
+      errorhandler:
+        configuration:
+          text: Please provide PagerDuty API token and Incident ID to send diagnostics
+            to Incident.
+        keepgoingOnSuccess: true
+        nodeStep: false
+        type: progress-badge
+      nodeStep: false
+      type: pd-note-step
     keepgoing: false
     strategy: node-first
   tags: kubernetes
