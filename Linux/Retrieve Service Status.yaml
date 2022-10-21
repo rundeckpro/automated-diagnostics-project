@@ -41,20 +41,38 @@
   sequence:
     commands:
     - description: Retrieve Service Name
+      errorhandler:
+        configuration:
+          fail: 'false'
+          halt: 'false'
+          status: Service Down
+        keepgoingOnSuccess: true
+        nodeStep: false
+        type: flow-control
       exec: systemctl status ${option.service_name}
       plugins:
         LogFilter:
         - config:
-            captureMultipleKeysValues: 'false'
-            hideOutput: 'false'
-            logData: 'true'
-            name: service_status
-            regex: (.*)
-          type: key-value-data-multilines
+            contextVariable: service-status
+            doNothing: 'true'
+            mute: 'false'
+            regex: '.*Active: active.*'
+            statusSymbol: ✅
+            text: Healthy
+          type: progress-badges
+        - config:
+            contextVariable: service-status
+            doNothing: 'true'
+            mute: 'false'
+            regex: '.*Active: failed.*'
+            statusSymbol: ❌
+            text: Unhealthy
+          type: progress-badges
     - configuration:
-        api_token: keys/project/automated-diagnostics/pd-api-token
+        api_token: keys/pagerduty_api
+        email: rundeck@rundeck.com
         incident_id: ${option.pd_incident_id}
-        note: Service Status:\n ${data.service_status*}
+        note: 'Service Status: ${data.service-status*}'
       description: Send Diagnostics to PagerDuty
       errorhandler:
         configuration:
@@ -66,7 +84,7 @@
       nodeStep: false
       type: pd-note-step
     keepgoing: false
-    strategy: node-first
+    strategy: sequential
   tags: linux
   uuid: eae2db60-f9b9-4e28-901e-0585ddc53687
 
