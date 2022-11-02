@@ -11,7 +11,7 @@
     **ecs:DescribeTasks**<br>
   executionEnabled: true
   group: AWS/ECS
-  id: edbcfa0c-ade4-4fbc-b0fc-7e52a35431ab
+  id: d415a129-348c-40e4-b568-009d4035d0ca
   loglevel: INFO
   name: Stopped ECS Task Errors
   nodeFilterEditable: false
@@ -53,7 +53,8 @@
           type: key-value-data-multilines
       type: aws-ecs-stopped-tasks
     - configuration:
-        api_token: keys/project/automated-diagnostics/pd-api-token
+        api_token: keys/pagerduty_api
+        email: rundeck@rundeck.com
         incident_id: ${option.pd_incident_id}
         note: 'Stopped ECS Tasks: ${data.ecs_task_errors}'
       description: Send Diagnostics to PagerDuty
@@ -68,5 +69,5 @@
     keepgoing: false
     strategy: node-first
   tags: 'aws,ecs'
-  uuid: edbcfa0c-ade4-4fbc-b0fc-7e52a35431ab
+  uuid: d415a129-348c-40e4-b568-009d4035d0ca
 

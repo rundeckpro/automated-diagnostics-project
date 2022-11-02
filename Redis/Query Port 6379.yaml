@@ -1,15 +1,13 @@
 - defaultTab: nodes
   description: |-
-    Retrieve memory statistics from Redis server using the redis-cli.
-
-    This Job uses `redis-cli` commands such as **`memory malloc-stats`** and others to provide information useful for debugging issues related to redis instances.
+    Simple check if port 6379 is listening on the Redis host.
 
     See the [**Project Readme**](/project/automated-diagnostics/home) for recommended tours on how to add remote-nodes and configure connectivity to them using methods such as SSH or Systems Manager (SSM).
   executionEnabled: true
   group: Redis
-  id: db4ad943-28dd-46c8-bda0-9a323a24157d
+  id: 30291808-47fa-4316-8e6d-14072ed86feb
   loglevel: INFO
-  name: Redis Memory Statistics
+  name: Query Port 6379
   nodeFilterEditable: true
   nodefilters:
     dispatch:
@@ -31,37 +29,26 @@
     label: PagerDuty Incident ID
     name: pd_incident_id
   plugins:
-    ExecutionLifecycle: null
+    ExecutionLifecycle: {}
   scheduleEnabled: true
   schedules: []
   sequence:
     commands:
-    - description: Run the "memory stats" Command
-      exec: redis-cli memory stats
+    - description: Check Port 6379 is Listening on Remote Host
+      exec: sudo lsof -i:6379
       plugins:
         LogFilter:
         - config:
             captureMultipleKeysValues: 'false'
             hideOutput: 'false'
             logData: 'true'
-            name: memory_stats
-            regex: (.*)
-          type: key-value-data-multilines
-    - description: Run the "memory malloc-stats" Command
-      exec: redis-cli memory malloc-stats
-      plugins:
-        LogFilter:
-        - config:
-            captureMultipleKeysValues: 'false'
-            hideOutput: 'false'
-            logData: 'true'
-            name: malloc_stats
+            name: port_check
             regex: (.*)
           type: key-value-data-multilines
     - configuration:
         api_token: keys/project/automated-diagnostics/pd-api-token
         incident_id: ${option.pd_incident_id}
-        note: Redis Memory Stats:\n ${data.memory_stats*}\n ${data.malloc_stats*}
+        note: Redis Port Check:\n ${data.port_check*}
       description: Send Diagnostics to PagerDuty
       errorhandler:
         configuration:
@@ -75,5 +62,5 @@
     keepgoing: false
     strategy: node-first
   tags: redis
-  uuid: db4ad943-28dd-46c8-bda0-9a323a24157d
+  uuid: 30291808-47fa-4316-8e6d-14072ed86feb
 

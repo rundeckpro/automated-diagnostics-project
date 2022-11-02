@@ -7,7 +7,7 @@
     If using PagerDuty Runbook Automation (SaaS), then this Job is designed to be run on an [**Enterprise Runner**](https://docs.rundeck.com/docs/administration/runner/#architecture). Follow the documentation and install the Runner in a location that can communicate with your Kubernetes cluster.
   executionEnabled: true
   group: Kubernetes
-  id: 7b958185-6ce0-4112-98d9-00cb63cc3abd
+  id: 2ae636b1-451c-4a9a-95d8-83360df224f9
   loglevel: INFO
   name: Describe Deployment
   nodeFilterEditable: false
@@ -27,7 +27,7 @@
     label: PagerDuty Incident ID
     name: pd_incident_id
   plugins:
-    ExecutionLifecycle: {}
+    ExecutionLifecycle: null
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -60,5 +60,5 @@
     keepgoing: false
     strategy: node-first
   tags: kubernetes
-  uuid: 7b958185-6ce0-4112-98d9-00cb63cc3abd
+  uuid: 2ae636b1-451c-4a9a-95d8-83360df224f9
 

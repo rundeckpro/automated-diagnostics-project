@@ -1,15 +1,16 @@
 - defaultTab: nodes
-  description: |-
-    Retrieve memory statistics from Redis server using the redis-cli.
-
-    This Job uses `redis-cli` commands such as **`memory malloc-stats`** and others to provide information useful for debugging issues related to redis instances.
-
-    See the [**Project Readme**](/project/automated-diagnostics/home) for recommended tours on how to add remote-nodes and configure connectivity to them using methods such as SSH or Systems Manager (SSM).
+  description: "Check if Nginx is processing requests using Curl\n\nThis Job executes\
+    \ `curl` on a remote node to see if Nginx is processesing requests.  \n\nThe default\
+    \ endpoint checked is:\n```\nhttp://127.0.0.1/nginx_status\n```\nThis default\
+    \ endpoint can be changed using the **`Endpoint`** field below.\n\nSee the [**Project\
+    \ Readme**](/project/automated-diagnostics/home) for recommended tours on how\
+    \ to add remote-nodes and configure connectivity to them using methods such as\
+    \ SSH or Systems Manager (SSM)."
   executionEnabled: true
-  group: Redis
-  id: db4ad943-28dd-46c8-bda0-9a323a24157d
+  group: Nginx
+  id: 13979be7-d59d-49fa-9504-e98893b67e59
   loglevel: INFO
-  name: Redis Memory Statistics
+  name: Query Nginx Status Endpoint
   nodeFilterEditable: true
   nodefilters:
     dispatch:
@@ -21,6 +22,11 @@
     filter: ${option.node_filter}
   nodesSelectedByDefault: true
   options:
+  - description: Endpoint to execute `curl` command against.
+    label: Endpoint
+    name: endpoint
+    required: true
+    value: http://127.0.0.1/nginx_status
   - hidden: true
     label: Node Filter
     name: node_filter
@@ -31,37 +37,26 @@
     label: PagerDuty Incident ID
     name: pd_incident_id
   plugins:
-    ExecutionLifecycle: null
+    ExecutionLifecycle: {}
   scheduleEnabled: true
   schedules: []
   sequence:
     commands:
-    - description: Run the "memory stats" Command
-      exec: redis-cli memory stats
+    - description: Execute curl against specified endpoint
+      exec: curl -i ${option.endpoint}
       plugins:
         LogFilter:
         - config:
             captureMultipleKeysValues: 'false'
             hideOutput: 'false'
             logData: 'true'
-            name: memory_stats
-            regex: (.*)
-          type: key-value-data-multilines
-    - description: Run the "memory malloc-stats" Command
-      exec: redis-cli memory malloc-stats
-      plugins:
-        LogFilter:
-        - config:
-            captureMultipleKeysValues: 'false'
-            hideOutput: 'false'
-            logData: 'true'
-            name: malloc_stats
+            name: endpoint_response
             regex: (.*)
           type: key-value-data-multilines
     - configuration:
         api_token: keys/project/automated-diagnostics/pd-api-token
         incident_id: ${option.pd_incident_id}
-        note: Redis Memory Stats:\n ${data.memory_stats*}\n ${data.malloc_stats*}
+        note: Nginx Check:\n ${data.endpoint_response*}
       description: Send Diagnostics to PagerDuty
       errorhandler:
         configuration:
@@ -74,6 +69,6 @@
       type: pd-note-step
     keepgoing: false
     strategy: node-first
-  tags: redis
-  uuid: db4ad943-28dd-46c8-bda0-9a323a24157d
+  tags: nginx
+  uuid: 13979be7-d59d-49fa-9504-e98893b67e59
 

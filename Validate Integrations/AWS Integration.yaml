@@ -9,12 +9,12 @@
     For more information on this Job, see the **Configure AWS Credentials** tour.
   executionEnabled: true
   group: Validate Integrations
-  id: d354cc6f-9e98-4b99-b114-02317d58b444
+  id: b0af2ccd-0161-4002-9d7a-bf04eab1a2d7
   loglevel: INFO
   name: AWS Integration
   nodeFilterEditable: false
   plugins:
-    ExecutionLifecycle: {}
+    ExecutionLifecycle: null
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -23,11 +23,9 @@
         region: us-east-1
       description: Validate Credentials
       nodeStep: false
-      plugins:
-        LogFilter: []
       type: aws-validate-credentials-step
     keepgoing: false
     strategy: node-first
   tags: aws
-  uuid: d354cc6f-9e98-4b99-b114-02317d58b444
+  uuid: b0af2ccd-0161-4002-9d7a-bf04eab1a2d7
 

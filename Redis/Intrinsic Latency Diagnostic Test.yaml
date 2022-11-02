@@ -8,7 +8,7 @@
     \ such as SSH or Systems Manager (SSM)."
   executionEnabled: true
   group: Redis
-  id: 9ab3efa1-9860-4f1a-8e96-85a8278041a4
+  id: da338025-d983-4339-ba17-fc33db64f658
   loglevel: INFO
   name: Intrinsic Latency Diagnostic Test
   nodeFilterEditable: true
@@ -29,10 +29,10 @@
     required: true
     value: '60'
     values:
-    - '30'
-    - '60'
     - '100'
     - '150'
+    - '30'
+    - '60'
     valuesListDelimiter: ','
   - hidden: true
     label: Node Filter
@@ -44,7 +44,7 @@
     label: PagerDuty Incident ID
     name: pd_incident_id
   plugins:
-    ExecutionLifecycle: {}
+    ExecutionLifecycle: null
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -77,5 +77,5 @@
     keepgoing: false
     strategy: node-first
   tags: redis
-  uuid: 9ab3efa1-9860-4f1a-8e96-85a8278041a4
+  uuid: da338025-d983-4339-ba17-fc33db64f658
 

@@ -5,7 +5,7 @@
     \ tour."
   executionEnabled: true
   group: Validate Integrations
-  id: 00006846-4e6c-45cc-9878-560058d7911f
+  id: d0eb55f5-624b-4437-ba9e-9ced61b332b3
   loglevel: INFO
   name: PagerDuty Integration
   nodeFilterEditable: false
@@ -28,7 +28,7 @@
     value: This is a note to test the integration between Runbook Automation and PagerDuty
       Incidents.
   plugins:
-    ExecutionLifecycle: {}
+    ExecutionLifecycle: null
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -43,5 +43,5 @@
     keepgoing: false
     strategy: node-first
   tags: pagerduty
-  uuid: 00006846-4e6c-45cc-9878-560058d7911f
+  uuid: d0eb55f5-624b-4437-ba9e-9ced61b332b3
 
