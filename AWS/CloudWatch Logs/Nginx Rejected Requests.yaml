@@ -7,7 +7,7 @@
     \ follow the **Configure AWS Credentials** Tour."
   executionEnabled: true
   group: AWS/CloudWatch Logs
-  id: 3e62bb0f-5fec-4fef-b2b6-7ff57c5ec01d
+  id: 75a44046-9d9c-4fb6-bb46-923929c3244a
   loglevel: INFO
   name: Nginx Rejected Requests
   nodeFilterEditable: false
@@ -22,16 +22,11 @@
     - us-east-1
     - us-east-2
     valuesListDelimiter: ','
-  - description: The CloudWatch Log Group to query
-    label: CloudWatch Log Group
-    name: cloudwatch-log-group
+  - description: The CloudWatch log group - or groups - to query.
+    label: CloudWatch Logs Groups
+    name: cloudwatch-logs-groups
     required: true
     value: cloudwatch-log-group-name
-  - description: |-
-      ID of the PagerDuty incident that should receive the diagnostics queried from this automation.
-      This field is _not_ required to invoke this Job.
-    label: PagerDuty Incident ID
-    name: pd_incident_id
   plugins:
     ExecutionLifecycle: {}
   scheduleEnabled: true
@@ -40,7 +35,7 @@
     commands:
     - configuration:
         '0': '1'
-        cloudWatchLogGroup: ${option.cloudwatch-log-group}
+        cloudWatchLogGroups: ${option.cloudwatch-logs-groups}
         queryString: |-
           fields @message
           | parse @message '* - - [*] "* * *" * * "-" "*"' as remote_addr, timestamp, request_type, location, protocol, response_code, body_bytes_sent, user_agent
@@ -50,31 +45,8 @@
         timeUnit: Hours
       description: Nginx CloudWatch Logs Query
       nodeStep: false
-      plugins:
-        LogFilter:
-        - config:
-            captureMultipleKeysValues: 'false'
-            hideOutput: 'false'
-            logData: 'true'
-            name: cloudwatch_logs
-            regex: (.*)
-          type: key-value-data-multilines
       type: aws-query-cloudwatch-logs-step
-    - configuration:
-        api_token: keys/project/automated-diagnostics/pd-api-token
-        incident_id: ${option.pd_incident_id}
-        note: ${data.cloudwatch_logs}
-      description: Send Diagnostics to PagerDuty
-      errorhandler:
-        configuration:
-          text: Please provide PagerDuty API token to send diagnostics to Incident.
-        keepgoingOnSuccess: true
-        nodeStep: false
-        type: progress-badge
-      nodeStep: false
-      type: pd-note-step
     keepgoing: false
     strategy: node-first
-  tags: 'aws,vpc'
-  uuid: 3e62bb0f-5fec-4fef-b2b6-7ff57c5ec01d
+  uuid: 75a44046-9d9c-4fb6-bb46-923929c3244a
 
