@@ -65,7 +65,8 @@
         api_token: keys/project/automated-diagnostics-development/pd-api-token
         email: rundeck@rundeck.com
         incident_id: ${option.pd_incident_id}
-        note: ${data.api-health}
+        note: 'API Check: ${data.api-health}\n\nClick here for detailed diagnostics:
+          ${job.url}#output'
       description: Send Diagnostics to PagerDuty
       errorhandler:
         configuration:
