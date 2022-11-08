@@ -45,7 +45,7 @@
     label: PagerDuty Incident ID
     name: pd_incident_id
   plugins:
-    ExecutionLifecycle: null
+    ExecutionLifecycle: {}
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -62,9 +62,11 @@
             regex: (.*)
           type: key-value-data-multilines
     - configuration:
-        api_token: keys/project/automated-diagnostics/pd-api-token
+        api_token: keys/project/automated-diagnostics/pd-api-key
+        email: ${globals.pd-email}
         incident_id: ${option.pd_incident_id}
-        note: Redis Slowlog Entries:\n ${data.slowlog_entries*}
+        note: 'Redis Slowlog Entries:\n ${data.slowlog_entries*}\n\nClick here for
+          detailed diagnostics: ${job.url}#output'
       description: Send Diagnostics to PagerDuty
       errorhandler:
         configuration:
