@@ -70,7 +70,7 @@
           type: key-value-data-multilines
     - configuration:
         api_token: keys/project/automated-diagnostics/pd-api-key
-        email: ${global.pd-email}
+        email: ${globals.pd-email}
         incident_id: ${option.pd_incident_id}
         note: 'Top CPU Processes:\n${data.top_cpu*}\n Top Memory Processes:\n${data.top_memory*}\n
           Top Disk Consuming Files:\n${data.top_disk*}\n\nClick here for detailed

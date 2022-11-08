@@ -70,7 +70,7 @@
           type: progress-badges
     - configuration:
         api_token: keys/project/automated-diagnostics/pd-api-key
-        email: ${global.pd-email}
+        email: ${globals.pd-email}
         incident_id: ${option.pd_incident_id}
         note: 'Service Status: ${data.service-status*}\n\nClick here for detailed
           diagnostics: ${job.url}#output'
