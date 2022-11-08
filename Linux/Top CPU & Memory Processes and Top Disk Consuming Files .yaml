@@ -31,12 +31,8 @@
       to on the Incident Timeline.
     label: PagerDuty Incident ID
     name: pd_incident_id
-  - description: 'If a **General Access** API Token was used, provide a valid PagerDuty
-      user''s email address here.'
-    label: PagerDuty User Email
-    name: user-email
   plugins:
-    ExecutionLifecycle: null
+    ExecutionLifecycle: {}
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -73,10 +69,12 @@
             regex: (.*)
           type: key-value-data-multilines
     - configuration:
-        email: ${option.user-email}
+        api_token: keys/project/automated-diagnostics/pd-api-key
+        email: ${global.pd-email}
         incident_id: ${option.pd_incident_id}
-        note: Top CPU Processes:\n${data.top_cpu*}\n Top Memory Processes:\n${data.top_memory*}\n
-          Top Disk Consuming Files:\n${data.top_disk*}
+        note: 'Top CPU Processes:\n${data.top_cpu*}\n Top Memory Processes:\n${data.top_memory*}\n
+          Top Disk Consuming Files:\n${data.top_disk*}\n\nClick here for detailed
+          diagnostics: ${job.url}#output'
       description: Send Diagnostics to PagerDuty
       errorhandler:
         configuration:

@@ -66,9 +66,10 @@
           type: progress-badges
       type: aws-rds-status
     - configuration:
-        api_token: keys/project/automated-diagnostics/pd-api-token
+        api_token: keys/project/automated-diagnostics/pd-api-key
+        email: ${globals.pd-email}
         incident_id: ${option.pd_incident_id}
-        note: ${data.rds-health}
+        note: '${data.rds-health}\n\nClick here for detailed diagnostics: ${job.url}#output'
       description: Send Diagnostics to PagerDuty
       errorhandler:
         configuration:

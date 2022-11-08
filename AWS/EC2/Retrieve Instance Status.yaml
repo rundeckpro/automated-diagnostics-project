@@ -85,9 +85,11 @@
             regex: (.*)
           type: key-value-data-multilines
     - configuration:
-        api_token: keys/project/automated-diagnostics/pd-api-token
+        api_token: keys/project/automated-diagnostics/pd-api-key
+        email: ${globals.pd-email}
         incident_id: ${option.pd_incident_id}
-        note: ${data.instance_diagnostics*}
+        note: '${data.instance_diagnostics*}\n\nClick here for detailed diagnostics:
+          ${job.url}#output'
       description: Send Diagnostics to PagerDuty
       errorhandler:
         configuration:

@@ -53,10 +53,11 @@
           type: key-value-data-multilines
       type: aws-ecs-stopped-tasks
     - configuration:
-        api_token: keys/pagerduty_api
-        email: rundeck@rundeck.com
+        api_token: keys/project/automated-diagnostics/pd-api-key
+        email: ${globals.pd-email}
         incident_id: ${option.pd_incident_id}
-        note: 'Stopped ECS Tasks: ${data.ecs_task_errors}'
+        note: 'Stopped ECS Tasks: ${data.ecs_task_errors}\n\nClick here for detailed
+          diagnostics: ${job.url}#output'
       description: Send Diagnostics to PagerDuty
       errorhandler:
         configuration:

@@ -33,7 +33,7 @@
     label: Incident ID
     name: pd_incident_id
   plugins:
-    ExecutionLifecycle: null
+    ExecutionLifecycle: {}
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -117,11 +117,13 @@
             regex: (.*)
           type: key-value-data-multilines
     - configuration:
-        api_token: keys/project/automated-diagnostics/pd-api-token
+        api_token: keys/project/automated-diagnostics/pd-api-key
+        email: ${globals.pd-email}
         incident_id: ${option.pd_incident_id}
-        note: ${data.out_of_memory*}\n ${data.memory_management*}\n ${data.io_error*}\n
+        note: '${data.out_of_memory*}\n ${data.memory_management*}\n ${data.io_error*}\n
           ${data.runaway_loop*}\n ${data.could_not_load*}\n ${data.kernel_error*}\n
-          ${data.filesystem_mount_error*}
+          ${data.filesystem_mount_error*}\n\nClick here for detailed diagnostics:
+          ${job.url}#output'
       description: Send Diagnostics to PagerDuty
       errorhandler:
         configuration:

@@ -29,7 +29,7 @@
     name: region
     optionValuesPluginType: aws-regions-job-options
   plugins:
-    ExecutionLifecycle: null
+    ExecutionLifecycle: {}
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -43,17 +43,27 @@
         LogFilter:
         - config:
             contextVariable: elb-status
-            doNothing: 'false'
-            mute: 'true'
-            regex: Found.*
+            doNothing: 'true'
+            mute: 'false'
+            regex: Found 0.*
             statusSymbol: ✅
             text: Healthy
           type: progress-badges
+        - config:
+            contextVariable: elb-status
+            doNothing: 'true'
+            mute: 'false'
+            regex: Found unhealthy.*
+            statusSymbol: ❌
+            text: Found unhealthy ELB targets
+          type: progress-badges
       type: aws-target-elb
     - configuration:
-        api_token: keys/pagerduty_api
+        api_token: keys/project/automated-diagnostics/pd-api-key
+        email: ${globals.pd-email}
         incident_id: ${option.pd_incident_id}
-        note: 'ELB Targets Status: ${data.elb-status}'
+        note: 'ELB Targets Status: ${data.elb-status}\n\nClick here for detailed diagnostics:
+          ${job.url}#output'
       description: Send Diagnostics to PagerDuty
       errorhandler:
         configuration:

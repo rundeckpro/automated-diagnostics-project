@@ -35,7 +35,7 @@
     name: service_name
     required: true
   plugins:
-    ExecutionLifecycle: null
+    ExecutionLifecycle: {}
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -69,9 +69,11 @@
             text: Unhealthy
           type: progress-badges
     - configuration:
-        api_token: keys/project/automated-diagnostics/pd-api-token
+        api_token: keys/project/automated-diagnostics/pd-api-key
+        email: ${global.pd-email}
         incident_id: ${option.pd_incident_id}
-        note: 'Service Status: ${data.service-status*}'
+        note: 'Service Status: ${data.service-status*}\n\nClick here for detailed
+          diagnostics: ${job.url}#output'
       description: Send Diagnostics to PagerDuty
       errorhandler:
         configuration:
