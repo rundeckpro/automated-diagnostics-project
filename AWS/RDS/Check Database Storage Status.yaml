@@ -11,7 +11,7 @@
 
   executionEnabled: true
   group: AWS/RDS
-  id: d7d54d15-cdd9-4dfe-a298-ee50afd0ce9c
+  id: d5db4794-fb37-43d2-b44a-9ae86eccc3c8
   loglevel: INFO
   name: Check Database Storage Status
   nodeFilterEditable: false
@@ -29,7 +29,7 @@
     name: region
     optionValuesPluginType: aws-regions-job-options
   plugins:
-    ExecutionLifecycle: {}
+    ExecutionLifecycle: null
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -82,5 +82,5 @@
     keepgoing: false
     strategy: node-first
   tags: 'aws,rds'
-  uuid: d7d54d15-cdd9-4dfe-a298-ee50afd0ce9c
+  uuid: d5db4794-fb37-43d2-b44a-9ae86eccc3c8
 

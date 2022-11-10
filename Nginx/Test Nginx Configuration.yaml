@@ -7,7 +7,7 @@
     See the [**Project Readme**](/project/automated-diagnostics/home) for recommended tours on how to add remote-nodes and configure connectivity to them using methods such as SSH or Systems Manager (SSM).
   executionEnabled: true
   group: Nginx
-  id: d1062bd2-5dbe-4a4c-8eec-0409be43cdb6
+  id: 7747ad3d-289d-4a82-a485-95afb1ef71a6
   loglevel: INFO
   name: Test Nginx Configuration
   nodeFilterEditable: true
@@ -31,7 +31,7 @@
     label: PagerDuty Incident ID
     name: pd_incident_id
   plugins:
-    ExecutionLifecycle: {}
+    ExecutionLifecycle: null
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -66,5 +66,5 @@
     keepgoing: false
     strategy: node-first
   tags: nginx
-  uuid: d1062bd2-5dbe-4a4c-8eec-0409be43cdb6
+  uuid: 7747ad3d-289d-4a82-a485-95afb1ef71a6
 

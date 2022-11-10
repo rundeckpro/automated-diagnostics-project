@@ -9,7 +9,7 @@
     See the [**Project Readme**](/project/automated-diagnostics/home) for recommended tours on how to add remote-nodes and configure connectivity to them using methods such as SSH or Systems Manager (SSM).
   executionEnabled: true
   group: Linux
-  id: c6487215-35a5-47c9-9f4e-b5f8b421c25c
+  id: ab44526f-76bb-4857-a70b-b8bfab81ba94
   loglevel: INFO
   name: Retrieve Errors from Syslog
   nodeFilterEditable: true
@@ -33,7 +33,7 @@
     label: Incident ID
     name: pd_incident_id
   plugins:
-    ExecutionLifecycle: {}
+    ExecutionLifecycle: null
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -137,5 +137,5 @@
     keepgoing: false
     strategy: sequential
   tags: linux
-  uuid: c6487215-35a5-47c9-9f4e-b5f8b421c25c
+  uuid: ab44526f-76bb-4857-a70b-b8bfab81ba94
 

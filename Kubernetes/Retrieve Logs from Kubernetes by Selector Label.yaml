@@ -10,7 +10,7 @@
     \ with your Kubernetes cluster."
   executionEnabled: true
   group: Kubernetes
-  id: 89533804-458d-404c-90bb-e9342978dcc6
+  id: 6774c554-9a54-4c66-b190-b598ed9bf2ab
   loglevel: INFO
   name: Retrieve Logs from Kubernetes by Selector Label
   nodeFilterEditable: false
@@ -72,5 +72,5 @@
     keepgoing: false
     strategy: node-first
   tags: kubernetes
-  uuid: 89533804-458d-404c-90bb-e9342978dcc6
+  uuid: 6774c554-9a54-4c66-b190-b598ed9bf2ab
 

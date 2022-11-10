@@ -7,7 +7,7 @@
     \ follow the **Configure AWS Credentials** Tour."
   executionEnabled: true
   group: AWS/CloudWatch Logs
-  id: 75a44046-9d9c-4fb6-bb46-923929c3244a
+  id: c8d4503d-8ae5-4e56-8b1a-c2086d407b82
   loglevel: INFO
   name: Nginx Rejected Requests
   nodeFilterEditable: false
@@ -18,9 +18,9 @@
     required: true
     value: us-west-1
     values:
-    - us-west-1
     - us-east-1
     - us-east-2
+    - us-west-1
     valuesListDelimiter: ','
   - description: The CloudWatch log group - or groups - to query.
     label: CloudWatch Logs Groups
@@ -28,7 +28,7 @@
     required: true
     value: cloudwatch-log-group-name
   plugins:
-    ExecutionLifecycle: {}
+    ExecutionLifecycle: null
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -48,5 +48,5 @@
       type: aws-query-cloudwatch-logs-step
     keepgoing: false
     strategy: node-first
-  uuid: 75a44046-9d9c-4fb6-bb46-923929c3244a
+  uuid: c8d4503d-8ae5-4e56-8b1a-c2086d407b82
 

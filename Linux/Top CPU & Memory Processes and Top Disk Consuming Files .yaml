@@ -9,7 +9,7 @@
     See the [**Project Readme**](/project/automated-diagnostics/home) for recommended tours on how to add remote-nodes and configure connectivity to them using methods such as SSH or Systems Manager (SSM).
   executionEnabled: true
   group: Linux
-  id: ed687774-c64b-477c-8cf3-85ab9eeea440
+  id: 9d666e90-a793-41ce-9a54-e1f169059f84
   loglevel: INFO
   name: 'Top CPU & Memory Processes and Top Disk Consuming Files '
   nodeFilterEditable: true
@@ -32,7 +32,7 @@
     label: PagerDuty Incident ID
     name: pd_incident_id
   plugins:
-    ExecutionLifecycle: {}
+    ExecutionLifecycle: null
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -88,5 +88,5 @@
     keepgoing: false
     strategy: node-first
   tags: linux
-  uuid: ed687774-c64b-477c-8cf3-85ab9eeea440
+  uuid: 9d666e90-a793-41ce-9a54-e1f169059f84
 

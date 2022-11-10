@@ -7,7 +7,7 @@
     See the [**Project Readme**](/project/automated-diagnostics/home) for recommended tours on how to add remote-nodes and configure connectivity to them using methods such as SSH or Systems Manager (SSM).
   executionEnabled: true
   group: PostgreSQL
-  id: 73687735-142b-46aa-ad5e-953121c88956
+  id: e07edc8a-e87f-43eb-94de-cc6470aaca28
   loglevel: INFO
   name: Tail PostgreSQL Log File
   nodeFilterEditable: true
@@ -31,7 +31,7 @@
     label: PagerDuty Incident ID
     name: pd_incident_id
   plugins:
-    ExecutionLifecycle: {}
+    ExecutionLifecycle: null
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -76,5 +76,5 @@
     keepgoing: false
     strategy: node-first
   tags: postgresql
-  uuid: 73687735-142b-46aa-ad5e-953121c88956
+  uuid: e07edc8a-e87f-43eb-94de-cc6470aaca28
 

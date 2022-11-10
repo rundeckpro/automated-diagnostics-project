@@ -6,7 +6,7 @@
     \ such as SSH or Systems Manager (SSM)."
   executionEnabled: true
   group: Nginx
-  id: da107e85-e7a3-42c1-97a1-730edbc8b282
+  id: d73944d8-4ee9-49b8-b0ae-bc910acf0907
   loglevel: INFO
   name: Retrieve Error Logs
   nodeFilterEditable: true
@@ -30,7 +30,7 @@
     label: PagerDuty Incident ID
     name: pd_incident_id
   plugins:
-    ExecutionLifecycle: {}
+    ExecutionLifecycle: null
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -65,5 +65,5 @@
     keepgoing: false
     strategy: node-first
   tags: nginx
-  uuid: da107e85-e7a3-42c1-97a1-730edbc8b282
+  uuid: d73944d8-4ee9-49b8-b0ae-bc910acf0907
 

@@ -7,7 +7,7 @@
     See the [**Project Readme**](/project/automated-diagnostics/home) for recommended tours on how to add remote-nodes and configure connectivity to them using methods such as SSH or Systems Manager (SSM).
   executionEnabled: true
   group: Linux
-  id: 1f1f0483-84b9-46bf-a070-5626c5508bc2
+  id: ae4a7494-27df-4049-be8d-f2587b7455b9
   loglevel: INFO
   name: Retrieve Service Status
   nodeFilterEditable: true
@@ -35,7 +35,7 @@
     name: service_name
     required: true
   plugins:
-    ExecutionLifecycle: {}
+    ExecutionLifecycle: null
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -87,5 +87,5 @@
     keepgoing: false
     strategy: sequential
   tags: linux
-  uuid: 1f1f0483-84b9-46bf-a070-5626c5508bc2
+  uuid: ae4a7494-27df-4049-be8d-f2587b7455b9
 

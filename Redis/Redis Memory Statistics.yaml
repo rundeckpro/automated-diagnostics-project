@@ -7,7 +7,7 @@
     See the [**Project Readme**](/project/automated-diagnostics/home) for recommended tours on how to add remote-nodes and configure connectivity to them using methods such as SSH or Systems Manager (SSM).
   executionEnabled: true
   group: Redis
-  id: db4ad943-28dd-46c8-bda0-9a323a24157d
+  id: 9dfdb77b-d6c2-4a67-be07-8b85bc09d7ff
   loglevel: INFO
   name: Redis Memory Statistics
   nodeFilterEditable: true
@@ -31,7 +31,7 @@
     label: PagerDuty Incident ID
     name: pd_incident_id
   plugins:
-    ExecutionLifecycle: {}
+    ExecutionLifecycle: null
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -77,5 +77,5 @@
     keepgoing: false
     strategy: node-first
   tags: redis
-  uuid: db4ad943-28dd-46c8-bda0-9a323a24157d
+  uuid: 9dfdb77b-d6c2-4a67-be07-8b85bc09d7ff
 

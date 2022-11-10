@@ -7,7 +7,7 @@
     If using PagerDuty Runbook Automation (SaaS), then this Job is designed to be run on an [**Enterprise Runner**](https://docs.rundeck.com/docs/administration/runner/#architecture). Follow the documentation and install the Runner in a location that can communicate with your Kubernetes cluster.
   executionEnabled: true
   group: Kubernetes
-  id: f515dba4-0a5e-4bc8-a505-23123f42b917
+  id: 6e20baf8-ad40-4eb8-a956-289e1867d861
   loglevel: INFO
   name: Describe Replicaset
   nodeFilterEditable: false
@@ -60,5 +60,5 @@
     keepgoing: false
     strategy: node-first
   tags: kubernetes
-  uuid: f515dba4-0a5e-4bc8-a505-23123f42b917
+  uuid: 6e20baf8-ad40-4eb8-a956-289e1867d861
 
