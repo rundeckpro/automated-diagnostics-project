@@ -32,7 +32,7 @@
     label: PagerDuty Incident ID
     name: pd_incident_id
   plugins:
-    ExecutionLifecycle: null
+    ExecutionLifecycle: {}
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -45,26 +45,38 @@
       plugins:
         LogFilter:
         - config:
-            captureMultipleKeysValues: 'false'
-            hideOutput: 'false'
-            logData: 'true'
-            name: ecs_task_errors
-            regex: (.*)
-          type: key-value-data-multilines
+            contextVariable: ecs-health
+            doNothing: 'true'
+            mute: 'false'
+            regex: Found 0 failed ECS tasks
+            statusSymbol: ✅
+            text: All ECS tasks are healthy
+          type: progress-badges
+        - config:
+            contextVariable: ecs-health
+            doNothing: 'true'
+            mute: 'false'
+            regex: Found [^0] failed ECS tasks.*
+            statusSymbol: ❌
+            text: Found failed ECS tasks
+          type: progress-badges
       type: aws-ecs-stopped-tasks
     - configuration:
         api_token: keys/project/automated-diagnostics/pd-api-key
         email: ${globals.pd-email}
         incident_id: ${option.pd_incident_id}
-        note: 'Stopped ECS Tasks: ${data.ecs_task_errors}\n\nClick here for detailed
-          diagnostics: ${job.url}#output'
+        note: 'ECS Health Check: ${data.ecs-health}\n\nClick here for detailed diagnostics:
+          ${job.url}#output'
       description: Send Diagnostics to PagerDuty
       errorhandler:
         configuration:
-          text: Please provide PagerDuty API token to send diagnostics to Incident.
+          fail: 'false'
+          halt: 'true'
+          status: 'Please provide PagerDuty API token, User Email, and Incident ID
+            to send diagnostics to Incident.'
         keepgoingOnSuccess: true
         nodeStep: false
-        type: progress-badge
+        type: flow-control
       nodeStep: false
       type: pd-note-step
     keepgoing: false
