@@ -1,9 +1,12 @@
 - defaultTab: output
-  description: Retrieve recent service disruptions to public-cloud & SaaS providers
+  description: |-
+    Retrieve recent service disruptions to public-cloud & SaaS providers
+
+    This Job uses the [RSS Feed](https://docs.rundeck.com/docs/manual/workflow-steps/rss-feed-plugin.html) plugin to surface recent service-disruptions to public-cloud and SaaS providers.
   executionEnabled: true
   id: bbffec54-fc9d-4085-8b6b-d70e0c3f4617
   loglevel: INFO
-  name: Cloud & SaaS Service Disruptions
+  name: Third Party Service Disruptions
   nodeFilterEditable: false
   options:
   - label: PagerDuty Incident ID
