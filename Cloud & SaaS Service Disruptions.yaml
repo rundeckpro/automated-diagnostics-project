@@ -1,0 +1,137 @@
+- defaultTab: output
+  description: Retrieve recent service disruptions to public-cloud & SaaS providers
+  executionEnabled: true
+  id: bbffec54-fc9d-4085-8b6b-d70e0c3f4617
+  loglevel: INFO
+  name: Cloud & SaaS Service Disruptions
+  nodeFilterEditable: false
+  options:
+  - label: PagerDuty Incident ID
+    name: pd_incident_id
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - configuration:
+        rssUrl: https://status.aws.amazon.com/rss/all.rss
+        timeRange: '3'
+        timeUnit: Hours
+      description: Retrieve AWS Events
+      nodeStep: false
+      plugins:
+        LogFilter:
+        - config:
+            contextVariable: aws-incidents
+            doNothing: 'true'
+            mute: 'false'
+            regex: 'specified time range: 0'
+            statusSymbol: ✅
+            text: No recent AWS service disruptions
+          type: progress-badges
+        - config:
+            contextVariable: aws-incidents
+            doNothing: 'true'
+            mute: 'false'
+            regex: \[RESOLVED\]
+            statusSymbol: ✅
+            text: No recent AWS service disruptions
+          type: progress-badges
+        - config:
+            contextVariable: aws-incidents
+            doNothing: 'true'
+            mute: 'false'
+            regex: 'specified time range: [^0]\n.*((?!RESOLVED).)*$'
+            statusSymbol: ❌
+            text: Recent AWS service disruptions
+          type: progress-badges
+      type: rss-feed-retrieve-events
+    - configuration:
+        rssUrl: https://www.githubstatus.com/history.rss
+        timeRange: '3'
+        timeUnit: Hours
+      description: Retrieve Github Events
+      nodeStep: false
+      plugins:
+        LogFilter:
+        - config:
+            contextVariable: github-incidents
+            doNothing: 'true'
+            mute: 'false'
+            regex: 'specified time range: 0'
+            statusSymbol: ✅
+            text: No recent Github service disruptions
+          type: progress-badges
+        - config:
+            contextVariable: github-incidents
+            doNothing: 'true'
+            mute: 'false'
+            regex: \[RESOLVED\]
+            statusSymbol: ✅
+            text: No recent Github service disruptions
+          type: progress-badges
+        - config:
+            contextVariable: github-incidents
+            doNothing: 'true'
+            mute: 'false'
+            regex: 'specified time range: [^0]'
+            statusSymbol: ❌
+            text: Recent Github service disruptions
+          type: progress-badges
+      type: rss-feed-retrieve-events
+    - configuration:
+        rssUrl: https://status.datadoghq.com/history.rss
+        timeRange: '3'
+        timeUnit: Hours
+      description: Retrieve Github Events
+      nodeStep: false
+      plugins:
+        LogFilter:
+        - config:
+            contextVariable: datadog-incidents
+            doNothing: 'true'
+            mute: 'false'
+            regex: 'specified time range: 0'
+            statusSymbol: ✅
+            text: No recent Datadog service disruptions
+          type: progress-badges
+        - config:
+            contextVariable: datadog-incidents
+            doNothing: 'true'
+            mute: 'false'
+            regex: \[RESOLVED\]
+            statusSymbol: ✅
+            text: No recent Datadog service disruptions
+          type: progress-badges
+        - config:
+            contextVariable: datadog-incidents
+            doNothing: 'true'
+            mute: 'false'
+            regex: 'specified time range: [^0]\n.*((?!RESOLVED).)*$'
+            statusSymbol: ❌
+            text: Recent Datadog service disruptions
+          type: progress-badges
+      type: rss-feed-retrieve-events
+    - configuration:
+        api_token: keys/project/automated-diagnostics/pd-api-key
+        email: ${globals.pd-email}
+        incident_id: ${option.pd_incident_id}
+        note: 'AWS: ${data.aws-incidents}\n\nGithub: ${data.github-incidents}\n\nDatadog:
+          ${data.datadog-incidents}\n\nClick here for more details: ${job.url}#output'
+      description: Send Diagnostics to PagerDuty
+      errorhandler:
+        configuration:
+          fail: 'false'
+          halt: 'true'
+          status: 'Please provide PagerDuty API token, User Email, and Incident ID
+            to send diagnostics to Incident.'
+        keepgoingOnSuccess: true
+        nodeStep: false
+        type: flow-control
+      nodeStep: false
+      type: pd-note-step
+    keepgoing: false
+    strategy: node-first
+  uuid: bbffec54-fc9d-4085-8b6b-d70e0c3f4617
+
