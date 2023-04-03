@@ -28,6 +28,8 @@
     name: pd_incident_id
   plugins:
     ExecutionLifecycle: null
+  runnerSelector:
+    canChange: true
   scheduleEnabled: true
   schedules: []
   sequence:
