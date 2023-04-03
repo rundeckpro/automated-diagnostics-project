@@ -18,7 +18,7 @@
       rankOrder: ascending
       successOnEmptyNodeFilter: false
       threadcount: '1'
-    filter: ${option.node_filter}
+    filter: .*
   nodesSelectedByDefault: true
   options:
   - description: |-

@@ -1,0 +1,44 @@
+- defaultTab: nodes
+  description: |-
+    Describe a specific Kafka topic.
+
+    This job describes a topic in Kafka.  Because this job runs a command on a remote-node, an [Enterprise Runner](https://docs.rundeck.com/docs/administration/runner/#enterprise-runner-overview) may be required.
+  executionEnabled: true
+  group: Kafka
+  id: 3c77e580-9e21-4a64-8cc3-63077deeceac
+  loglevel: INFO
+  name: Describe Kafka Topic
+  nodeFilterEditable: true
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: .*
+  nodesSelectedByDefault: true
+  options:
+  - description: The address of the kafka hostname.
+    label: Hostname Address
+    name: hostname-address
+    value: localhost:9092
+  - description: The name of the kafka topic.
+    label: Topic Name
+    name: topic-name
+    value: my-kafka-topic
+  plugins:
+    ExecutionLifecycle: null
+  runnerSelector:
+    canChange: true
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - description: Describe the Kafka topic
+      exec: kafka-topics.sh --bootstrap-server ${option.hostname-address} --describe
+        --topic ${option.topic-name}
+    keepgoing: false
+    strategy: node-first
+  uuid: 3c77e580-9e21-4a64-8cc3-63077deeceac
+
