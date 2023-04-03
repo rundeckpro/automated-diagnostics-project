@@ -13,15 +13,9 @@
     value: default
   - label: Pod Name
     name: pod-name
-    value: rundeckpro-6746d58bb4-8jtt7
   - description: Name of the container within the pod to debug.
     label: Container Name
     name: container-name
-    value: rundeck
-  - description: A note will be appended to the Incident with a link to the S3 bucket
-      where the thread-dump is saved.
-    label: PagerDuty Incident ID
-    name: pd-incident-id
   plugins:
     ExecutionLifecycle: null
   runnerSelector:
@@ -75,14 +69,12 @@
     - description: Save thread-dump to temp file
       exec: echo ${data.threadDump*} > /tmp/threadDump-${job.id}-${job.execid}.log
     - configuration:
-        access_key: AKIAQMZZURQOGNY65AO6
-        default_region: us-west-1
         destination: s3://automated-diagnostics/threadDump-${job.id}-${job.execid}.log
         dryrun: 'false'
         quiet: 'false'
         recursive: 'false'
-        secret_access_key: keys/aws-secret-key
         source: /tmp/threadDump-${job.id}-${job.execid}.log
+      description: Send Thread Dump to S3
       nodeStep: true
       type: aws-cli-s3-mv-step
     keepgoing: false
