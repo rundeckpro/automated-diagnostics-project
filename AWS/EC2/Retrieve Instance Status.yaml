@@ -33,7 +33,7 @@
     **ec2:DescribeInstanceStatus**"
   executionEnabled: true
   group: AWS/EC2
-  id: 7958689b-0093-48b3-b1e5-3423849f42b4
+  id: 04b99b7b-2137-4db6-9cd2-6a1795dc853f
   loglevel: INFO
   name: Retrieve Instance Status
   nodeFilterEditable: false
@@ -102,5 +102,5 @@
     keepgoing: false
     strategy: node-first
   tags: 'aws,ec2'
-  uuid: 7958689b-0093-48b3-b1e5-3423849f42b4
+  uuid: 04b99b7b-2137-4db6-9cd2-6a1795dc853f
 

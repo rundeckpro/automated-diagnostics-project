@@ -9,7 +9,7 @@
     See the [**Project Readme**](/project/automated-diagnostics/home) for recommended tours on how to add remote-nodes and configure connectivity to them using methods such as SSH or Systems Manager (SSM).
   executionEnabled: true
   group: Redis
-  id: 06a28563-0bef-45e4-91a0-adc12581b237
+  id: 4812c43a-5244-4dbb-83e5-072c87e59e7f
   loglevel: INFO
   name: Slow Log Entries
   nodeFilterEditable: true
@@ -20,7 +20,7 @@
       rankOrder: ascending
       successOnEmptyNodeFilter: false
       threadcount: '1'
-    filter: ${option.node_filter}
+    filter: .*
   nodesSelectedByDefault: true
   options:
   - enforced: true
@@ -35,10 +35,6 @@
     - '5'
     - '50'
     valuesListDelimiter: ','
-  - hidden: true
-    label: Node Filter
-    name: node_filter
-    value: hostname
   - description: |-
       ID of the PagerDuty incident that should receive the diagnostics queried from this automation.
       This field is **_not_** required to invoke this Job.
@@ -80,5 +76,5 @@
     keepgoing: false
     strategy: node-first
   tags: redis
-  uuid: 06a28563-0bef-45e4-91a0-adc12581b237
+  uuid: 4812c43a-5244-4dbb-83e5-072c87e59e7f
 

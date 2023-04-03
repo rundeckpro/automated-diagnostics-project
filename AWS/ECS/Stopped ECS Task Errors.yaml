@@ -11,7 +11,7 @@
     **ecs:DescribeTasks**<br>
   executionEnabled: true
   group: AWS/ECS
-  id: 5d5b9467-cfea-4482-8bfb-346704c9f998
+  id: 2ffe0436-c28f-417b-8cc1-78b3c6a7a6d9
   loglevel: INFO
   name: Stopped ECS Task Errors
   nodeFilterEditable: false
@@ -32,7 +32,7 @@
     label: PagerDuty Incident ID
     name: pd_incident_id
   plugins:
-    ExecutionLifecycle: {}
+    ExecutionLifecycle: null
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -82,5 +82,5 @@
     keepgoing: false
     strategy: node-first
   tags: 'aws,ecs'
-  uuid: 5d5b9467-cfea-4482-8bfb-346704c9f998
+  uuid: 2ffe0436-c28f-417b-8cc1-78b3c6a7a6d9
 

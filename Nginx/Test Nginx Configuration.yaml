@@ -7,7 +7,7 @@
     See the [**Project Readme**](/project/automated-diagnostics/home) for recommended tours on how to add remote-nodes and configure connectivity to them using methods such as SSH or Systems Manager (SSM).
   executionEnabled: true
   group: Nginx
-  id: 7747ad3d-289d-4a82-a485-95afb1ef71a6
+  id: 6ade61d6-e2c1-4e0d-ba84-1aa5d93ae90d
   loglevel: INFO
   name: Test Nginx Configuration
   nodeFilterEditable: true
@@ -18,13 +18,9 @@
       rankOrder: ascending
       successOnEmptyNodeFilter: false
       threadcount: '1'
-    filter: ${option.node_filter}
+    filter: .*
   nodesSelectedByDefault: true
   options:
-  - hidden: true
-    label: Node Filter
-    name: node_filter
-    value: hostname
   - description: |-
       ID of the PagerDuty incident that should receive the diagnostics queried from this automation.
       This field is **_not_** required to invoke this Job.
@@ -66,5 +62,5 @@
     keepgoing: false
     strategy: node-first
   tags: nginx
-  uuid: 7747ad3d-289d-4a82-a485-95afb1ef71a6
+  uuid: 6ade61d6-e2c1-4e0d-ba84-1aa5d93ae90d
 

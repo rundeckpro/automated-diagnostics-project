@@ -11,7 +11,7 @@
 
   executionEnabled: true
   group: AWS/RDS
-  id: d5db4794-fb37-43d2-b44a-9ae86eccc3c8
+  id: a03ded8c-7492-4a56-a8ad-dca359a1a486
   loglevel: INFO
   name: Check Database Storage Status
   nodeFilterEditable: false
@@ -82,5 +82,5 @@
     keepgoing: false
     strategy: node-first
   tags: 'aws,rds'
-  uuid: d5db4794-fb37-43d2-b44a-9ae86eccc3c8
+  uuid: a03ded8c-7492-4a56-a8ad-dca359a1a486
 

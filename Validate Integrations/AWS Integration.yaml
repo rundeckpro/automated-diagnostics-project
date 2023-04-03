@@ -9,7 +9,7 @@
     For more information on this Job, see the **Configure AWS Credentials** tour.
   executionEnabled: true
   group: Validate Integrations
-  id: 8cb4213e-4685-4206-a3e6-8a55c4768ea1
+  id: 99fe5a79-8945-4947-ac3c-7fb2e5af134d
   loglevel: INFO
   name: AWS Integration
   nodeFilterEditable: false
@@ -27,5 +27,5 @@
     keepgoing: false
     strategy: node-first
   tags: aws
-  uuid: 8cb4213e-4685-4206-a3e6-8a55c4768ea1
+  uuid: 99fe5a79-8945-4947-ac3c-7fb2e5af134d
 

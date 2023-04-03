@@ -9,7 +9,7 @@
     See the [**Project Readme**](/project/automated-diagnostics/home) for recommended tours on how to add remote-nodes and configure connectivity to them using methods such as SSH or Systems Manager (SSM).
   executionEnabled: true
   group: Linux
-  id: ab44526f-76bb-4857-a70b-b8bfab81ba94
+  id: 5e0ea06b-62ba-4024-8dbf-91f11b691655
   loglevel: INFO
   name: Retrieve Errors from Syslog
   nodeFilterEditable: true
@@ -20,13 +20,9 @@
       rankOrder: ascending
       successOnEmptyNodeFilter: false
       threadcount: '3'
-    filter: ${option.node_filter}
+    filter: .*
   nodesSelectedByDefault: true
   options:
-  - hidden: true
-    label: Node Filter
-    name: node_filter
-    value: hostname
   - description: |-
       ID of the PagerDuty incident that should receive the diagnostics queried from this automation.
       This field is **_not_** required to invoke this Job.
@@ -137,5 +133,5 @@
     keepgoing: false
     strategy: sequential
   tags: linux
-  uuid: ab44526f-76bb-4857-a70b-b8bfab81ba94
+  uuid: 5e0ea06b-62ba-4024-8dbf-91f11b691655
 

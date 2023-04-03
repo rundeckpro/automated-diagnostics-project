@@ -8,7 +8,7 @@
     \ such as SSH or Systems Manager (SSM)."
   executionEnabled: true
   group: Redis
-  id: 518e09a1-351f-4eac-b2d8-c09c111a3f5d
+  id: 2c78fad0-3483-4361-90e2-cc8473035309
   loglevel: INFO
   name: Intrinsic Latency Diagnostic Test
   nodeFilterEditable: true
@@ -19,7 +19,7 @@
       rankOrder: ascending
       successOnEmptyNodeFilter: false
       threadcount: '1'
-    filter: ${option.node_filter}
+    filter: .*
   nodesSelectedByDefault: true
   options:
   - description: Number of seconds that the `--intrinsic-latency` test should run.
@@ -34,10 +34,6 @@
     - '30'
     - '60'
     valuesListDelimiter: ','
-  - hidden: true
-    label: Node Filter
-    name: node_filter
-    value: hostname
   - description: |-
       ID of the PagerDuty incident that should receive the diagnostics queried from this automation.
       This field is **_not_** required to invoke this Job.
@@ -79,5 +75,5 @@
     keepgoing: false
     strategy: node-first
   tags: redis
-  uuid: 518e09a1-351f-4eac-b2d8-c09c111a3f5d
+  uuid: 2c78fad0-3483-4361-90e2-cc8473035309
 

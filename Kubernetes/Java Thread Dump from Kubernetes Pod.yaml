@@ -1,0 +1,91 @@
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  group: Kubernetes
+  id: 031e4575-410a-4654-b510-dba30ebc8184
+  loglevel: INFO
+  name: Java Thread Dump from Kubernetes Pod
+  nodeFilterEditable: false
+  options:
+  - description: Kubernetes namespace where the pod resides.
+    label: Namespace
+    name: namespace
+    value: default
+  - label: Pod Name
+    name: pod-name
+    value: rundeckpro-6746d58bb4-8jtt7
+  - description: Name of the container within the pod to debug.
+    label: Container Name
+    name: container-name
+    value: rundeck
+  - description: A note will be appended to the Incident with a link to the S3 bucket
+      where the thread-dump is saved.
+    label: PagerDuty Incident ID
+    name: pd-incident-id
+  plugins:
+    ExecutionLifecycle: null
+  runnerSelector:
+    canChange: true
+    filter: GRIMLOCK
+    runnerFilterType: TAG_FILTER_AND
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - configuration:
+        command: pgrep java
+        config_file: /root/.kube/config
+        container: ${option.container-name}
+        name: ${option.pod-name}
+        namespace: ${option.namespace}
+        shell: /bin/sh
+        verify_ssl: 'false'
+      description: Retrieve Java Process ID in Container
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            invalidKeyPattern: \s|\$|\{|\}|\\
+            logData: 'false'
+            name: process-id
+            regex: (.*)
+            replaceFilteredResult: 'false'
+          type: key-value-data
+      type: Kubernetes-Execute-Step
+    - configuration:
+        command: jstack ${data.process-id*}
+        config_file: /root/.kube/config
+        container: ${option.container-name}
+        name: ${option.pod-name}
+        namespace: ${option.namespace}
+        shell: /bin/sh
+        verify_ssl: 'false'
+      description: Retrieve Java Thread Dump
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            captureMultipleKeysValues: 'false'
+            hideOutput: 'true'
+            logData: 'false'
+            name: threadDump
+            regex: (.*)
+          type: key-value-data-multilines
+      type: Kubernetes-Execute-Step
+    - description: Save thread-dump to temp file
+      exec: echo ${data.threadDump*} > /tmp/threadDump-${job.id}-${job.execid}.log
+    - configuration:
+        access_key: AKIAQMZZURQOGNY65AO6
+        default_region: us-west-1
+        destination: s3://automated-diagnostics/threadDump-${job.id}-${job.execid}.log
+        dryrun: 'false'
+        quiet: 'false'
+        recursive: 'false'
+        secret_access_key: keys/aws-secret-key
+        source: /tmp/threadDump-${job.id}-${job.execid}.log
+      nodeStep: true
+      type: aws-cli-s3-mv-step
+    keepgoing: false
+    strategy: node-first
+  uuid: 031e4575-410a-4654-b510-dba30ebc8184
+

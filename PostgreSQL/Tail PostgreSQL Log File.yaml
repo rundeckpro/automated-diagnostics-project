@@ -7,7 +7,7 @@
     See the [**Project Readme**](/project/automated-diagnostics/home) for recommended tours on how to add remote-nodes and configure connectivity to them using methods such as SSH or Systems Manager (SSM).
   executionEnabled: true
   group: PostgreSQL
-  id: e07edc8a-e87f-43eb-94de-cc6470aaca28
+  id: 93dae356-ea84-4a6a-b500-984d9f9be657
   loglevel: INFO
   name: Tail PostgreSQL Log File
   nodeFilterEditable: true
@@ -21,10 +21,6 @@
     filter: ${option.node_filter}
   nodesSelectedByDefault: true
   options:
-  - hidden: true
-    label: Node Filter
-    name: node_filter
-    value: hostname
   - description: |-
       ID of the PagerDuty incident that should receive the diagnostics queried from this automation.
       This field is **_not_** required to invoke this Job.
@@ -76,5 +72,5 @@
     keepgoing: false
     strategy: node-first
   tags: postgresql
-  uuid: e07edc8a-e87f-43eb-94de-cc6470aaca28
+  uuid: 93dae356-ea84-4a6a-b500-984d9f9be657
 

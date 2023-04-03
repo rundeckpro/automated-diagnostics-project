@@ -7,7 +7,7 @@
     \ follow the **Configure AWS Credentials** Tour."
   executionEnabled: true
   group: AWS/CloudWatch Logs
-  id: c8d4503d-8ae5-4e56-8b1a-c2086d407b82
+  id: 0946f1e8-4b24-4e6b-99d1-0525e0a92f58
   loglevel: INFO
   name: Nginx Rejected Requests
   nodeFilterEditable: false
@@ -48,5 +48,5 @@
       type: aws-query-cloudwatch-logs-step
     keepgoing: false
     strategy: node-first
-  uuid: c8d4503d-8ae5-4e56-8b1a-c2086d407b82
+  uuid: 0946f1e8-4b24-4e6b-99d1-0525e0a92f58
 

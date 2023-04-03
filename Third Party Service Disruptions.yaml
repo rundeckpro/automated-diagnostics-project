@@ -4,15 +4,17 @@
 
     This Job uses the [RSS Feed](https://docs.rundeck.com/docs/manual/workflow-steps/rss-feed-plugin.html) plugin to surface recent service-disruptions to public-cloud and SaaS providers.
   executionEnabled: true
-  id: bbffec54-fc9d-4085-8b6b-d70e0c3f4617
+  id: 0e0459b7-6f13-4b48-ab52-d0dd8154812f
   loglevel: INFO
   name: Third Party Service Disruptions
   nodeFilterEditable: false
   options:
-  - label: PagerDuty Incident ID
+  - description: (Optional) Add a PagerDuty Incident ID to add the diagnostic output
+      of this Job to an Incident.
+    label: PagerDuty Incident ID
     name: pd_incident_id
   plugins:
-    ExecutionLifecycle: {}
+    ExecutionLifecycle: null
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -45,9 +47,42 @@
             contextVariable: aws-incidents
             doNothing: 'true'
             mute: 'false'
-            regex: 'specified time range: [^0]\n.*((?!RESOLVED).)*$'
+            regex: 'specified time range: [^0]'
             statusSymbol: ❌
             text: Recent AWS service disruptions
+          type: progress-badges
+      type: rss-feed-retrieve-events
+    - configuration:
+        rssUrl: https://status.datadoghq.com/history.rss
+        timeRange: '3'
+        timeUnit: Hours
+      description: Retrieve DataDog Events
+      nodeStep: false
+      plugins:
+        LogFilter:
+        - config:
+            contextVariable: datadog-incidents
+            doNothing: 'true'
+            mute: 'false'
+            regex: 'specified time range: 0'
+            statusSymbol: ✅
+            text: No recent Datadog service disruptions
+          type: progress-badges
+        - config:
+            contextVariable: datadog-incidents
+            doNothing: 'true'
+            mute: 'false'
+            regex: \[RESOLVED\]
+            statusSymbol: ✅
+            text: No recent Datadog service disruptions
+          type: progress-badges
+        - config:
+            contextVariable: datadog-incidents
+            doNothing: 'true'
+            mute: 'false'
+            regex: 'specified time range: [^0]'
+            statusSymbol: ❌
+            text: Recent Datadog service disruptions
           type: progress-badges
       type: rss-feed-retrieve-events
     - configuration:
@@ -84,39 +119,6 @@
           type: progress-badges
       type: rss-feed-retrieve-events
     - configuration:
-        rssUrl: https://status.datadoghq.com/history.rss
-        timeRange: '3'
-        timeUnit: Hours
-      description: Retrieve Github Events
-      nodeStep: false
-      plugins:
-        LogFilter:
-        - config:
-            contextVariable: datadog-incidents
-            doNothing: 'true'
-            mute: 'false'
-            regex: 'specified time range: 0'
-            statusSymbol: ✅
-            text: No recent Datadog service disruptions
-          type: progress-badges
-        - config:
-            contextVariable: datadog-incidents
-            doNothing: 'true'
-            mute: 'false'
-            regex: \[RESOLVED\]
-            statusSymbol: ✅
-            text: No recent Datadog service disruptions
-          type: progress-badges
-        - config:
-            contextVariable: datadog-incidents
-            doNothing: 'true'
-            mute: 'false'
-            regex: 'specified time range: [^0]\n.*((?!RESOLVED).)*$'
-            statusSymbol: ❌
-            text: Recent Datadog service disruptions
-          type: progress-badges
-      type: rss-feed-retrieve-events
-    - configuration:
         api_token: keys/project/automated-diagnostics/pd-api-key
         email: ${globals.pd-email}
         incident_id: ${option.pd_incident_id}
@@ -133,8 +135,17 @@
         nodeStep: false
         type: flow-control
       nodeStep: false
+      plugins:
+        LogFilter:
+        - config:
+            captureMultipleKeysValues: 'false'
+            hideOutput: 'true'
+            logData: 'false'
+            name: pd-output
+            regex: (.*)
+          type: key-value-data-multilines
       type: pd-note-step
     keepgoing: false
     strategy: node-first
-  uuid: bbffec54-fc9d-4085-8b6b-d70e0c3f4617
+  uuid: 0e0459b7-6f13-4b48-ab52-d0dd8154812f
 

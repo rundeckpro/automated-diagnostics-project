@@ -2,7 +2,7 @@
   description: Query an API endpoint to determine service health.
   executionEnabled: true
   group: API
-  id: 5eb3606c-3901-4b48-b42f-213d99a9f88a
+  id: 308bf280-3387-4544-b97b-daae1a593167
   loglevel: INFO
   name: API Endpoint Health Check
   nodeFilterEditable: false
@@ -16,7 +16,7 @@
     label: PagerDuty Incident ID
     name: pd_incident_id
   plugins:
-    ExecutionLifecycle: {}
+    ExecutionLifecycle: null
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -81,5 +81,5 @@
       type: pd-note-step
     keepgoing: true
     strategy: node-first
-  uuid: 5eb3606c-3901-4b48-b42f-213d99a9f88a
+  uuid: 308bf280-3387-4544-b97b-daae1a593167
 

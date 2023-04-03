@@ -6,7 +6,7 @@
     \ such as SSH or Systems Manager (SSM)."
   executionEnabled: true
   group: Nginx
-  id: d73944d8-4ee9-49b8-b0ae-bc910acf0907
+  id: 202c1640-17ec-4d09-b1e4-4492c2f1b4a9
   loglevel: INFO
   name: Retrieve Error Logs
   nodeFilterEditable: true
@@ -17,13 +17,9 @@
       rankOrder: ascending
       successOnEmptyNodeFilter: false
       threadcount: '1'
-    filter: ${option.node_filter}
+    filter: .*
   nodesSelectedByDefault: true
   options:
-  - hidden: true
-    label: Node Filter
-    name: node_filter
-    value: hostname
   - description: |-
       ID of the PagerDuty incident that should receive the diagnostics queried from this automation.
       This field is **_not_** required to invoke this Job.
@@ -65,5 +61,5 @@
     keepgoing: false
     strategy: node-first
   tags: nginx
-  uuid: d73944d8-4ee9-49b8-b0ae-bc910acf0907
+  uuid: 202c1640-17ec-4d09-b1e4-4492c2f1b4a9
 

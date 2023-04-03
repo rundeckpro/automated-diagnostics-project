@@ -8,7 +8,7 @@
     This is meant to demonstrate that certain diagnostics are best saved and viewed through storage services - such as S3.
   executionEnabled: true
   group: AWS/ECS
-  id: e72fc138-171b-4253-bf77-411f06d2bb09
+  id: d71e0d90-643b-4bf6-982a-1348457ef39a
   loglevel: INFO
   name: Java Thread Dump from Container
   nodeFilterEditable: false
@@ -122,5 +122,5 @@
     keepgoing: false
     strategy: node-first
   tags: 'aws,ecs,lambda'
-  uuid: e72fc138-171b-4253-bf77-411f06d2bb09
+  uuid: d71e0d90-643b-4bf6-982a-1348457ef39a
 

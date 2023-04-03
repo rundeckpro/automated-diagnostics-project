@@ -8,7 +8,7 @@
     \ SSH or Systems Manager (SSM)."
   executionEnabled: true
   group: Nginx
-  id: c7cdd4ad-9099-4a72-a1dd-c4d2961d0572
+  id: c524bcca-fe8f-47a7-b358-e00bcb840d36
   loglevel: INFO
   name: Query Nginx Status Endpoint
   nodeFilterEditable: true
@@ -19,7 +19,7 @@
       rankOrder: ascending
       successOnEmptyNodeFilter: false
       threadcount: '1'
-    filter: ${option.node_filter}
+    filter: .*
   nodesSelectedByDefault: true
   options:
   - description: Endpoint to execute `curl` command against.
@@ -27,10 +27,6 @@
     name: endpoint
     required: true
     value: http://127.0.0.1/nginx_status
-  - hidden: true
-    label: Node Filter
-    name: node_filter
-    value: hostname
   - description: |-
       ID of the PagerDuty incident that should receive the diagnostics queried from this automation.
       This field is **_not_** required to invoke this Job.
@@ -72,5 +68,5 @@
     keepgoing: false
     strategy: node-first
   tags: nginx
-  uuid: c7cdd4ad-9099-4a72-a1dd-c4d2961d0572
+  uuid: c524bcca-fe8f-47a7-b358-e00bcb840d36
 

@@ -9,7 +9,7 @@
     See the [**Project Readme**](/project/automated-diagnostics/home) for recommended tours on how to add remote-nodes and configure connectivity to them using methods such as SSH or Systems Manager (SSM).
   executionEnabled: true
   group: Linux
-  id: 9d666e90-a793-41ce-9a54-e1f169059f84
+  id: c977cadd-9c69-4d81-a934-3356dcfb0d7c
   loglevel: INFO
   name: 'Top CPU & Memory Processes and Top Disk Consuming Files '
   nodeFilterEditable: true
@@ -20,13 +20,9 @@
       rankOrder: ascending
       successOnEmptyNodeFilter: false
       threadcount: '1'
-    filter: ${option.node_filter}
+    filter: .*
   nodesSelectedByDefault: true
   options:
-  - hidden: true
-    label: Node Filter
-    name: node_filter
-    value: hostname
   - description: Incident ID where Runbook Automation will send the diagnostic data
       to on the Incident Timeline.
     label: PagerDuty Incident ID
@@ -88,5 +84,5 @@
     keepgoing: false
     strategy: node-first
   tags: linux
-  uuid: 9d666e90-a793-41ce-9a54-e1f169059f84
+  uuid: c977cadd-9c69-4d81-a934-3356dcfb0d7c
 

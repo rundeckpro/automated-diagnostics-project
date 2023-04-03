@@ -5,7 +5,7 @@
     \ tour."
   executionEnabled: true
   group: Validate Integrations
-  id: d966e5c4-badb-48e6-95ad-77bae2cfd47d
+  id: 9c3a7089-d956-41fa-b89a-8b0c215ecd5a
   loglevel: INFO
   name: PagerDuty Integration
   nodeFilterEditable: false
@@ -43,5 +43,5 @@
     keepgoing: false
     strategy: node-first
   tags: pagerduty
-  uuid: d966e5c4-badb-48e6-95ad-77bae2cfd47d
+  uuid: 9c3a7089-d956-41fa-b89a-8b0c215ecd5a
 

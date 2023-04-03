@@ -12,7 +12,7 @@
     **elasticloadbalancing:DescribeTargetGroups**<br>
   executionEnabled: true
   group: AWS/ELB
-  id: e43c6396-fb45-49e2-b550-6f334b6d2a39
+  id: 9a317a81-24ac-411c-b97d-57eacf1478b3
   loglevel: INFO
   name: Retrieve ELB Targets Health Status
   nodeFilterEditable: false
@@ -29,7 +29,7 @@
     name: region
     optionValuesPluginType: aws-regions-job-options
   plugins:
-    ExecutionLifecycle: {}
+    ExecutionLifecycle: null
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -79,5 +79,5 @@
     keepgoing: false
     strategy: node-first
   tags: 'aws,elb'
-  uuid: e43c6396-fb45-49e2-b550-6f334b6d2a39
+  uuid: 9a317a81-24ac-411c-b97d-57eacf1478b3
 
