@@ -1,0 +1,44 @@
+- defaultTab: nodes
+  description: |-
+    View the messages in a Kafka topic
+
+    This job shows the events in a Kafka topic.  Because this job runs a command on a remote-node, an [Enterprise Runner](https://docs.rundeck.com/docs/administration/runner/#enterprise-runner-overview) may be required.
+  executionEnabled: true
+  group: Kafka
+  id: 86232c46-ead5-4311-83b3-41048e588eea
+  loglevel: INFO
+  name: View Topic Messages
+  nodeFilterEditable: true
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: .*
+  nodesSelectedByDefault: true
+  options:
+  - description: The address of the kafka hostname.
+    label: Hostname Address
+    name: hostname-address
+    value: localhost:9092
+  - description: The name of the kafka topic.
+    label: Topic Name
+    name: topic-name
+    value: my-kafka-topic
+  plugins:
+    ExecutionLifecycle: null
+  runnerSelector:
+    canChange: true
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - description: View topic messages
+      exec: kafka-console-consumer.sh --topic ${option.topic-name} --from-beginning
+        --bootstrap-server ${option.hostname-address}
+    keepgoing: false
+    strategy: node-first
+  uuid: 86232c46-ead5-4311-83b3-41048e588eea
+

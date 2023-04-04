@@ -9,7 +9,7 @@
     See the [**Project Readme**](/project/automated-diagnostics/home) for recommended tours on how to add remote-nodes and configure connectivity to them using methods such as SSH or Systems Manager (SSM).
   executionEnabled: true
   group: Redis
-  id: 28dbd976-5c83-4932-a66e-c3eb8b3154ea
+  id: 4812c43a-5244-4dbb-83e5-072c87e59e7f
   loglevel: INFO
   name: Slow Log Entries
   nodeFilterEditable: true
@@ -20,7 +20,7 @@
       rankOrder: ascending
       successOnEmptyNodeFilter: false
       threadcount: '1'
-    filter: ${option.node_filter}
+    filter: .*
   nodesSelectedByDefault: true
   options:
   - enforced: true
@@ -29,23 +29,19 @@
     required: true
     value: '5'
     values:
-    - '5'
     - '10'
-    - '25'
-    - '50'
     - '100'
+    - '25'
+    - '5'
+    - '50'
     valuesListDelimiter: ','
-  - hidden: true
-    label: Node Filter
-    name: node_filter
-    value: hostname
   - description: |-
       ID of the PagerDuty incident that should receive the diagnostics queried from this automation.
       This field is **_not_** required to invoke this Job.
     label: PagerDuty Incident ID
     name: pd_incident_id
   plugins:
-    ExecutionLifecycle: {}
+    ExecutionLifecycle: null
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -62,9 +58,11 @@
             regex: (.*)
           type: key-value-data-multilines
     - configuration:
-        api_token: keys/project/automated-diagnostics/pd-api-token
+        api_token: keys/project/automated-diagnostics/pd-api-key
+        email: ${globals.pd-email}
         incident_id: ${option.pd_incident_id}
-        note: Redis Slowlog Entries:\n ${data.slowlog_entries*}
+        note: 'Redis Slowlog Entries:\n ${data.slowlog_entries*}\n\nClick here for
+          detailed diagnostics: ${job.url}#output'
       description: Send Diagnostics to PagerDuty
       errorhandler:
         configuration:
@@ -78,5 +76,5 @@
     keepgoing: false
     strategy: node-first
   tags: redis
-  uuid: 28dbd976-5c83-4932-a66e-c3eb8b3154ea
+  uuid: 4812c43a-5244-4dbb-83e5-072c87e59e7f
 

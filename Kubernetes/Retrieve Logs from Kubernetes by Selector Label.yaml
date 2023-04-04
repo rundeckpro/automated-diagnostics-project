@@ -10,7 +10,7 @@
     \ with your Kubernetes cluster."
   executionEnabled: true
   group: Kubernetes
-  id: e4836755-0219-4e7b-a126-bac4aef8338e
+  id: efa9b885-3314-4677-b202-fef221c2110c
   loglevel: INFO
   name: Retrieve Logs from Kubernetes by Selector Label
   nodeFilterEditable: false
@@ -33,13 +33,13 @@
     value: '10'
     values:
     - '1'
-    - '5'
     - '10'
     - '25'
+    - '5'
     - '50'
     valuesListDelimiter: ','
   plugins:
-    ExecutionLifecycle: {}
+    ExecutionLifecycle: null
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -72,5 +72,5 @@
     keepgoing: false
     strategy: node-first
   tags: kubernetes
-  uuid: e4836755-0219-4e7b-a126-bac4aef8338e
+  uuid: efa9b885-3314-4677-b202-fef221c2110c
 

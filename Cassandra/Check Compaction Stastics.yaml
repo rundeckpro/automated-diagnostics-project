@@ -1,0 +1,51 @@
+- defaultTab: nodes
+  description: "Use nodetool to Check Compaction\n\nCompaction is a critical process\
+    \ in Apache Cassandra that helps to maintain data consistency, optimize storage,\
+    \ and improve read and write performance. \nChecking compaction is important to\
+    \ ensure that it is running smoothly and to detect any issues that may arise.\n\
+    \nThis job uses the **`nodetool compactionstats`** command.  This command shows\
+    \ information about the ongoing and recent compaction tasks, including the keyspace,\
+    \ table, compaction type, progress, and time taken."
+  executionEnabled: true
+  group: Cassandra
+  id: baccdca1-053d-49b2-bc0e-26fc6fdc782d
+  loglevel: INFO
+  name: Check Compaction Stastics
+  nodeFilterEditable: true
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: .*
+  nodesSelectedByDefault: true
+  options:
+  - description: |-
+      (Optional) These will be inserted in the command as: **`nodetool {{command-options}} compactionstats`**.
+
+      | Short | Long             | Description                                                                                           |
+      |-------|------------------|-------------------------------------------------------------------------------------------------------|
+      | -h    | --host           | Hostname or IP address.                                                                               |
+      | -p    | --port           | Port number.                                                                                          |
+      | -pwf  | --password-file  | Password file path.                                                                                   |
+      | -pw   | --password       | Password.                                                                                             |
+      | -u    | --username       | Remote JMX agent username.                                                                            |
+      | -H    | --human-readable | Display bytes in human readable form: KiB (kibibyte), MiB (mebibyte), GiB (gibibyte), TiB (tebibyte). |
+    label: Command Options
+    name: command-options
+  plugins:
+    ExecutionLifecycle: null
+  runnerSelector:
+    canChange: true
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - description: Check Compaction Statistics
+      exec: nodetool ${option.command-options} compactionstats -H
+    keepgoing: false
+    strategy: node-first
+  uuid: baccdca1-053d-49b2-bc0e-26fc6fdc782d
+

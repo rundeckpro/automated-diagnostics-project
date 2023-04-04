@@ -1,15 +1,13 @@
 - defaultTab: nodes
   description: |-
-    Retrieve the status of a specific service running a remote Linux host.
-
-    This Job uses **`systemctl`** to retrieve the status of an individual service running on a remote linux node.
+    Simple check if port 6379 is listening on the Redis host.
 
     See the [**Project Readme**](/project/automated-diagnostics/home) for recommended tours on how to add remote-nodes and configure connectivity to them using methods such as SSH or Systems Manager (SSM).
   executionEnabled: true
-  group: Linux
-  id: b4bee8ee-398e-4a98-9e12-4f5ea15ea94b
+  group: Redis
+  id: dc7a5357-0b6f-4b9f-9399-fcfd9c1a9332
   loglevel: INFO
-  name: Retrieve Service Status
+  name: Query Port 6379
   nodeFilterEditable: true
   nodefilters:
     dispatch:
@@ -26,49 +24,28 @@
       This field is **_not_** required to invoke this Job.
     label: PagerDuty Incident ID
     name: pd_incident_id
-  - description: The name of the service running on the remote node. For example `sshd`
-    label: Service Name
-    name: service_name
-    required: true
   plugins:
     ExecutionLifecycle: null
   scheduleEnabled: true
   schedules: []
   sequence:
     commands:
-    - description: Retrieve Service Name
-      errorhandler:
-        configuration:
-          fail: 'false'
-          halt: 'false'
-          status: Service Down
-        keepgoingOnSuccess: true
-        nodeStep: false
-        type: flow-control
-      exec: systemctl status ${option.service_name}
+    - description: Check Port 6379 is Listening on Remote Host
+      exec: sudo lsof -i:6379
       plugins:
         LogFilter:
         - config:
-            contextVariable: service-status
-            doNothing: 'true'
-            mute: 'false'
-            regex: '.*Active: active.*'
-            statusSymbol: ✅
-            text: Healthy
-          type: progress-badges
-        - config:
-            contextVariable: service-status
-            doNothing: 'true'
-            mute: 'false'
-            regex: '.*Active: failed.*'
-            statusSymbol: ❌
-            text: Unhealthy
-          type: progress-badges
+            captureMultipleKeysValues: 'false'
+            hideOutput: 'false'
+            logData: 'true'
+            name: port_check
+            regex: (.*)
+          type: key-value-data-multilines
     - configuration:
         api_token: keys/project/automated-diagnostics/pd-api-key
         email: ${globals.pd-email}
         incident_id: ${option.pd_incident_id}
-        note: 'Service Status: ${data.service-status*}\n\nClick here for detailed
+        note: 'Redis Port Check:\n ${data.port_check*}\n\nClick here for detailed
           diagnostics: ${job.url}#output'
       description: Send Diagnostics to PagerDuty
       errorhandler:
@@ -81,7 +58,7 @@
       nodeStep: false
       type: pd-note-step
     keepgoing: false
-    strategy: sequential
-  tags: linux
-  uuid: b4bee8ee-398e-4a98-9e12-4f5ea15ea94b
+    strategy: node-first
+  tags: redis
+  uuid: dc7a5357-0b6f-4b9f-9399-fcfd9c1a9332
 

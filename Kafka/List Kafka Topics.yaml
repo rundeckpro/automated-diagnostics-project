@@ -1,0 +1,39 @@
+- defaultTab: nodes
+  description: |-
+    List the topics in Kafka.
+
+    This job lists the topics in Kafka.  Because this job runs a command on a remote-node, an [Enterprise Runner](https://docs.rundeck.com/docs/administration/runner/#enterprise-runner-overview) may be required.
+  executionEnabled: true
+  group: Kafka
+  id: 3e5ddde6-ffe8-4604-835d-b6ffa1b6b09b
+  loglevel: INFO
+  name: List Kafka Topics
+  nodeFilterEditable: true
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: .*
+  nodesSelectedByDefault: true
+  options:
+  - description: The address of the kafka hostname.
+    label: Hostname Address
+    name: hostname-address
+    value: localhost:9092
+  plugins:
+    ExecutionLifecycle: null
+  runnerSelector:
+    canChange: true
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - description: List the kafka topics
+      exec: kafka-topics.sh --bootstrap-server ${option.broker-addres} --list
+    keepgoing: false
+    strategy: node-first
+  uuid: 3e5ddde6-ffe8-4604-835d-b6ffa1b6b09b
+

@@ -9,7 +9,7 @@
     See the [**Project Readme**](/project/automated-diagnostics/home) for recommended tours on how to add remote-nodes and configure connectivity to them using methods such as SSH or Systems Manager (SSM).
   executionEnabled: true
   group: Linux
-  id: 552c918c-4bc8-48b6-850c-00e4622daa10
+  id: 5e0ea06b-62ba-4024-8dbf-91f11b691655
   loglevel: INFO
   name: Retrieve Errors from Syslog
   nodeFilterEditable: true
@@ -20,20 +20,16 @@
       rankOrder: ascending
       successOnEmptyNodeFilter: false
       threadcount: '3'
-    filter: ${option.node_filter}
+    filter: .*
   nodesSelectedByDefault: true
   options:
-  - hidden: true
-    label: Node Filter
-    name: node_filter
-    value: hostname
   - description: |-
       ID of the PagerDuty incident that should receive the diagnostics queried from this automation.
       This field is **_not_** required to invoke this Job.
     label: Incident ID
     name: pd_incident_id
   plugins:
-    ExecutionLifecycle: {}
+    ExecutionLifecycle: null
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -117,11 +113,13 @@
             regex: (.*)
           type: key-value-data-multilines
     - configuration:
-        api_token: keys/project/automated-diagnostics/pd-api-token
+        api_token: keys/project/automated-diagnostics/pd-api-key
+        email: ${globals.pd-email}
         incident_id: ${option.pd_incident_id}
-        note: ${data.out_of_memory*}\n ${data.memory_management*}\n ${data.io_error*}\n
+        note: '${data.out_of_memory*}\n ${data.memory_management*}\n ${data.io_error*}\n
           ${data.runaway_loop*}\n ${data.could_not_load*}\n ${data.kernel_error*}\n
-          ${data.filesystem_mount_error*}
+          ${data.filesystem_mount_error*}\n\nClick here for detailed diagnostics:
+          ${job.url}#output'
       description: Send Diagnostics to PagerDuty
       errorhandler:
         configuration:
@@ -135,5 +133,5 @@
     keepgoing: false
     strategy: sequential
   tags: linux
-  uuid: 552c918c-4bc8-48b6-850c-00e4622daa10
+  uuid: 5e0ea06b-62ba-4024-8dbf-91f11b691655
 

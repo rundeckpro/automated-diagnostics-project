@@ -11,7 +11,7 @@
     See the [**Project Readme**](/project/automated-diagnostics/home) for recommended tours on how to add remote-nodes and configure connectivity to them using methods such as SSH or Systems Manager (SSM).
   executionEnabled: true
   group: PostgreSQL
-  id: 42a2e089-f48e-4564-85ca-87f859663e37
+  id: 9f1304a2-d10a-4066-bf5c-5fd661df7a01
   loglevel: INFO
   name: Test if PostgreSQL Server is Running
   nodeFilterEditable: true
@@ -22,20 +22,16 @@
       rankOrder: ascending
       successOnEmptyNodeFilter: false
       threadcount: '1'
-    filter: ${option.node_filter}
+    filter: .*
   nodesSelectedByDefault: true
   options:
-  - hidden: true
-    label: Node Filter
-    name: node_filter
-    value: hostname
   - description: |-
       ID of the PagerDuty incident that should receive the diagnostics queried from this automation.
       This field is **_not_** required to invoke this Job.
     label: PagerDuty Incident ID
     name: pd_incident_id
   plugins:
-    ExecutionLifecycle: {}
+    ExecutionLifecycle: null
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -52,9 +48,11 @@
             regex: (.*)
           type: key-value-data-multilines
     - configuration:
-        api_token: keys/project/automated-diagnostics/pd-api-token
+        api_token: keys/project/automated-diagnostics/pd-api-key
+        email: ${globals.pd-email}
         incident_id: ${option.pd_incident_id}
-        note: PostgreSQL Test:\n ${data.postgres_status*}
+        note: 'PostgreSQL Test:\n ${data.postgres_status*}\n\nClick here for detailed
+          diagnostics: ${job.url}#output'
       description: Send Diagnostics to PagerDuty
       errorhandler:
         configuration:
@@ -68,5 +66,5 @@
     keepgoing: false
     strategy: node-first
   tags: postgresql
-  uuid: 42a2e089-f48e-4564-85ca-87f859663e37
+  uuid: 9f1304a2-d10a-4066-bf5c-5fd661df7a01
 

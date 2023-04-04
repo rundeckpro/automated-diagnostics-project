@@ -1,0 +1,85 @@
+- defaultTab: nodes
+  description: Query an API endpoint to determine service health.
+  executionEnabled: true
+  group: API
+  id: 308bf280-3387-4544-b97b-daae1a593167
+  loglevel: INFO
+  name: API Endpoint Health Check
+  nodeFilterEditable: false
+  options:
+  - label: API Endpoint
+    name: api-endpoint
+    value: https://jsonplaceholder.typicode.com/todos/1
+  - description: |+
+      ID of the PagerDuty incident that should receive the diagnostics queried from this automation. This field is **not** required to invoke this Job.
+
+    label: PagerDuty Incident ID
+    name: pd_incident_id
+  plugins:
+    ExecutionLifecycle: null
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - configuration:
+        authentication: None
+        checkResponseCode: 'false'
+        headers: '{"content-type": "application/json"}'
+        method: GET
+        printResponse: 'true'
+        printResponseCode: 'true'
+        printResponseToFile: 'false'
+        proxySettings: 'false'
+        remoteUrl: ${option.api-endpoint}
+        sslVerify: 'true'
+        timeout: '30000'
+      errorhandler:
+        configuration:
+          fail: 'false'
+          halt: 'false'
+          status: Unhealthy API Endpoint
+        keepgoingOnSuccess: true
+        nodeStep: false
+        type: flow-control
+      nodeStep: false
+      plugins:
+        LogFilter:
+        - config:
+            contextVariable: api-health
+            doNothing: 'true'
+            mute: 'false'
+            regex: 'Response Code: HTTP/1.1 200 OK'
+            statusSymbol: ✅
+            text: Healthy
+          type: progress-badges
+        - config:
+            contextVariable: api-health
+            doNothing: 'true'
+            mute: 'false'
+            regex: 'Response Code: HTTP/1.1 [^200].*'
+            statusSymbol: ❌
+            text: Unhealthy
+          type: progress-badges
+      type: edu.ohio.ais.rundeck.HttpWorkflowStepPlugin
+    - configuration:
+        api_token: keys/project/automated-diagnostics/pd-api-key
+        email: ${globals.pd-email}
+        incident_id: ${option.pd_incident_id}
+        note: 'API Check: ${data.api-health}\n\nClick here for detailed diagnostics:
+          ${job.url}#output'
+      description: Send Diagnostics to PagerDuty
+      errorhandler:
+        configuration:
+          fail: 'false'
+          halt: 'true'
+          status: Please provide PagerDuty API token and Incident ID to send diagnostics
+            to Incident.
+        keepgoingOnSuccess: true
+        nodeStep: false
+        type: flow-control
+      nodeStep: false
+      type: pd-note-step
+    keepgoing: true
+    strategy: node-first
+  uuid: 308bf280-3387-4544-b97b-daae1a593167
+

@@ -7,7 +7,7 @@
     If using PagerDuty Runbook Automation (SaaS), then this Job is designed to be run on an [**Enterprise Runner**](https://docs.rundeck.com/docs/administration/runner/#architecture). Follow the documentation and install the Runner in a location that can communicate with your Kubernetes cluster.
   executionEnabled: true
   group: Kubernetes
-  id: 8f9cfa59-8d50-4d46-9dc4-ab3ce01c255e
+  id: 4e66eede-e557-4e1f-abff-639e9fc00b96
   loglevel: INFO
   name: Tail Logs from Individual Kubernetes Pod
   nodeFilterEditable: false
@@ -27,7 +27,7 @@
     name: pod_name
     required: true
   plugins:
-    ExecutionLifecycle: {}
+    ExecutionLifecycle: null
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -60,5 +60,5 @@
     keepgoing: false
     strategy: node-first
   tags: kubernetes
-  uuid: 8f9cfa59-8d50-4d46-9dc4-ab3ce01c255e
+  uuid: 4e66eede-e557-4e1f-abff-639e9fc00b96
 

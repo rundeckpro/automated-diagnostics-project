@@ -1,22 +1,18 @@
 - defaultTab: nodes
-  description: |-
-    Send a command to an individual pod in a specific namespace.
-
-    This Job sends a command to a pod in a specified namespace.  The command is executed by the following syntax:
-    ```
-    kubectl exec -it {{pod_name}} -n {{namespace}} -- /bin/bash -c {{command}}
-    ```
-
-    If using PagerDuty Runbook Automation (SaaS), then this Job is designed to be run on an [**Enterprise Runner**](https://docs.rundeck.com/docs/administration/runner/#architecture). Follow the documentation and install the Runner in a location that can communicate with your Kubernetes cluster.
+  description: "Send a command to an individual pod in a specific namespace.\n\nThis\
+    \ Job sends a command to a pod in a specified namespace.  \n\nIf using PagerDuty\
+    \ Runbook Automation (SaaS), then this Job is designed to be run on an [**Enterprise\
+    \ Runner**](https://docs.rundeck.com/docs/administration/runner/#architecture).\
+    \ Follow the documentation and install the Runner in a location that can communicate\
+    \ with your Kubernetes cluster."
   executionEnabled: true
   group: Kubernetes
-  id: 23da4939-354b-4225-bdf4-03877c64e45c
+  id: b02ca591-7605-4e1a-abf9-ce54d874d336
   loglevel: INFO
   name: Execute Command in Pod
   nodeFilterEditable: false
   options:
-  - description: Command to send to pod.  This will be executed after `kubectl exec
-      -it {{pod_name}} -n {{namespace}} --  /bin/bash -c {{commands}}`
+  - description: This will be executed as `/bin/bash` within the specified container.
     label: Command
     name: command
     required: true
@@ -29,17 +25,28 @@
     label: Pod Name
     name: pod_name
     required: true
+  - description: 'Optionally add the container name within the pod. By default, the
+      command will execute in the first container listed in the pod definition.'
+    label: Container Name
+    name: container_name
   plugins:
-    ExecutionLifecycle: {}
+    ExecutionLifecycle: null
   scheduleEnabled: true
   schedules: []
   sequence:
     commands:
-    - description: Send command to pod
-      exec: kubectl exec -it ${option.pod_name} -n ${option.namespace} -- /bin/bash
-        -c ${option.commands}
+    - configuration:
+        command: ${option.command}
+        container: ${option.container_name}
+        name: ${option.pod_name}
+        namespace: ${option.namespace}
+        shell: /bin/bash
+        verify_ssl: 'false'
+      description: Execute Command
+      nodeStep: true
+      type: Kubernetes-Execute-Step
     keepgoing: false
     strategy: node-first
   tags: kubernetes
-  uuid: 23da4939-354b-4225-bdf4-03877c64e45c
+  uuid: b02ca591-7605-4e1a-abf9-ce54d874d336
 

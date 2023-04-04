@@ -9,7 +9,7 @@
     See the [**Project Readme**](/project/automated-diagnostics/home) for recommended tours on how to add remote-nodes and configure connectivity to them using methods such as SSH or Systems Manager (SSM).
   executionEnabled: true
   group: Linux
-  id: eaa8efeb-4a06-4e4e-b292-a0b4fa084358
+  id: c977cadd-9c69-4d81-a934-3356dcfb0d7c
   loglevel: INFO
   name: 'Top CPU & Memory Processes and Top Disk Consuming Files '
   nodeFilterEditable: true
@@ -20,23 +20,15 @@
       rankOrder: ascending
       successOnEmptyNodeFilter: false
       threadcount: '1'
-    filter: ${option.node_filter}
+    filter: .*
   nodesSelectedByDefault: true
   options:
-  - hidden: true
-    label: Node Filter
-    name: node_filter
-    value: hostname
   - description: Incident ID where Runbook Automation will send the diagnostic data
       to on the Incident Timeline.
     label: PagerDuty Incident ID
     name: pd_incident_id
-  - description: 'If a **General Access** API Token was used, provide a valid PagerDuty
-      user''s email address here.'
-    label: PagerDuty User Email
-    name: user-email
   plugins:
-    ExecutionLifecycle: {}
+    ExecutionLifecycle: null
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -73,10 +65,12 @@
             regex: (.*)
           type: key-value-data-multilines
     - configuration:
-        email: ${option.user-email}
+        api_token: keys/project/automated-diagnostics/pd-api-key
+        email: ${globals.pd-email}
         incident_id: ${option.pd_incident_id}
-        note: Top CPU Processes:\n${data.top_cpu*}\n Top Memory Processes:\n${data.top_memory*}\n
-          Top Disk Consuming Files:\n${data.top_disk*}
+        note: 'Top CPU Processes:\n${data.top_cpu*}\n Top Memory Processes:\n${data.top_memory*}\n
+          Top Disk Consuming Files:\n${data.top_disk*}\n\nClick here for detailed
+          diagnostics: ${job.url}#output'
       description: Send Diagnostics to PagerDuty
       errorhandler:
         configuration:
@@ -90,5 +84,5 @@
     keepgoing: false
     strategy: node-first
   tags: linux
-  uuid: eaa8efeb-4a06-4e4e-b292-a0b4fa084358
+  uuid: c977cadd-9c69-4d81-a934-3356dcfb0d7c
 

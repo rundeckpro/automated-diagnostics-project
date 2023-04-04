@@ -11,7 +11,7 @@
 
   executionEnabled: true
   group: AWS/RDS
-  id: a2f3fd6e-54df-4f3f-b4eb-06b667aa0493
+  id: a03ded8c-7492-4a56-a8ad-dca359a1a486
   loglevel: INFO
   name: Check Database Storage Status
   nodeFilterEditable: false
@@ -29,7 +29,7 @@
     name: region
     optionValuesPluginType: aws-regions-job-options
   plugins:
-    ExecutionLifecycle: {}
+    ExecutionLifecycle: null
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -48,11 +48,28 @@
             name: instance_status
             regex: (.*)
           type: key-value-data-multilines
+        - config:
+            contextVariable: rds-health
+            doNothing: 'true'
+            mute: 'false'
+            regex: '.*instance status is: available'
+            statusSymbol: ✅
+            text: Healthy
+          type: progress-badges
+        - config:
+            contextVariable: rds-health
+            doNothing: 'true'
+            mute: 'false'
+            regex: '.*instance status is: \[Failed|Insufficient-capacity|Storage-full\]'
+            statusSymbol: ❌
+            text: Unhealthy
+          type: progress-badges
       type: aws-rds-status
     - configuration:
-        api_token: keys/project/automated-diagnostics/pd-api-token
+        api_token: keys/project/automated-diagnostics/pd-api-key
+        email: ${globals.pd-email}
         incident_id: ${option.pd_incident_id}
-        note: ${data.instance_status}
+        note: '${data.rds-health}\n\nClick here for detailed diagnostics: ${job.url}#output'
       description: Send Diagnostics to PagerDuty
       errorhandler:
         configuration:
@@ -65,5 +82,5 @@
     keepgoing: false
     strategy: node-first
   tags: 'aws,rds'
-  uuid: a2f3fd6e-54df-4f3f-b4eb-06b667aa0493
+  uuid: a03ded8c-7492-4a56-a8ad-dca359a1a486
 

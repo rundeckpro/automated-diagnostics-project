@@ -12,7 +12,7 @@
     **elasticloadbalancing:DescribeTargetGroups**<br>
   executionEnabled: true
   group: AWS/ELB
-  id: 2dc2ade9-6b8d-4446-8247-92facdbe20cd
+  id: 9a317a81-24ac-411c-b97d-57eacf1478b3
   loglevel: INFO
   name: Retrieve ELB Targets Health Status
   nodeFilterEditable: false
@@ -29,7 +29,7 @@
     name: region
     optionValuesPluginType: aws-regions-job-options
   plugins:
-    ExecutionLifecycle: {}
+    ExecutionLifecycle: null
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -42,28 +42,42 @@
       plugins:
         LogFilter:
         - config:
-            captureMultipleKeysValues: 'false'
-            hideOutput: 'false'
-            logData: 'true'
-            name: unhealthy_targets
-            regex: (.*)
-          type: key-value-data-multilines
+            contextVariable: elb-status
+            doNothing: 'true'
+            mute: 'false'
+            regex: Found 0 unhealthy instances.*
+            statusSymbol: ✅
+            text: All instances are healthy
+          type: progress-badges
+        - config:
+            contextVariable: elb-status
+            doNothing: 'true'
+            mute: 'false'
+            regex: Found [^0] unhealthy instances.*
+            statusSymbol: ❌
+            text: Found unhealthy ELB targets
+          type: progress-badges
       type: aws-target-elb
     - configuration:
-        api_token: keys/project/automated-diagnostics/pd-api-token
+        api_token: keys/project/automated-diagnostics/pd-api-key
+        email: ${globals.pd-email}
         incident_id: ${option.pd_incident_id}
-        note: Unhealthy ELB Targets:\n ${data.unhealthy_targets}
+        note: 'ELB Targets Status: ${data.elb-status}\n\nClick here for detailed diagnostics:
+          ${job.url}#output'
       description: Send Diagnostics to PagerDuty
       errorhandler:
         configuration:
-          text: Please provide PagerDuty API token to send diagnostics to Incident.
+          fail: 'false'
+          halt: 'true'
+          status: 'Please provide PagerDuty API token, User Email, and Incident ID
+            to send diagnostics to Incident.'
         keepgoingOnSuccess: true
         nodeStep: false
-        type: progress-badge
+        type: flow-control
       nodeStep: false
       type: pd-note-step
     keepgoing: false
     strategy: node-first
   tags: 'aws,elb'
-  uuid: 2dc2ade9-6b8d-4446-8247-92facdbe20cd
+  uuid: 9a317a81-24ac-411c-b97d-57eacf1478b3
 

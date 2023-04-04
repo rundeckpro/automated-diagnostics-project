@@ -6,7 +6,7 @@
     \ such as SSH or Systems Manager (SSM)."
   executionEnabled: true
   group: Nginx
-  id: 986494bd-eb20-49aa-b831-7057dd1dfbc8
+  id: 202c1640-17ec-4d09-b1e4-4492c2f1b4a9
   loglevel: INFO
   name: Retrieve Error Logs
   nodeFilterEditable: true
@@ -17,20 +17,16 @@
       rankOrder: ascending
       successOnEmptyNodeFilter: false
       threadcount: '1'
-    filter: ${option.node_filter}
+    filter: .*
   nodesSelectedByDefault: true
   options:
-  - hidden: true
-    label: Node Filter
-    name: node_filter
-    value: hostname
   - description: |-
       ID of the PagerDuty incident that should receive the diagnostics queried from this automation.
       This field is **_not_** required to invoke this Job.
     label: PagerDuty Incident ID
     name: pd_incident_id
   plugins:
-    ExecutionLifecycle: {}
+    ExecutionLifecycle: null
   scheduleEnabled: true
   schedules: []
   sequence:
@@ -47,9 +43,11 @@
             regex: (.*)
           type: key-value-data-multilines
     - configuration:
-        api_token: keys/project/automated-diagnostics/pd-api-token
+        api_token: keys/project/automated-diagnostics/pd-api-key
+        email: ${globals.pd-email}
         incident_id: ${option.pd_incident_id}
-        note: Nginx Errors:\n ${data.nginx_errors*}
+        note: 'Nginx Errors:\n ${data.nginx_errors*}\n\nClick here for detailed diagnostics:
+          ${job.url}#output'
       description: Send Diagnostics to PagerDuty
       errorhandler:
         configuration:
@@ -63,5 +61,5 @@
     keepgoing: false
     strategy: node-first
   tags: nginx
-  uuid: 986494bd-eb20-49aa-b831-7057dd1dfbc8
+  uuid: 202c1640-17ec-4d09-b1e4-4492c2f1b4a9
 
