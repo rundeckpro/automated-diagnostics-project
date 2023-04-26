@@ -15,6 +15,15 @@
   loglevel: INFO
   name: Stopped ECS Task Errors
   nodeFilterEditable: false
+  notification:
+    onfailure:
+      plugin:
+        configuration:
+          incident_id: ${option.pd_incident_id}
+          note: 'Automated diagnostics job did not complete.  For full details, click
+              here: ${job.url}#output'
+        type: pd-note-incident-notification
+  notifyAvgDurationThreshold: null
   options:
   - description: The name of the ECS Cluster
     label: ECS Cluster Name
@@ -62,8 +71,8 @@
           type: progress-badges
       type: aws-ecs-stopped-tasks
     - configuration:
-        api_token: keys/project/automated-diagnostics/pd-api-key
-        email: ${globals.pd-email}
+        api_token:
+        email:
         incident_id: ${option.pd_incident_id}
         note: 'ECS Health Check: ${data.ecs-health}\n\nClick here for detailed diagnostics:
           ${job.url}#output'

@@ -16,6 +16,15 @@
   loglevel: INFO
   name: Retrieve ELB Targets Health Status
   nodeFilterEditable: false
+  notification:
+    onfailure:
+      plugin:
+        configuration:
+          incident_id: ${option.pd_incident_id}
+          note: 'Automated diagnostics job did not complete.  For full details, click
+              here: ${job.url}#output'
+        type: pd-note-incident-notification
+  notifyAvgDurationThreshold: null
   options:
   - label: Load Balancer Name
     name: load_balancer_name
@@ -59,8 +68,8 @@
           type: progress-badges
       type: aws-target-elb
     - configuration:
-        api_token: keys/project/automated-diagnostics/pd-api-key
-        email: ${globals.pd-email}
+        api_token:
+        email:
         incident_id: ${option.pd_incident_id}
         note: 'ELB Targets Status: ${data.elb-status}\n\nClick here for detailed diagnostics:
           ${job.url}#output'
