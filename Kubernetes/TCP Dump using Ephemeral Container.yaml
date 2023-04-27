@@ -15,6 +15,15 @@
     onfailure:
       plugin:
         configuration:
+          incident_id: ${option.pd_incident_id}
+          note: 'Automated diagnostics job did not complete.  For full details, click
+              here: ${job.url}#output'
+        type: pd-note-incident-notification
+  notifyAvgDurationThreshold: null
+  notification:
+    onfailure:
+      plugin:
+        configuration:
           incident_id: ${option.incident-id}
           note: |-
             Unable to complete automation for capturing TCP dump.

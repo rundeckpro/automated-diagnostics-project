@@ -11,6 +11,15 @@
   loglevel: INFO
   name: Describe Replicaset
   nodeFilterEditable: false
+  notification:
+    onfailure:
+      plugin:
+        configuration:
+          incident_id: ${option.pd_incident_id}
+          note: 'Automated diagnostics job did not complete.  For full details, click
+              here: ${job.url}#output'
+        type: pd-note-incident-notification
+  notifyAvgDurationThreshold: null
   options:
   - description: Namespace where the Replicaset Resides
     label: Namespace

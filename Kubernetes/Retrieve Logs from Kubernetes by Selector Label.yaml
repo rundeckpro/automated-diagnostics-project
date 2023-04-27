@@ -14,6 +14,15 @@
   loglevel: INFO
   name: Retrieve Logs from Kubernetes by Selector Label
   nodeFilterEditable: false
+  notification:
+    onfailure:
+      plugin:
+        configuration:
+          incident_id: ${option.pd_incident_id}
+          note: 'Automated diagnostics job did not complete.  For full details, click
+              here: ${job.url}#output'
+        type: pd-note-incident-notification
+  notifyAvgDurationThreshold: null
   options:
   - description: 'For example, `environment=product,tier=frontend`'
     label: Label Selector

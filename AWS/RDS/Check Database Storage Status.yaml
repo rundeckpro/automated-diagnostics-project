@@ -76,7 +76,7 @@
       type: aws-rds-status
     - configuration:
         api_token:
-        email: 
+        email:
         incident_id: ${option.pd_incident_id}
         note: '${data.rds-health}\n\nClick here for detailed diagnostics: ${job.url}#output'
       description: Send Diagnostics to PagerDuty
