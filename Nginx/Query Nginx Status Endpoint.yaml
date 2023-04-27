@@ -59,8 +59,6 @@
             regex: (.*)
           type: key-value-data-multilines
     - configuration:
-        api_token: keys/project/automated-diagnostics/pd-api-key
-        email: ${globals.pd-email}
         incident_id: ${option.pd_incident_id}
         note: 'Nginx Check:\n ${data.endpoint_response*}\n\nClick here for detailed
           diagnostics: ${job.url}#output'

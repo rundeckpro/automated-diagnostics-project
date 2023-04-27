@@ -54,7 +54,6 @@
             regex: (.*)
           type: key-value-data-multilines
     - configuration:
-        api_token: keys/project/automated-diagnostics/pd-api-token
         incident_id: ${option.pd_incident_id}
         note: Nginx Check:\n ${data.endpoint_response*}
       description: Send Diagnostics to PagerDuty

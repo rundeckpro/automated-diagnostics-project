@@ -71,8 +71,6 @@
           type: progress-badges
       type: aws-ecs-stopped-tasks
     - configuration:
-        api_token:
-        email:
         incident_id: ${option.pd_incident_id}
         note: 'ECS Health Check: ${data.ecs-health}\n\nClick here for detailed diagnostics:
           ${job.url}#output'

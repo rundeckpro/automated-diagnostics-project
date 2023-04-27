@@ -122,8 +122,6 @@
             regex: (.*)
           type: key-value-data-multilines
     - configuration:
-        api_token: keys/project/automated-diagnostics/pd-api-key
-        email: ${globals.pd-email}
         incident_id: ${option.pd_incident_id}
         note: '${data.out_of_memory*}\n ${data.memory_management*}\n ${data.io_error*}\n
           ${data.runaway_loop*}\n ${data.could_not_load*}\n ${data.kernel_error*}\n

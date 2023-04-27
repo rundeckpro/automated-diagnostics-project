@@ -116,8 +116,7 @@
           type: key-value-data-multilines
       type: aws-lambda-custom-code-execution
     - configuration:
-        api_token:
-        incident_id:
+        incident_id: ${option.pd_incident_id}
         note: 'Jstack Status: ${data.jstack_status}'
       description: Send Diagnostics to PagerDuty
       errorhandler:

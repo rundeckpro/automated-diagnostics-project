@@ -53,7 +53,6 @@
             regex: (.*)
           type: key-value-data-multilines
     - configuration:
-        api_token: keys/project/automated-diagnostics/pd-api-token
         incident_id: ${option.pd_incident_id}
         note: Pod Description:\n ${data.describe_pod*}
       description: Send Diagnostics to PagerDuty

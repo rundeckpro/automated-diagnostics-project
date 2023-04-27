@@ -68,8 +68,6 @@
           type: progress-badges
       type: aws-target-elb
     - configuration:
-        api_token:
-        email:
         incident_id: ${option.pd_incident_id}
         note: 'ELB Targets Status: ${data.elb-status}\n\nClick here for detailed diagnostics:
           ${job.url}#output'
