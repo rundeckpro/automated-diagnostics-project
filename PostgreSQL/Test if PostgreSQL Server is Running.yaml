@@ -15,6 +15,15 @@
   loglevel: INFO
   name: Test if PostgreSQL Server is Running
   nodeFilterEditable: true
+  notification:
+    onfailure:
+      plugin:
+        configuration:
+          incident_id: ${option.pd_incident_id}
+          note: 'Automated diagnostics job did not complete.  For full details, click
+              here: ${job.url}#output'
+        type: pd-note-incident-notification
+  notifyAvgDurationThreshold: null
   nodefilters:
     dispatch:
       excludePrecedence: true

@@ -12,6 +12,15 @@
   loglevel: INFO
   name: Query Nginx Status Endpoint
   nodeFilterEditable: true
+  notification:
+    onfailure:
+      plugin:
+        configuration:
+          incident_id: ${option.pd_incident_id}
+          note: 'Automated diagnostics job did not complete.  For full details, click
+              here: ${job.url}#output'
+        type: pd-note-incident-notification
+  notifyAvgDurationThreshold: null
   nodefilters:
     dispatch:
       excludePrecedence: true
