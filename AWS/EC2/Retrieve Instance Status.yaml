@@ -94,8 +94,6 @@
             regex: (.*)
           type: key-value-data-multilines
     - configuration:
-        api_token:
-        email:
         incident_id: ${option.pd_incident_id}
         note: '${data.instance_diagnostics*}\n\nClick here for detailed diagnostics:
           ${job.url}#output'
