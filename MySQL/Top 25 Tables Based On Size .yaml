@@ -1,0 +1,51 @@
+- defaultTab: nodes
+  description: |-
+    Retrive top 25 table names based on size in descending order
+
+    The output shows the **tables name and size** (in MB), this allows you to know yhe amount of disk space those tables are consuming in your system.
+
+    ## Configuration
+
+    This step uses the SQL Run Command plugin.
+    Be sure to provide a username and a key-storage path for the connection parameters in the Job step.
+    Upon executing, choose the database host from the **Nodes** section.
+  executionEnabled: true
+  group: MySQL
+  id: 47630917-02bd-40a0-8d06-d2f6c9973935
+  loglevel: INFO
+  name: 'Top 25 Tables Based On Size '
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ${option.node_filter}
+  nodesSelectedByDefault: true
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - configuration:
+        commit: 'false'
+        jdbcDriver: org.mariadb.jdbc.Driver
+        jdbcUrl: jdbc:mysql://${node.hostname}:3306
+        scriptBody: "SELECT table_schema AS DB_NAME, TABLE_NAME, \n(DATA_LENGTH+INDEX_LENGTH)/1024/1024\
+          \ AS TABLE_SIZE_in_MB FROM information_schema.TABLES\nORDER BY (data_length\
+          \ + index_length) DESC LIMIT 25;\n\n"
+        statementDelimiter: ;
+        user: database-user
+      description: Retrieve Tables
+      nodeStep: true
+      plugins:
+        LogFilter: []
+      type: org.rundeck.sqlrunner.SQLRunnerNodeStepPlugin
+    keepgoing: false
+    strategy: node-first
+  tags: mysql
+  uuid: 47630917-02bd-40a0-8d06-d2f6c9973935
+

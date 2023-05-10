@@ -1,0 +1,49 @@
+- defaultTab: nodes
+  description: |-
+    This job shows the alloccated memory for each host
+
+    The information showed in the output may be useful to toubleshoot memory performance issues or to have a general idea of the amount of allocated memory.
+
+    ## Configuration
+
+    This step uses the SQL Run Command plugin.
+    Be sure to provide a username and a key-storage path for the connection parameters in the Job step.
+    Upon executing, choose the database host from the **Nodes** section.
+  executionEnabled: true
+  group: MySQL
+  id: ee30383f-db8d-48e8-a0db-74a72b09b98b
+  loglevel: INFO
+  name: Current Allocated Memory By Host
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: .*
+  nodesSelectedByDefault: true
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - configuration:
+        commit: 'false'
+        jdbcDriver: org.mariadb.jdbc.Driver
+        jdbcUrl: jdbc:mysql://${node.hostname}:3306
+        scriptBody: |+
+          select host,current_allocated from sys.memory_by_host_by_current_bytes;
+
+        statementDelimiter: ;
+        user: database-username
+      description: Retrieve Memory by Host
+      nodeStep: true
+      type: org.rundeck.sqlrunner.SQLRunnerNodeStepPlugin
+    keepgoing: false
+    strategy: node-first
+  tags: mysql
+  uuid: ee30383f-db8d-48e8-a0db-74a72b09b98b
+
