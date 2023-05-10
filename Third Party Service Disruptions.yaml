@@ -8,6 +8,14 @@
   loglevel: INFO
   name: Third Party Service Disruptions
   nodeFilterEditable: false
+  notification:
+    onfailure:
+      plugin:
+        configuration:
+          incident_id: ${option.pd_incident_id}
+          note: 'Automated diagnostics job did not complete.  For full details, click
+                here: ${job.url}#output'
+        type: pd-note-incident-notification
   options:
   - description: (Optional) Add a PagerDuty Incident ID to add the diagnostic output
       of this Job to an Incident.
@@ -119,8 +127,6 @@
           type: progress-badges
       type: rss-feed-retrieve-events
     - configuration:
-        api_token: keys/project/automated-diagnostics/pd-api-key
-        email: ${globals.pd-email}
         incident_id: ${option.pd_incident_id}
         note: 'AWS: ${data.aws-incidents}\n\nGithub: ${data.github-incidents}\n\nDatadog:
           ${data.datadog-incidents}\n\nClick here for more details: ${job.url}#output'

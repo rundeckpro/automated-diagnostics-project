@@ -1,0 +1,110 @@
+- defaultTab: nodes
+  description: |-
+    Collects diagnostics data from RabbitMQ
+
+    This Job collects and prints the health of a RabbitMQ node using a health-check script developed and maintained by the RabbitMQ team:
+
+    "Collects RabbitMQ and selected OS logs, system-level metrics and other environment information (iostat, kernel limits and similar) that is not always directly related to RabbitMQ but can provide additional insights about the overall state of the node."
+
+    Details about this health-check scripts can be found [here](https://github.com/rabbitmq/support-tools/).
+
+    **Node Selection**: This Job is designed to execute on the RabbitMQ node. Be sure to select the correct node from the Node Filter.
+  executionEnabled: true
+  group: RabbitMQ
+  id: 101f7d6f-a58a-4bfb-a548-7325978eefaf
+  loglevel: INFO
+  name: RabbitMQ Node Health
+  nodeFilterEditable: true
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: .*
+  nodesSelectedByDefault: true
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - description: Execute Health Check Script on RabbitMQ Node
+      fileExtension: .sh
+      interpreterArgsQuoted: false
+      plugins:
+        LogFilter:
+        - config:
+            invalidKeyPattern: \s|\$|\{|\}|\\
+            logData: 'true'
+            name: output_archive
+            regex: .*\'(.*)\'.*
+            replaceFilteredResult: 'false'
+          type: key-value-data
+      scriptInterpreter: /bin/bash
+      scripturl: https://raw.githubusercontent.com/rabbitmq/support-tools/main/scripts/rabbitmq-collect-env
+    - configuration:
+        cycles: '1'
+        interval: '3'
+        progress: 'true'
+      description: Wait three seconds
+      nodeStep: true
+      type: nixy-waitfor-sleep-workflow-node-step
+    - description: Uncompress the dump to print some values in the job
+      exec: cd /var/log/rabbitmq; tar xvf ${data.output_archive}
+    - description: Operating System related data
+      plugins:
+        LogFilter: []
+      script: |
+        echo "#############"
+        echo "SERVER HEALTH"
+        echo "#############"
+
+        echo ""
+
+        echo "Hostname:"
+        cat /var/log/rabbitmq/rmq/system/hostname
+
+        echo ""
+
+        echo "Operating System:"
+        cat /var/log/rabbitmq/rmq/system/uname
+
+        echo ""
+
+        echo "Uptime:"
+        cat /var/log/rabbitmq/rmq/system/uptime
+
+        echo ""
+
+        echo "VMSTAT data:"
+        cat /var/log/rabbitmq/rmq/system/vmstat
+    - description: RabbitMQ specific data
+      plugins:
+        LogFilter: []
+      script: |
+        echo "#############"
+        echo "SERVER HEALTH"
+        echo "#############"
+
+        echo ""
+
+        echo "RMQ Environment:"
+        cat /var/log/rabbitmq/rmq/rabbitmq/rabbitmqctl_environment
+
+        echo ""
+
+        echo "RMQ Status:"
+        cat /var/log/rabbitmq/rmq/rabbitmq/rabbitmqctl_status
+
+        echo ""
+
+        echo "RMQ PID Limits:"
+        cat /var/log/rabbitmq/rmq/rabbitmq/rabbitmq_pid_limits
+    - description: Remove Diagnostic Data Files
+      exec: rm ${data.output_archive}; rm -rf /var/log/rabbitmq/rmq; echo "All done!"
+    keepgoing: false
+    strategy: sequential
+  uuid: 101f7d6f-a58a-4bfb-a548-7325978eefaf
+

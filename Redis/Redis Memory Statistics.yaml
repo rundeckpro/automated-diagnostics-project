@@ -11,6 +11,15 @@
   loglevel: INFO
   name: Redis Memory Statistics
   nodeFilterEditable: true
+  notification:
+    onfailure:
+      plugin:
+        configuration:
+          incident_id: ${option.pd_incident_id}
+          note: 'Automated diagnostics job did not complete.  For full details, click
+              here: ${job.url}#output'
+        type: pd-note-incident-notification
+  notifyAvgDurationThreshold: null
   nodefilters:
     dispatch:
       excludePrecedence: true
@@ -55,8 +64,6 @@
             regex: (.*)
           type: key-value-data-multilines
     - configuration:
-        api_token: keys/project/automated-diagnostics/pd-api-key
-        email: ${globals.pd-email}
         incident_id: ${option.pd_incident_id}
         note: 'Redis Memory Stats:\n ${data.memory_stats*}\n ${data.malloc_stats*}\n\nClick
           here for detailed diagnostics: ${job.url}#output'

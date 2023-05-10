@@ -18,6 +18,15 @@
       threadcount: '1'
     filter: .*
   nodesSelectedByDefault: true
+  notification:
+    onfailure:
+      plugin:
+        configuration:
+          incident_id: ${option.pd_incident_id}
+          note: 'Automated diagnostics job did not complete.  For full details, click
+              here: ${job.url}#output'
+        type: pd-note-incident-notification
+  notifyAvgDurationThreshold: null
   options:
   - description: The address of the kafka hostname.
     label: Hostname Address

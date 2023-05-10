@@ -1,0 +1,90 @@
+- defaultTab: nodes
+  description: |-
+    Debug existing pod using an Ephemeral Container
+
+    This job attaches an ephemeral container to a running pod and then executes a TCP dump of a running container in the same pod.
+
+    Using ephemeral containers is useful when an already running container does not have the debugging utilities in the container-image. Learn more [here](https://kubernetes.io/docs/tasks/debug/debug-application/debug-running-pod/#ephemeral-container).
+  executionEnabled: true
+  group: Kubernetes
+  id: c47e7d07-7b33-4713-b389-ecddafe164de
+  loglevel: INFO
+  name: TCP Dump using Ephemeral Container
+  nodeFilterEditable: false
+  notification:
+    onfailure:
+      plugin:
+        configuration:
+          incident_id: ${option.pd_incident_id}
+          note: 'Automated diagnostics job did not complete.  For full details, click
+              here: ${job.url}#output'
+        type: pd-note-incident-notification
+  notifyAvgDurationThreshold: null
+  notification:
+    onfailure:
+      plugin:
+        configuration:
+          incident_id: ${option.incident-id}
+          note: |-
+            Unable to complete automation for capturing TCP dump.
+            Full automation output can be viewed here: ${job.url}#output
+        type: pd-note-incident-notification
+    onsuccess:
+      plugin:
+        configuration:
+          incident_id: ${option.incident-id}
+          note: 'TCP dump has been captured from running container and can be viewed
+            here: ${job.url}#output'
+        type: pd-note-incident-notification
+  notifyAvgDurationThreshold: null
+  options:
+  - description: Kubernetes namespace where the pod resides.
+    label: Namespace
+    name: namespace
+    required: true
+    value: default
+  - label: Pod Name
+    name: pod-name
+    required: true
+  - description: The name of the container that the ephemeral-container will target
+      to share processes-namespace.
+    label: Target Container
+    name: target-container
+    required: true
+  plugins:
+    ExecutionLifecycle: {}
+  runnerSelector:
+    filter: LATEST
+    runnerFilterType: TAG_FILTER_AND
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - configuration:
+        container_image: nicolaka/netshoot
+        container_name: debugger
+        interpreter: python
+        name: ${option.pod-name}
+        namespace: ${option.namespace}
+        print_pod_spec: 'false'
+        target_container: ${option.target-container}
+        verify_ssl: 'false'
+      description: Attach Ephemeral Container to Existing Pod
+      nodeStep: true
+      type: Kubernetes-Ephemeral-Container
+    - configuration:
+        command: 'timeout 10s tcpdump || ( [[ $? -eq 124 ]] && echo "WARNING: Timeout
+          reached, but that''s OK" )'
+        container: debugger
+        interpreter: python
+        name: ${option.pod-name}
+        namespace: ${option.namespace}
+        shell: /bin/bash
+        verify_ssl: 'false'
+      description: Execute TCP Dump using Ephemeral Container
+      nodeStep: true
+      type: Kubernetes-Execute-Step
+    keepgoing: false
+    strategy: node-first
+  uuid: c47e7d07-7b33-4713-b389-ecddafe164de
+

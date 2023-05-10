@@ -6,6 +6,15 @@
   loglevel: INFO
   name: Java Thread Dump from Kubernetes Pod
   nodeFilterEditable: false
+  notification:
+    onfailure:
+      plugin:
+        configuration:
+          incident_id: ${option.pd_incident_id}
+          note: 'Automated diagnostics job did not complete.  For full details, click
+              here: ${job.url}#output'
+        type: pd-note-incident-notification
+  notifyAvgDurationThreshold: null
   options:
   - description: Kubernetes namespace where the pod resides.
     label: Namespace

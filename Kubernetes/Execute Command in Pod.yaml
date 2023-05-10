@@ -11,6 +11,15 @@
   loglevel: INFO
   name: Execute Command in Pod
   nodeFilterEditable: false
+  notification:
+    onfailure:
+      plugin:
+        configuration:
+          incident_id: ${option.pd_incident_id}
+          note: 'Automated diagnostics job did not complete.  For full details, click
+              here: ${job.url}#output'
+        type: pd-note-incident-notification
+  notifyAvgDurationThreshold: null
   options:
   - description: This will be executed as `/bin/bash` within the specified container.
     label: Command

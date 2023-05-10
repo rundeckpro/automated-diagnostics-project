@@ -1,0 +1,52 @@
+- defaultTab: nodes
+  description: |-
+    This job retrieves recent log error or warnings stores in the performance_schema error log
+
+    The job output shows most recent **error events** in the Performance Schema error_log table which are useful to check several issues such as security or conection problems.\
+    It also shows the **error code** that will help to identify the error.
+
+    ## Configuration
+
+    This step uses the SQL Run Command plugin.
+    Be sure to provide a username and a key-storage path for the connection parameters in the Job step.
+    Upon executing, choose the database host from the **Nodes** section.
+  executionEnabled: true
+  group: MySQL
+  id: 207dcdab-4696-4ef6-88b3-3e9026b00263
+  loglevel: INFO
+  name: Query Permormance Schema Error Log
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: .*
+  nodesSelectedByDefault: true
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - configuration:
+        commit: 'false'
+        jdbcDriver: org.mariadb.jdbc.Driver
+        jdbcUrl: jdbc:mysql://${node.hostname}:3306
+        scriptBody: |
+          SELECT "LOG STATUS" As "MYSQL SERVER ";
+          select * from performance_schema.log_status;
+          SELECT "LATEST LOG ERRORS" As "MYSQL SERVER ";
+          SELECT * FROM performance_schema.error_log LIMIT 25;
+        statementDelimiter: ;
+        user: database-user
+      description: Retrieve Query Performance
+      nodeStep: true
+      type: org.rundeck.sqlrunner.SQLRunnerNodeStepPlugin
+    keepgoing: false
+    strategy: node-first
+  tags: mysql
+  uuid: 207dcdab-4696-4ef6-88b3-3e9026b00263
+

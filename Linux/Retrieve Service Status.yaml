@@ -11,6 +11,15 @@
   loglevel: INFO
   name: Retrieve Service Status
   nodeFilterEditable: true
+  notification:
+    onfailure:
+      plugin:
+        configuration:
+          incident_id: ${option.pd_incident_id}
+          note: 'Automated diagnostics job did not complete.  For full details, click
+              here: ${job.url}#output'
+        type: pd-note-incident-notification
+  notifyAvgDurationThreshold: null
   nodefilters:
     dispatch:
       excludePrecedence: true
@@ -65,8 +74,6 @@
             text: Unhealthy
           type: progress-badges
     - configuration:
-        api_token: keys/project/automated-diagnostics/pd-api-key
-        email: ${globals.pd-email}
         incident_id: ${option.pd_incident_id}
         note: 'Service Status: ${data.service-status*}\n\nClick here for detailed
           diagnostics: ${job.url}#output'

@@ -11,6 +11,15 @@
   loglevel: INFO
   name: Describe Specific Pod
   nodeFilterEditable: false
+  notification:
+    onfailure:
+      plugin:
+        configuration:
+          incident_id: ${option.pd_incident_id}
+          note: 'Automated diagnostics job did not complete.  For full details, click
+              here: ${job.url}#output'
+        type: pd-note-incident-notification
+  notifyAvgDurationThreshold: null
   options:
   - description: Specify the Kubernetes Namespace
     label: Kubernetes Namespace
@@ -44,7 +53,6 @@
             regex: (.*)
           type: key-value-data-multilines
     - configuration:
-        api_token: keys/project/automated-diagnostics/pd-api-token
         incident_id: ${option.pd_incident_id}
         note: Pod Description:\n ${data.describe_pod*}
       description: Send Diagnostics to PagerDuty

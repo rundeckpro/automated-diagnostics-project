@@ -37,6 +37,15 @@
   loglevel: INFO
   name: Retrieve Instance Status
   nodeFilterEditable: false
+  notification:
+    onfailure:
+      plugin:
+        configuration:
+          incident_id: ${option.pd_incident_id}
+          note: 'Automated diagnostics job did not complete.  For full details, click
+              here: ${job.url}#output'
+        type: pd-note-incident-notification
+  notifyAvgDurationThreshold: null
   options:
   - description: The instance ID of the EC2 to check status.
     label: EC2 Instance ID
@@ -85,8 +94,6 @@
             regex: (.*)
           type: key-value-data-multilines
     - configuration:
-        api_token: keys/project/automated-diagnostics/pd-api-key
-        email: ${globals.pd-email}
         incident_id: ${option.pd_incident_id}
         note: '${data.instance_diagnostics*}\n\nClick here for detailed diagnostics:
           ${job.url}#output'

@@ -1,0 +1,49 @@
+- defaultTab: nodes
+  description: |-
+    This Job summarizes statement activity, file I/O, and connections, grouped by host.
+
+    Look for parameters such as **total statements**, **table scans** or **total connections** to trace activity for each host from which the client connected.
+
+    ## Configuration
+
+    This step uses the SQL Run Command plugin.
+    Be sure to provide a username and a key-storage path for the connection parameters in the Job step.
+    Upon executing, choose the database host from the **Nodes** section.
+  executionEnabled: true
+  group: MySQL
+  id: cd9d3a1b-8ffe-4778-bdf3-6155952069d9
+  loglevel: INFO
+  name: Hosts Summary
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: .*
+  nodesSelectedByDefault: true
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - configuration:
+        commit: 'false'
+        jdbcDriver: org.mariadb.jdbc.Driver
+        jdbcUrl: jdbc:mysql://${node.hostname}:3306
+        scriptBody: |+
+          select host,statements,table_scans,total_connections,file_ios,unique_users from sys.host_summary;
+
+        statementDelimiter: ;
+        user: database-username
+      description: Retrieve Hosts Statistics
+      nodeStep: true
+      type: org.rundeck.sqlrunner.SQLRunnerNodeStepPlugin
+    keepgoing: false
+    strategy: node-first
+  tags: mysql
+  uuid: cd9d3a1b-8ffe-4778-bdf3-6155952069d9
+
