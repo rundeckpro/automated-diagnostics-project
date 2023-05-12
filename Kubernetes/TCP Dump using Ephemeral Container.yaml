@@ -19,7 +19,6 @@
           note: 'Automated diagnostics job did not complete.  For full details, click
               here: ${job.url}#output'
         type: pd-note-incident-notification
-  notifyAvgDurationThreshold: null
   notification:
     onfailure:
       plugin:
