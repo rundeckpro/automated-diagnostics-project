@@ -15,7 +15,7 @@
         configuration:
           incident_id: ${option.pd_incident_id}
           note: 'Automated Diagnostics job "${job.project}/${job.group}/${job.name}"
-            Failed for incident "${option.pd_incident_id}".   See the full Rundeck
+            Failed for incident "${option.pd_incident_id}".   See the full Process Automation
             log at: ${job.url}#output'
         type: pd-note-incident-notification
     onstart:
@@ -23,7 +23,7 @@
         configuration:
           incident_id: ${option.pd_incident_id}
           note: 'Automated Diagnostics job "${job.project}/${job.group}/${job.name}"
-            Started for incident "${option.pd_incident_id}".   See the full Rundeck
+            Started for incident "${option.pd_incident_id}".   See the full Process Automation
             log at: ${job.url}#output'
         type: pd-note-incident-notification
     onsuccess:
@@ -31,7 +31,7 @@
         configuration:
           incident_id: ${option.pd_incident_id}
           note: 'Automated Diagnostics job "${job.project}/${job.group}/${job.name}"
-            Succeeded for incident "${option.pd_incident_id}".   See the full Rundeck
+            Succeeded for incident "${option.pd_incident_id}".   See the full Process Automation
             log at: ${job.url}#output'
         type: pd-note-incident-notification
   notifyAvgDurationThreshold: null
