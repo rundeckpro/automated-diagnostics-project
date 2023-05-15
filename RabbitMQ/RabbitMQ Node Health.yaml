@@ -24,6 +24,39 @@
       threadcount: '1'
     filter: .*
   nodesSelectedByDefault: true
+  notification:
+    onfailure:
+      plugin:
+        configuration:
+          incident_id: ${option.pd_incident_id}
+          note: 'Automated Diagnostics job "${job.project}/${job.group}/${job.name}"
+            Failed for incident "${option.pd_incident_id}".   See the full Process Automation
+            log at: ${job.url}#output'
+        type: pd-note-incident-notification
+    onstart:
+      plugin:
+        configuration:
+          incident_id: ${option.pd_incident_id}
+          note: 'Automated Diagnostics job "${job.project}/${job.group}/${job.name}"
+            Started for incident "${option.pd_incident_id}".   See the full Process Automation
+            log at: ${job.url}#output'
+        type: pd-note-incident-notification
+    onsuccess:
+      plugin:
+        configuration:
+          incident_id: ${option.pd_incident_id}
+          note: 'Automated Diagnostics job "${job.project}/${job.group}/${job.name}"
+            Succeeded for incident "${option.pd_incident_id}".   See the full Process Automation
+            log at: ${job.url}#output'
+        type: pd-note-incident-notification
+  notifyAvgDurationThreshold: null
+  options:
+  - description: |-
+      ID of the PagerDuty incident that should receive the diagnostics queried from this automation.
+      This field is required to invoke this Job.
+    label: PagerDuty Incident ID
+    name: pd_incident_id
+    required: true
   plugins:
     ExecutionLifecycle: {}
   scheduleEnabled: true
@@ -52,7 +85,7 @@
       nodeStep: true
       type: nixy-waitfor-sleep-workflow-node-step
     - description: Uncompress the dump to print some values in the job
-      exec: cd /var/log/rabbitmq; tar xvf ${data.output_archive}
+      exec: cd /var/log/rabbitmq && tar xvf ${data.output_archive}
     - description: Operating System related data
       plugins:
         LogFilter: []
@@ -103,7 +136,7 @@
         echo "RMQ PID Limits:"
         cat /var/log/rabbitmq/rmq/rabbitmq/rabbitmq_pid_limits
     - description: Remove Diagnostic Data Files
-      exec: rm ${data.output_archive}; rm -rf /var/log/rabbitmq/rmq; echo "All done!"
+      exec: rm ${data.output_archive} && rm -rf /var/log/rabbitmq/rmq && echo "All done!"
     keepgoing: false
     strategy: sequential
   uuid: 101f7d6f-a58a-4bfb-a548-7325978eefaf
