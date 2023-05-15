@@ -16,15 +16,6 @@
       plugin:
         configuration:
           incident_id: ${option.pd_incident_id}
-          note: 'Automated diagnostics job did not complete.  For full details, click
-              here: ${job.url}#output'
-        type: pd-note-incident-notification
-  notifyAvgDurationThreshold: null
-  notification:
-    onfailure:
-      plugin:
-        configuration:
-          incident_id: ${option.incident-id}
           note: |-
             Unable to complete automation for capturing TCP dump.
             Full automation output can be viewed here: ${job.url}#output
@@ -32,7 +23,7 @@
     onsuccess:
       plugin:
         configuration:
-          incident_id: ${option.incident-id}
+          incident_id: ${option.pd_incident_id}
           note: 'TCP dump has been captured from running container and can be viewed
             here: ${job.url}#output'
         type: pd-note-incident-notification
@@ -51,6 +42,10 @@
     label: Target Container
     name: target-container
     required: true
+  - description: Optionally provide a PagerDuty Incident ID to provide a link to these
+      diagnostics to incident responders.
+    label: Incident ID
+    name: pd_incident_id
   plugins:
     ExecutionLifecycle: {}
   runnerSelector:
