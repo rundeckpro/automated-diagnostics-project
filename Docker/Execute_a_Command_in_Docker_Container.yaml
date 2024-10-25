@@ -1,0 +1,54 @@
+- defaultTab: nodes
+  description: " \nUse the Change Target Node to select where you'd like to run the\
+    \ command. Default shows all nodes with `docker` tag, but be sure to select relevant\
+    \ nodes. The job will also display performance stats for each container.\n\n##\
+    \ Setup Requirements\n- Must setup Docker Node Source before running this job.\n\
+    - Assumes the base OS of Docker image is Linux\n- For ease of testing, have an\
+    \ Enterprise Runner running on the same host that is Running Docker."
+  executionEnabled: true
+  group: Containers/Docker
+  id: 50306d82-b1a3-4f5c-86d6-41d03df24a08
+  loglevel: INFO
+  name: Execute a Command in Docker Container
+  nodeFilterEditable: true
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: 'tags: "docker"'
+  nodesSelectedByDefault: true
+  options:
+  - label: Command to Run
+    name: command-input
+    value: ls -last
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - configuration:
+        container: ${node.name}
+        debug: 'false'
+      nodeStep: true
+      type: docker-container-inspect-workflow-step
+    - configuration:
+        container: ${node.name}
+        debug: 'false'
+        format: table {{.Container}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.NetIO}}\t{{.BlockIO}}
+      nodeStep: true
+      type: docker-container-stats-step
+    - configuration:
+        command: ${option.command-input}
+        container: ${node.name}
+        debug: 'false'
+        user: root
+      nodeStep: true
+      type: docker-container-execute-command
+    keepgoing: false
+    strategy: node-first
+  tags: 'containers,docker'
+  uuid: 50306d82-b1a3-4f5c-86d6-41d03df24a08
