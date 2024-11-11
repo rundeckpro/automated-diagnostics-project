@@ -1,0 +1,88 @@
+- defaultTab: output
+  description: "Adhoc PostgreSQL DB Backup:\n\nThis job will:\n- Backup a PostgreSQL\
+    \ database using the `pg_dump` command.  \n- The output will be saved to plain\
+    \ text SQL file.\n- The SQL file will be read out using `cat` to the output log.\
+    \  \n- The SQL file will then be optionally deleted as a cleanup step based on\
+    \ the input choice.\n\nIt is recommended to run the job on a single Enterprise\
+    \ Runner node with `pg_dump` installed.\n\n### Prerequisites\n\n- The `pg_dump`\
+    \ command must be installed on the same machine as the Enterprise Runner and be\
+    \ available in the default path.\n- The password can be provided directly as part\
+    \ of the input options.  For production use we recommend using a Key Storage entry.\n\
+    \nThis job is for demonstration purposes only.\n"
+  executionEnabled: true
+  group: Database Management/PostgreSQL
+  id: 24388343-cf9a-43d5-8a91-c6c61cae43c1
+  loglevel: INFO
+  name: Backup a PostgreSQL Database to SQL text
+  nodeFilterEditable: true
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: 'tags: "RUNNER"'
+  nodesSelectedByDefault: false
+  options:
+  - label: Database Host Name
+    name: db_host
+    required: true
+    value: 127.0.0.1
+  - description: This is the name of the database to be reindexed.
+    label: Database Name
+    name: db_name
+    required: true
+    value: testdb
+  - label: Database User Name
+    name: db_user
+    required: true
+    value: postgres
+  - description: This should only be used to test job functionality. For production
+      use Create a Key Storage entry and use the "Secure Remote Authentication" Job
+      Option.
+    label: Login Password
+    name: db_password
+    required: true
+    secure: true
+    valueExposed: true
+  - description: Should the job delete the SQL output file at the end of the job?  Answer
+      `Yes` to just view the SQL definition in the job log.  Answer `No` if you plan
+      to use the SQL file to restore a database.
+    enforced: true
+    label: Delete the file?
+    name: delete_file
+    required: true
+    value: 'Yes'
+    values:
+    - 'Yes'
+    - 'No'
+    valuesListDelimiter: ','
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - description: 'Check if psql is available before attempting command.  Error task
+        could install, but default notifies.'
+      errorhandler:
+        exec: echo "psql Command may not be installed."
+      exec: psql --version
+    - description: Reindex Database
+      exec: PGPASSWORD="${option.db_password}" pg_dump -h ${option.db_host} -U ${option.db_user}
+        -F p ${option.db_name} > ${option.db_name}.sql
+    - description: Write SQL Output to Job Log
+      exec: cat ${option.db_name}.sql
+    - description: Remove .sql File (optional)
+      exec: rm ${option.db_name}.sql
+    keepgoing: false
+    pluginConfig:
+      WorkflowStrategy:
+        ruleset:
+          rules: |-
+            [*] run-in-sequence
+            [4] if:option.delete_file==Yes
+    strategy: ruleset
+  tags: 'database,postgresql'
+  uuid: 24388343-cf9a-43d5-8a91-c6c61cae43c1

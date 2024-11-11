@@ -1,0 +1,71 @@
+- defaultTab: output
+  description: |-
+    Use this to trigger a reindex on a PostgreSQL Database
+    This job will:
+    - Reindex a PostgreSQL database using the psql command with the verbose output turned on.
+
+    It is recommended to run the job on a single Enterprise Runner node with `psql` installed.
+
+    ### Prerequisites
+
+    - The `psql` command must be installed on the same machine as the Enterprise Runner and be available in the default path.
+    - The password can be provided directly as part of the input options.  For production use we recommend using a Key Storage entry.
+
+    This job is for demonstration purposes only.
+
+    _Note: The verbose output text of the index command will be shown in red, but it does not represent a failure if the step ends in_ `REINDEX`.
+  executionEnabled: true
+  group: Database Management/PostgreSQL
+  id: ba584aab-0781-4a77-8c8c-10e0b166226f
+  loglevel: INFO
+  name: Reindex a PostgreSQL Database
+  nodeFilterEditable: true
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: 'tags: "RUNNER"'
+  nodesSelectedByDefault: false
+  options:
+  - label: Database Host Name
+    name: db_host
+    required: true
+    value: 127.0.0.1
+  - description: This is the name of the database to be reindexed.
+    label: Database Name
+    name: db_name
+    required: true
+    value: testdb
+  - label: Database User Name
+    name: db_user
+    required: true
+    value: postgres
+  - description: This should only be used to test job functionality.  For production
+      use Create a Key Storage entry and use the "Secure Remote Authentication" Job
+      Option.
+    label: Login password
+    name: db_password
+    required: true
+    secure: true
+    valueExposed: true
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - description: 'Check if psql is available before attempting command.  Error task
+        could install, but default notifies.'
+      errorhandler:
+        exec: echo "psql Command may not be installed."
+      exec: psql --version
+    - description: Reindex Database
+      exec: PGPASSWORD="${option.db_password}" psql -h ${option.db_host} -U ${option.db_user}
+        -d ${option.db_name} -c "'REINDEX (VERBOSE) DATABASE ${option.db_name};'"
+    keepgoing: false
+    strategy: node-first
+  tags: 'database,postgres'
+  uuid: ba584aab-0781-4a77-8c8c-10e0b166226f

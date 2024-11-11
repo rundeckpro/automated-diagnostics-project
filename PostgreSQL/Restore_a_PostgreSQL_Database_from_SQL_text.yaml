@@ -1,0 +1,69 @@
+- defaultTab: output
+  description: "Adhoc PostgreSQL DB Restore:\n\nThis job will: \n\n- Restore a PostgreSQL\
+    \ database using the `psql` command. \n- The input will be a plain text SQL file.\
+    \ \n- The SQL file will be read and executed to restore the database.\n\nIt is\
+    \ recommended to run the job on a single Enterprise Runner node with `psql` installed.\n\
+    \n### Prerequisites\n\n- The `psql` command must be installed on the same machine\
+    \ as the Enterprise Runner and be available in the default path. \n- The password\
+    \ can be provided directly as part of the input options. For production use, we\
+    \ recommend using a Key Storage entry. \n- The SQL file to be restored should\
+    \ be accessible to the runner.\n\nThis job is for demonstration purposes only."
+  executionEnabled: true
+  group: Database Management/PostgreSQL
+  id: 97718899-7972-49c4-abe2-f630f5b941e5
+  loglevel: INFO
+  name: Restore a PostgreSQL Database from SQL text
+  nodeFilterEditable: true
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: 'tags: "RUNNER"'
+  nodesSelectedByDefault: false
+  options:
+  - label: Database Host Name
+    name: db_host
+    required: true
+    value: 127.0.0.1
+  - description: This is the name of the database to be restored.
+    label: Database Name
+    name: db_name
+    required: true
+    value: testdb
+  - label: Database User Name
+    name: db_user
+    required: true
+    value: postgres
+  - description: This should only be used to test job functionality. For production
+      use Create a Key Storage entry and use the "Secure Remote Authentication" Job
+      Option.
+    label: Login Password
+    name: db_password
+    required: true
+    secure: true
+    valueExposed: true
+  - description: Full path to the SQL file to be restored
+    label: SQL File Path
+    name: sql_file
+    required: true
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - description: 'Check if psql is available before attempting command. Error task
+        could install, but default notifies.'
+      errorhandler:
+        exec: echo "psql Command may not be installed."
+      exec: psql --version
+    - description: Restore Database
+      exec: PGPASSWORD="${option.db_password}" psql -h ${option.db_host} -U ${option.db_user}
+        -d ${option.db_name} -f ${option.sql_file}
+    keepgoing: false
+    strategy: node-first
+  tags: 'database,postgresql'
+  uuid: 97718899-7972-49c4-abe2-f630f5b941e5
