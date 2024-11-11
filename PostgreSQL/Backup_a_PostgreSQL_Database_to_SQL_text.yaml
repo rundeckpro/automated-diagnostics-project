@@ -72,8 +72,10 @@
     - description: Reindex Database
       exec: PGPASSWORD="${option.db_password}" pg_dump -h ${option.db_host} -U ${option.db_user}
         -F p ${option.db_name} > ${option.db_name}.sql
-    - exec: cat ${option.db_name}.sql
-    - exec: rm ${option.db_name}.sql
+    - description: Write SQL Output to Job Log
+      exec: cat ${option.db_name}.sql
+    - description: Remove .sql File (optional)
+      exec: rm ${option.db_name}.sql
     keepgoing: false
     pluginConfig:
       WorkflowStrategy:
