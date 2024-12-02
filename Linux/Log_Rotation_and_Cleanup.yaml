@@ -1,0 +1,74 @@
+- defaultTab: output
+  description: |-
+    This example uses a shell script to manually rotate logs and delete old ones.
+
+    ## Explanation
+
+    - Rotate Logs: The script renames each log file by appending a timestamp to its name. This effectively "rotates" the log by archiving the current log file and starting a new one.
+    - Compress Logs: After renaming, the script compresses the rotated log files using gzip to save disk space.
+    - Clean Up Old Logs: The script deletes compressed log files older than a specified number of days (30 days default). Adjust the Retention Days input variable as needed.
+
+    ## Assumptions
+
+    - Files in the directory end with `.log`
+  executionEnabled: true
+  group: Storage Management/Linux
+  id: 5e1225fa-5407-474e-9f06-8cc656b6439b
+  loglevel: INFO
+  name: Log Rotation and Cleanup
+  nodeFilterEditable: true
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: .*
+  nodesSelectedByDefault: false
+  options:
+  - label: Log Directory
+    name: log-directory
+    required: true
+    value: /var/log/myapp
+  - label: Retention Days
+    name: retention-days
+    required: true
+    value: '30'
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - autoSecureInput: 'false'
+      description: Rotate and clean up logs
+      passSecureInput: 'false'
+      script: |
+        #!/bin/bash
+        # Define the log directory and retention period
+        LOG_DIR="@option.log-directory@"
+        RETENTION_DAYS=@option.retention-days@
+        TIMESTAMP=$(date +%Y%m%d%H%M%S)
+
+        # Rotate logs: rename current log file with a timestamp
+        for LOG_FILE in $LOG_DIR/*.log; do
+          if [ -f "$LOG_FILE" ]; then
+            mv "$LOG_FILE" "$LOG_FILE.$TIMESTAMP"
+            echo "Rotated $LOG_FILE to $LOG_FILE.$TIMESTAMP"
+          fi
+        done
+
+        # Compress rotated logs
+        for ROTATED_LOG in $LOG_DIR/*.log.$TIMESTAMP; do
+          gzip "$ROTATED_LOG"
+          echo "Compressed $ROTATED_LOG"
+        done
+
+        # Clean up old logs
+        find $LOG_DIR -type f -name "*.log.*.gz" -mtime +$RETENTION_DAYS -exec rm -f {} \;
+        echo "Old logs cleaned up successfully."
+    keepgoing: false
+    strategy: node-first
+  tags: storage
+  uuid: 5e1225fa-5407-474e-9f06-8cc656b6439b
