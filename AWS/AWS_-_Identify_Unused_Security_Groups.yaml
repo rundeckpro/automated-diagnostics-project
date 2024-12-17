@@ -1,0 +1,144 @@
+- defaultTab: output
+  description: |
+    Generate list of unused Security Groups
+
+    ### Description:
+    This automation job generates a listing of AWS security groups that are not associated with any network interfaces and are therefore eligible for deletion. It checks various AWS services to ensure comprehensive coverage.
+
+    ### Prerequisites:
+    - AWS CLI installed on runner.
+    - API permissions for Describe Network Interfaces.
+
+    ### Options:
+
+    | Option Name       | Description                    | Default Value |
+    |-------------------|--------------------------------|---------------|
+    | `region`    | Regional endpoint to search.   | N/A   |
+    | `always-show-results` | Show recommendations even if there are errors | false |
+
+    ------
+
+    If you have trouble running this, be sure to follow the corresponding Solutions page on our [docs site](https://docs.rundeck.com/docs).
+
+    **Disclaimer**: This document and the described automation job are provided "as is" without warranty of any kind, express or implied. The user assumes all risks associated with the use of this job. The creators or contributors are not liable for any direct, indirect, incidental, special, exemplary, or consequential damages (including, but not limited to, procurement of substitute goods or services; loss of use, data, or profits; or business interruption) caused and on any theory of liability, whether in contract, strict liability, or tort (including negligence or otherwise) arising in any way out of the use of this job, even if advised of the possibility of such damage.
+  executionEnabled: true
+  group: Cost Management/AWS
+  id: 9f863902-5435-497e-aa9b-4705046ecf51
+  loglevel: INFO
+  name: AWS - Identify Unused Security Groups
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: 'tags: "RUNNER"'
+  nodesSelectedByDefault: false
+  options:
+  - label: AWS Region
+    name: region
+    optionValuesPluginType: aws-regions-job-options
+    required: true
+  - description: Show the comparison results even when checking the various AWS services
+      may result in Access Errors.
+    enforced: true
+    label: Show Results with Errors
+    name: always-show-results
+    required: true
+    value: 'false'
+    values:
+    - 'false'
+    - 'true'
+    valuesListDelimiter: ','
+  plugins:
+    ExecutionLifecycle: {}
+  runnerSelector:
+    filter: DEMO
+    runnerFilterMode: TAGS
+    runnerFilterType: TAG_FILTER_AND
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - autoSecureInput: 'false'
+      description: Report Unused Security Groups
+      passSecureInput: 'false'
+      plugins:
+        LogFilter:
+        - config:
+            bgcolor: yellow
+            regex: WARNING.*
+          type: highlight-output
+      script: "# ------------------------------------------------------------------------------\n\
+        # Script Name: identify_deletable_security_groups.sh\n# Description: This\
+        \ script identifies AWS security groups that can be safely \n#           \
+        \   deleted in a specified region, excluding default security groups \n# \
+        \             and those associated with network interfaces.\n#\n# Functionality:\n\
+        #   1. Retrieves a list of all security groups in the specified AWS region.\n\
+        #   2. Identifies security groups associated with network interfaces.\n# \
+        \  3. Excludes default security groups since they cannot be deleted by AWS.\n\
+        #   4. Prints a list of security groups that are not associated with any \n\
+        #      network interfaces and are eligible for deletion.\n#\n# Usage:\n# \
+        \  - Set the `region` variable via @option.region@ to specify the AWS region.\n\
+        #   - Run the script with appropriate AWS CLI permissions.\n#\n# Requirements:\n\
+        #   - AWS CLI must be installed and configured with credentials that have\
+        \ \n#     permissions to:\n#       - Describe security groups.\n#       -\
+        \ Describe network interfaces.\n#\n# Input:\n#   - AWS Region (`region`).\n\
+        #\n# Output:\n#   - Messages indicating whether a security group is a default\
+        \ group, \n#     associated with network interfaces, or eligible for deletion.\n\
+        #\n# Notes:\n#   - This script does not automatically delete security groups\
+        \ but provides \n#     information for manual cleanup.\n#   - Additional checks\
+        \ for dependencies may be required before deleting a \n#     security group.\n\
+        #\n# Author: Pagerduty Community Member\n# Date: 20241216\n# ------------------------------------------------------------------------------\n\
+        \n\n\n#!/bin/bash\n\n# Set region job option variable \nregion=@option.region@\n\
+        \n# Set this to true to show results even if AWS errors occur\nshow_results_with_errors=@option.always-show-results@\n\
+        \n# Function to execute AWS CLI commands and handle errors\nrun_aws_command()\
+        \ {\n    local output\n    output=$(\"$@\" 2>&1)\n    local exit_code=$?\n\
+        \    \n    if [[ $exit_code -ne 0 ]]; then\n        echo \"Error: Failed to\
+        \ execute the command: $*\" >&2\n        echo \"Output: $output\" >&2\n  \
+        \      return 1\n    fi\n\n    echo \"$output\"\n}\n\n# Flag to track if any\
+        \ errors occurred\nerrors_occurred=false\n\necho \"Fetching all security groups...\"\
+        \nall_sgs=$(run_aws_command aws ec2 describe-security-groups --region \"$region\"\
+        \ --query 'SecurityGroups[*].[GroupId,GroupName]' --output text) || errors_occurred=true\n\
+        \nif [[ -z \"$all_sgs\" ]]; then\n    echo \"No security groups found in region\
+        \ $region.\"\n    exit 0\nfi\n\necho \"All security groups:\"\necho \"$all_sgs\"\
+        \n\necho \"Fetching associated security groups from network interfaces...\"\
+        \nnetwork_sgs=$(run_aws_command aws ec2 describe-network-interfaces --region\
+        \ \"$region\" --query 'NetworkInterfaces[].Groups[].GroupId' --output text)\
+        \ || errors_occurred=true\n\necho \"Fetching associated security groups from\
+        \ classic load balancers...\"\nelb_sgs=$(run_aws_command aws elb describe-load-balancers\
+        \ --region \"$region\" --query 'LoadBalancerDescriptions[].SecurityGroups[]'\
+        \ --output text) || errors_occurred=true\n\necho \"Fetching associated security\
+        \ groups from application/network load balancers...\"\nalb_sgs=$(run_aws_command\
+        \ aws elbv2 describe-load-balancers --region \"$region\" --query 'LoadBalancers[].SecurityGroups[]'\
+        \ --output text) || errors_occurred=true\n\necho \"Fetching associated security\
+        \ groups from RDS instances...\"\nrds_sgs=$(run_aws_command aws rds describe-db-instances\
+        \ --region \"$region\" --query 'DBInstances[].VpcSecurityGroups[].VpcSecurityGroupId'\
+        \ --output text) || errors_occurred=true\n\necho \"Fetching associated security\
+        \ groups from Elasticache clusters...\"\nelasticache_sgs=$(run_aws_command\
+        \ aws elasticache describe-cache-clusters --region \"$region\" --query 'CacheClusters[].SecurityGroups[].SecurityGroupId'\
+        \ --output text) || errors_occurred=true\n\necho \"Fetching associated security\
+        \ groups from Redshift clusters...\"\nredshift_sgs=$(run_aws_command aws redshift\
+        \ describe-clusters --region \"$region\" --query 'Clusters[].VpcSecurityGroups[].VpcSecurityGroupId'\
+        \ --output text) || errors_occurred=true\n\n# Combine all associated security\
+        \ groups\nall_associated_sgs=$(echo -e \"$network_sgs\\n$elb_sgs\\n$alb_sgs\\\
+        n$rds_sgs\\n$elasticache_sgs\\n$redshift_sgs\" | sort -u)\n\necho \"All associated\
+        \ security groups:\"\necho \"$all_associated_sgs\"\n\nif $errors_occurred;\
+        \ then\n    echo \"WARNING: Errors occurred while fetching security group\
+        \ information.\"\n    echo \"The list of unused security groups may be incomplete.\"\
+        \n    echo \"Please check your AWS permissions and try again.\"\nfi\n\nif\
+        \ $show_results_with_errors == \"true\" || ! $errors_occurred; then\n    echo\
+        \ \"Checking for unused security groups...\"\n    while read -r sg_id sg_name;\
+        \ do\n        if [[ \"$sg_name\" == \"default\" ]]; then\n            echo\
+        \ \"$sg_id is a default security group. Will not be listed for deletion.\"\
+        \n            continue\n        fi\n\n        if ! echo \"$all_associated_sgs\"\
+        \ | grep -q \"$sg_id\"; then\n            echo \"$sg_id ($sg_name) can be\
+        \ deleted.\"\n        fi\n    done <<< \"$all_sgs\"\nelse\n    echo \"Skipping\
+        \ unused security group check due to errors.\"\n    echo \"Set 'show_results_with_errors'\
+        \ to true to see partial results.\"\nfi\n\necho \"Script completed.\""
+    keepgoing: false
+    strategy: node-first
+  tags: aws
+  uuid: 9f863902-5435-497e-aa9b-4705046ecf51

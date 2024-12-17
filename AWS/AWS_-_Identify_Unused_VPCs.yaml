@@ -1,0 +1,154 @@
+- defaultTab: output
+  description: |
+    Generate list of unused Virtual Private Networks
+
+    ### Description:
+
+    This automation job generates a listing of AWS Virtual Private Clouds (VPCs) that are not associated with any resources and are therefore eligible for deletion. It checks various AWS services to ensure comprehensive coverage.
+
+    ### Prerequisites:
+    - AWS-CLI installed on runner.
+    - AWS permissions
+      - `ec2:DescribeVpcs`
+      - `ec2:DescribeInstances`
+      - `rds:DescribeDBInstances`
+      - `elb:DescribeLoadBalancers`
+      - `elbv2:DescribeLoadBalancers`
+      - `ec2:DescribeNatGateways`
+      - `ec2:DescribeVpnConnections`
+      - `ec2:DescribeTransitGatewayVpcAttachments`
+
+    ### Options:
+
+    | Option Name       | Description                    | Default Value |
+    |-------------------|--------------------------------|---------------|
+    | `region`    | regional endpoint to make your requests.   | N/A   |
+    | `always-show-results` | Show results even when checking AWS services results in Access Errors | false |
+
+    ------
+
+    If you have trouble running this, be sure to follow the corresponding Solutions page on our [docs site](https://docs.rundeck.com/docs).
+
+    **Disclaimer**: This document and the described automation job are provided "as is" without warranty of any kind, express or implied. The user assumes all risks associated with the use of this job. The creators or contributors are not liable for any direct, indirect, incidental, special, exemplary, or consequential damages (including, but not limited to, procurement of substitute goods or services; loss of use, data, or profits; or business interruption) caused and on any theory of liability, whether in contract, strict liability, or tort (including negligence or otherwise) arising in any way out of the use of this job, even if advised of the possibility of such damage.
+  executionEnabled: true
+  group: Cost Management/AWS
+  id: fd2b03d6-5470-42ac-95a3-359f77d898dd
+  loglevel: INFO
+  name: AWS - Identify Unused VPCs
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: 'tags: "RUNNER"'
+  nodesSelectedByDefault: false
+  options:
+  - label: AWS Region
+    name: region
+    optionValuesPluginType: aws-regions-job-options
+    required: true
+  - description: Show results even when checking AWS services results in Access Errors
+    enforced: true
+    label: Show Results even after Error
+    name: always-show-results
+    required: true
+    value: 'false'
+    values:
+    - 'false'
+    - 'true'
+    valuesListDelimiter: ','
+  plugins:
+    ExecutionLifecycle: {}
+  runnerSelector:
+    filter: DEMO
+    runnerFilterMode: TAGS
+    runnerFilterType: TAG_FILTER_AND
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - autoSecureInput: 'false'
+      description: Report Unused VPCs
+      passSecureInput: 'false'
+      plugins:
+        LogFilter:
+        - config:
+            bgcolor: yellow
+            mode: bold
+            regex: WARNING.*
+          type: highlight-output
+        - config:
+            fgcolor: magenta
+            mode: bold
+            regex: .* can be deleted
+          type: highlight-output
+      script: "# ------------------------------------------------------------------------------\n\
+        # Script Name: identify_unused_vpcs.sh\n# Description: This script identifies\
+        \ unused VPCs in a specified AWS region, \n#              excluding the default\
+        \ VPC and those with associated ENIs (Elastic \n#              Network Interfaces).\n\
+        #\n# Functionality:\n#   1. Retrieves a list of all VPCs in the specified\
+        \ AWS region.\n#   2. Identifies the default VPC and excludes it from further\
+        \ processing.\n#   3. Checks each non-default VPC for associated ENIs.\n#\
+        \   4. Prints a message indicating whether a VPC is unused and may be eligible\
+        \ \n#      for deletion.\n#\n# Usage:\n#   - Set the `region` variable via\
+        \ @option.region@ to specify the AWS region.\n#   - Run the script with appropriate\
+        \ AWS CLI permissions.\n#\n# Requirements:\n#   - AWS CLI must be installed\
+        \ and configured with credentials that have \n#     permissions to:\n#   \
+        \    - Describe VPCs.\n#       - Describe Network Interfaces.\n#\n# Input:\n\
+        #   - AWS Region (`region`).\n#\n# Output:\n#   - Messages indicating whether\
+        \ a VPC is unused, has associated ENIs, or is \n#     the default VPC and\
+        \ skipped.\n#\n# Notes:\n#   - This script does not delete VPCs automatically\
+        \ but provides guidance \n#     for manual cleanup.\n#   - Additional checks\
+        \ for associated resources (e.g., subnets, route tables, \n#     security\
+        \ groups) may be necessary before deleting a VPC.\n#\n# Author: Pagerduty\
+        \ Community Member\n# Date: 20241125\n# ------------------------------------------------------------------------------\n\
+        \n\n#!/bin/bash\n\n# Set region job option variable \nregion=@option.region@\n\
+        \n# Set this to true to show results even if AWS errors occur\nshow_results_with_errors=@option.always-show-results@\n\
+        \n# Function to execute AWS CLI commands and handle errors\nrun_aws_command()\
+        \ {\n    local output\n    output=$(\"$@\" 2>&1)\n    local exit_code=$?\n\
+        \    \n    if [[ $exit_code -ne 0 ]]; then\n        echo \"Error: Failed to\
+        \ execute the command: $*\" >&2\n        echo \"Output: $output\" >&2\n  \
+        \      return 1\n    fi\n\n    echo \"$output\"\n}\n\n# Flag to track if any\
+        \ errors occurred\nerrors_occurred=false\n\necho \"Fetching all VPCs...\"\n\
+        all_vpcs=$(run_aws_command aws ec2 describe-vpcs --region \"$region\" --query\
+        \ 'Vpcs[*].[VpcId,IsDefault]' --output text) || errors_occurred=true\n\nif\
+        \ [[ -z \"$all_vpcs\" ]]; then\n    echo \"No VPCs found in region $region.\"\
+        \n    exit 0\nfi\n\necho \"All VPCs:\"\necho \"$all_vpcs\"\n\necho \"Fetching\
+        \ EC2 instances...\"\nec2_vpcs=$(run_aws_command aws ec2 describe-instances\
+        \ --region \"$region\" --query 'Reservations[].Instances[].VpcId' --output\
+        \ text) || errors_occurred=true\n\necho \"Fetching RDS instances...\"\nrds_vpcs=$(run_aws_command\
+        \ aws rds describe-db-instances --region \"$region\" --query 'DBInstances[].DBSubnetGroup.VpcId'\
+        \ --output text) || errors_occurred=true\n\necho \"Fetching ELBs...\"\nelb_vpcs=$(run_aws_command\
+        \ aws elb describe-load-balancers --region \"$region\" --query 'LoadBalancerDescriptions[].VPCId'\
+        \ --output text) || errors_occurred=true\n\necho \"Fetching ALBs and NLBs...\"\
+        \nalb_vpcs=$(run_aws_command aws elbv2 describe-load-balancers --region \"\
+        $region\" --query 'LoadBalancers[].VpcId' --output text) || errors_occurred=true\n\
+        \necho \"Fetching NAT Gateways...\"\nnat_vpcs=$(run_aws_command aws ec2 describe-nat-gateways\
+        \ --region \"$region\" --query 'NatGateways[].VpcId' --output text) || errors_occurred=true\n\
+        \necho \"Fetching VPN Connections...\"\nvpn_vpcs=$(run_aws_command aws ec2\
+        \ describe-vpn-connections --region \"$region\" --query 'VpnConnections[].VpcId'\
+        \ --output text) || errors_occurred=true\n\necho \"Fetching Transit Gateway\
+        \ attachments...\"\ntgw_vpcs=$(run_aws_command aws ec2 describe-transit-gateway-vpc-attachments\
+        \ --region \"$region\" --query 'TransitGatewayVpcAttachments[].VpcId' --output\
+        \ text) || errors_occurred=true\n\n# Combine all associated VPCs\nall_associated_vpcs=$(echo\
+        \ -e \"$ec2_vpcs\\n$rds_vpcs\\n$elb_vpcs\\n$alb_vpcs\\n$nat_vpcs\\n$vpn_vpcs\\\
+        n$tgw_vpcs\" | sort -u)\n\necho \"All associated VPCs:\"\necho \"$all_associated_vpcs\"\
+        \n\nif $errors_occurred; then\n    echo \"WARNING: Errors occurred while fetching\
+        \ VPC information.\"\n    echo \"The list of unused VPCs may be incomplete.\"\
+        \n    echo \"Please check your AWS permissions and try again.\"\nfi\n\nif\
+        \ $show_results_with_errors == \"true\" || ! $errors_occurred; then\n    echo\
+        \ \"Checking for unused VPCs...\"\n    while read -r vpc_id is_default; do\n\
+        \        if [[ \"$is_default\" == \"True\" ]]; then\n            echo \"$vpc_id\
+        \ is the default VPC. Will not be listed for deletion.\"\n            continue\n\
+        \        fi\n\n        if ! echo \"$all_associated_vpcs\" | grep -q \"$vpc_id\"\
+        ; then\n            echo \"$vpc_id can be deleted.\"\n        fi\n    done\
+        \ <<< \"$all_vpcs\"\nelse\n    echo \"Skipping unused VPC check due to errors.\"\
+        \n    echo \"Set 'show_results_with_errors' to true to see partial results.\"\
+        \nfi\n\necho \"Script completed.\""
+    keepgoing: false
+    strategy: node-first
+  tags: aws
+  uuid: fd2b03d6-5470-42ac-95a3-359f77d898dd
