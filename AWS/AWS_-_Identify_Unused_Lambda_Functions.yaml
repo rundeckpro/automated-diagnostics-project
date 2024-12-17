@@ -1,0 +1,167 @@
+- defaultTab: nodes
+  description: |
+    Generate a listing of Lambda functions and highlight usage.
+
+    ### Description:
+    This automation job generates a listing of AWS Lambda functions and highlights any that may be eligible for deletion based on modification and execution dates provided as job inputs. It provides a detailed report of Lambda functions, including their last modified and last execution dates, and recommends whether to keep or delete each function.
+
+    ### Prerequisites:
+    - AWS-CLI installed on runner.
+    - jq tool for JSON parsing installed on runner.
+    - API permissions: List Lambda functions, Describe and delete log groups, Delete Lambda functions.
+
+    ### Options:
+
+    | Option Name       | Description                    | Default Value |
+    |-------------------|--------------------------------|---------------|
+    | `region`    | Regional endpoint to make your requests.   | N/A   |
+    | `Execution Date` | List fuctions that have not been called since this date | N/A |
+    | `Modified Date` | List functions older than this date | N/A |
+
+    ------
+    If you have trouble running this, be sure to follow the corresponding Solutions page on our [docs site](https://docs.rundeck.com/docs).
+
+    **Disclaimer**: This document and the described automation job are provided "as is" without warranty of any kind, express or implied. The user assumes all risks associated with the use of this job. The creators or contributors are not liable for any direct, indirect, incidental, special, exemplary, or consequential damages (including, but not limited to, procurement of substitute goods or services; loss of use, data, or profits; or business interruption) caused and on any theory of liability, whether in contract, strict liability, or tort (including negligence or otherwise) arising in any way out of the use of this job, even if advised of the possibility of such damage.
+  executionEnabled: true
+  group: Cost Management/AWS
+  id: 8a54ae31-10c6-4475-9c10-2c3d76f1c168
+  loglevel: INFO
+  name: AWS - Identify Unused Lambda Functions
+  nodeFilterEditable: true
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: 'tags: "RUNNER"'
+  nodesSelectedByDefault: false
+  options:
+  - dateFormat: null
+    isDate: true
+    label: Execution Date
+    name: exe_date
+    required: true
+  - dateFormat: null
+    isDate: true
+    label: Modified Date
+    name: mod_date
+    required: true
+  - label: AWS Region
+    name: region
+    optionValuesPluginType: aws-regions-job-options
+    required: true
+  plugins:
+    ExecutionLifecycle: {}
+  runnerSelector:
+    filter: DEMO
+    runnerFilterMode: TAGS
+    runnerFilterType: TAG_FILTER_AND
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - autoSecureInput: 'false'
+      passSecureInput: 'false'
+      plugins:
+        LogFilter:
+        - config:
+            bgcolor: red
+            mode: bold
+            regex: '^Recommendation: Delete$'
+          type: highlight-output
+        - config:
+            bgcolor: green
+            regex: '^Recommendation: Keep$'
+          type: highlight-output
+        - config:
+            mode: bold
+            regex: ^Function:.*$
+          type: highlight-output
+      script: "#!/bin/bash\n# ------------------------------------------------------------------------------\n\
+        # Script Name: cleanup_lambda_functions.sh\n# Description: This script generates\
+        \ a report of AWS Lambda functions in a \n#              specified region\
+        \ and deletes functions and their associated log \n#              groups if\
+        \ they meet specified conditions based on modification \n#              and\
+        \ execution dates.\n# \n# Functionality:\n#   1. Lists all Lambda functions\
+        \ in the specified AWS region.\n#   2. Retrieves the last modified date of\
+        \ each function and the last execution \n#      date (from CloudWatch Logs).\n\
+        #   3. Compares these dates against the provided execution and modification\
+        \ \n#      thresholds.\n#   4. Deletes functions and their log groups if both\
+        \ the last modified date and \n#      the last execution date are earlier\
+        \ than the thresholds.\n#\n# Usage:\n#   - Set the following variables:\n\
+        #       - `region`: AWS region to query.\n#       - `exe_date`: Threshold\
+        \ for the last execution date (YYYY-MM-DD format).\n#       - `mod_date`:\
+        \ Threshold for the last modified date (YYYY-MM-DD format).\n#   - Ensure\
+        \ AWS CLI and jq are installed and properly configured.\n#\n# Requirements:\n\
+        #   - AWS CLI with credentials and permissions to:\n#       - List Lambda\
+        \ functions.\n#       - Describe and delete log groups.\n#       - Delete\
+        \ Lambda functions.\n#   - jq tool for JSON parsing.\n#\n# Input:\n#   - AWS\
+        \ Region (`region`).\n#   - Execution Date Threshold (`exe_date`).\n#   -\
+        \ Modification Date Threshold (`mod_date`).\n#\n# Output:\n#   - A detailed\
+        \ report of Lambda functions, including their last modified and \n#     last\
+        \ execution dates.\n#   - Deletion messages for functions and logs meeting\
+        \ the criteria.\n#\n# Author: Pagerduty Community Member\n# Date: 20241122\n\
+        # ------------------------------------------------------------------------------\n\
+        \nregion=@option.region@\nexe_date=@option.exe_date@\nmod_date=@option.mod_date@\n\
+        \necho \"Region: $region\"\nif [[ \"$OSTYPE\" == \"linux-gnu\"* ]]; then\n\
+        \    exe_date_unix=$(date -d \"$exe_date\" +%s)\n    mod_date_unix=$(date\
+        \ -d \"$mod_date\" +%s)\n    exe_date_iso=$(date -d \"$exe_date\" \"+%Y-%m-%d\
+        \ %H:%M:%S\")\n    mod_date_iso=$(date -d \"$mod_date\" \"+%Y-%m-%d %H:%M:%S\"\
+        )\nelif [[ \"$OSTYPE\" == \"darwin\"* ]]; then\n    # Preprocess the input\
+        \ to remove the timezone offset\n    exe_date_fixed=$(echo \"$exe_date\" |\
+        \ sed -E 's/(T[0-9]{2}:[0-9]{2}:[0-9]{2})[-+][0-9]{2}:[0-9]{2}/\\1/')\n  \
+        \  mod_date_fixed=$(echo \"$mod_date\" | sed -E 's/(T[0-9]{2}:[0-9]{2}:[0-9]{2})[-+][0-9]{2}:[0-9]{2}/\\\
+        1/')\n    \n    # Convert to Unix timestamps\n    exe_date_unix=$(date -j\
+        \ -f \"%Y-%m-%dT%H:%M:%S\" \"$exe_date_fixed\" +%s)\n    mod_date_unix=$(date\
+        \ -j -f \"%Y-%m-%dT%H:%M:%S\" \"$mod_date_fixed\" +%s)\n    \n    # Convert\
+        \ to ISO 8601 format\n    exe_date_iso=$(date -j -f \"%Y-%m-%dT%H:%M:%S\"\
+        \ \"$exe_date_fixed\" \"+%Y-%m-%d %H:%M:%S\")\n    mod_date_iso=$(date -j\
+        \ -f \"%Y-%m-%dT%H:%M:%S\" \"$mod_date_fixed\" \"+%Y-%m-%d %H:%M:%S\")\n \
+        \   \n    # Output results\n    echo \"exe_date_unix: $exe_date_unix\"\n \
+        \   echo \"mod_date_unix: $mod_date_unix\"\n    echo \"exe_date_iso: $exe_date_iso\"\
+        \n    echo \"mod_date_iso: $mod_date_iso\"\nelse\n    echo \"Unsupported OS\"\
+        \nfi\necho \"Modified Date: $mod_date_iso\"\necho \"Execution Date: $exe_date_iso\"\
+        \n\necho \"Lambda Functions Report:\"\necho \"---------------------------\"\
+        \n\nfunctions=$(aws lambda list-functions --region \"$region\" --query 'Functions[*].{Name:FunctionName,LastModified:LastModified}'\
+        \ --output json)\n\necho \"$functions\" | jq -c '.[]' | while read -r function;\
+        \ do\n    name=$(echo \"$function\" | jq -r '.Name')\n    last_modified=$(echo\
+        \ \"$function\" | jq -r '.LastModified')\n\n    # Preprocess the LastModified\
+        \ field to remove fractional seconds and fix timezone\n    last_modified_fixed=$(echo\
+        \ \"$last_modified\" | sed -E 's/\\.[0-9]+//; s/([+-][0-9]{2}):([0-9]{2})/\\\
+        1\\2/')\n\n    if [[ \"$OSTYPE\" == \"linux-gnu\"* ]]; then\n        # Linux\
+        \ (GNU date)\n        last_modified_unix=$(date -d \"$last_modified_fixed\"\
+        \ +%s)\n        last_modified_iso=$(date -d \"$last_modified_fixed\" \"+%Y-%m-%d\
+        \ %H:%M:%S\")\n    elif [[ \"$OSTYPE\" == \"darwin\"* ]]; then\n        #\
+        \ macOS (BSD date)\n        last_modified_unix=$(date -j -f \"%Y-%m-%dT%H:%M:%S%z\"\
+        \ \"$last_modified_fixed\" +%s)\n        last_modified_iso=$(date -j -f \"\
+        %Y-%m-%dT%H:%M:%S%z\" \"$last_modified_fixed\" \"+%Y-%m-%d %H:%M:%S\")\n \
+        \   fi\n\n    log_group=\"/aws/lambda/$name\"\n\n    # Check if the log group\
+        \ exists\n    log_group_exists=$(aws logs describe-log-groups --log-group-name-prefix\
+        \ \"$log_group\" --region \"$region\" --query 'logGroups[?logGroupName==`'\"\
+        $log_group\"'`]' --output text)\n\n    if [[ -z \"$log_group_exists\" ]];\
+        \ then\n        # Log group does not exist\n        last_execution_iso=\"\
+        No logs found\"\n        last_execution_unix=0\n    else\n        # Log group\
+        \ exists, get the last event timestamp\n        last_event=$(aws logs describe-log-streams\
+        \ --log-group-name \"$log_group\" --order-by \"LastEventTime\" --descending\
+        \ --limit 1 --region \"$region\" \\\n                     --query 'logStreams[0].lastEventTimestamp'\
+        \ --output text)\n\n        if [[ \"$last_event\" != \"None\" && \"$last_event\"\
+        \ != \"null\" ]]; then\n            last_execution_unix=$((last_event / 1000))\n\
+        \            if [[ \"$OSTYPE\" == \"linux-gnu\"* ]]; then\n              \
+        \  # Linux (GNU date)\n                last_execution_iso=$(date -d @\"$last_execution_unix\"\
+        \ \"+%Y-%m-%d %H:%M:%S\")\n            elif [[ \"$OSTYPE\" == \"darwin\"*\
+        \ ]]; then\n                # macOS (BSD date)\n                last_execution_iso=$(date\
+        \ -r \"$last_execution_unix\" \"+%Y-%m-%d %H:%M:%S\")\n            fi\n  \
+        \      else\n            last_execution_iso=\"No execution found\"\n     \
+        \       last_execution_unix=0\n        fi\n    fi\n\n    echo \"Function:\
+        \ $name\"\n    echo \"Last Modified: $last_modified_iso\"\n    echo \"Last\
+        \ Execution: $last_execution_iso\"\n\n    if [[ \"$last_modified_unix\" -lt\
+        \ \"$mod_date_unix\" && \"$last_execution_unix\" -lt \"$exe_date_unix\" ]];\
+        \ then\n        echo \"Recommendation: Delete\"\n        echo \"Both dates\
+        \ are earlier than the provided inputs.\"\n    else\n        echo \"Recommendation:\
+        \ Keep\"\n    fi\n\n    echo \"---------------------------\"\ndone"
+    keepgoing: false
+    strategy: node-first
+  tags: 'aws,lambda'
+  uuid: 8a54ae31-10c6-4475-9c10-2c3d76f1c168
