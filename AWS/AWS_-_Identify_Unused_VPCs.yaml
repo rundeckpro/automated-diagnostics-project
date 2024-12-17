@@ -3,21 +3,31 @@
     Generate list of unused Virtual Private Networks
 
     ### Description:
-    The automation job is designed to identify VPCs that are unused across mulitiple resource types.  They would be candidates for removal.
+
+    This automation job generates a listing of AWS Virtual Private Clouds (VPCs) that are not associated with any resources and are therefore eligible for deletion. It checks various AWS services to ensure comprehensive coverage.
 
     ### Prerequisites:
     - AWS-CLI installed on runner.
-    - API permissions for
+    - AWS permissions
+      - `ec2:DescribeVpcs`
+      - `ec2:DescribeInstances`
+      - `rds:DescribeDBInstances`
+      - `elb:DescribeLoadBalancers`
+      - `elbv2:DescribeLoadBalancers`
+      - `ec2:DescribeNatGateways`
+      - `ec2:DescribeVpnConnections`
+      - `ec2:DescribeTransitGatewayVpcAttachments`
 
     ### Options:
 
     | Option Name       | Description                    | Default Value |
     |-------------------|--------------------------------|---------------|
     | `region`    | regional endpoint to make your requests.   | N/A   |
-
-
+    | `always-show-results` | Show results even when checking AWS services results in Access Errors | false |
 
     ------
+
+    If you have trouble running this, be sure to follow the corresponding Solutions page on our [docs site](https://docs.rundeck.com/docs).
 
     **Disclaimer**: This document and the described automation job are provided "as is" without warranty of any kind, express or implied. The user assumes all risks associated with the use of this job. The creators or contributors are not liable for any direct, indirect, incidental, special, exemplary, or consequential damages (including, but not limited to, procurement of substitute goods or services; loss of use, data, or profits; or business interruption) caused and on any theory of liability, whether in contract, strict liability, or tort (including negligence or otherwise) arising in any way out of the use of this job, even if advised of the possibility of such damage.
   executionEnabled: true
