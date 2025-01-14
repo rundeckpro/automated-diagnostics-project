@@ -1,0 +1,148 @@
+- defaultTab: nodes
+  description: |
+    Change EC2 Instance Size
+
+    This script does the following:
+    - Stops the selected EC2 instance.
+    - A script step ensures the instance is not running and performs error checking to verify that the new instance type is supported, then changes the type.
+    - Optionally starts the instance after successful change.
+
+    Requirements:
+    For detailed requirements see the corresponding solutions page in our docs at:  [https://docs.rundeck.com/learning/solutions](https://docs.rundeck.com/learning/solutions)
+    - AWS CLI on your runner
+    - AWS EC2 Node Source configured with "Show only Running instances" set to "No"
+    - Sufficient rights in AWS to change EC2 instances
+  executionEnabled: true
+  group: Cost Management/AWS
+  id: de28b8ff-d636-4318-be91-00ee3cc7961f
+  loglevel: INFO
+  name: AWS - Change EC2 Instance Size
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: 'tags: "ec2"'
+  nodesSelectedByDefault: false
+  options:
+  - label: New Instance Type
+    name: new-instance-type
+    required: true
+    sortValues: true
+    values:
+    - c5.18xlarge
+    - c5.2xlarge
+    - c5.4xlarge
+    - c5.9xlarge
+    - c5.large
+    - c5.xlarge
+    - g4dn.16xlarge
+    - g4dn.2xlarge
+    - g4dn.4xlarge
+    - g4dn.8xlarge
+    - g4dn.xlarge
+    - i3.16xlarge
+    - i3.2xlarge
+    - i3.4xlarge
+    - i3.8xlarge
+    - i3.large
+    - i3.xlarge
+    - m5.12xlarge
+    - m5.16xlarge
+    - m5.24xlarge
+    - m5.2xlarge
+    - m5.4xlarge
+    - m5.8xlarge
+    - m5.large
+    - m5.xlarge
+    - p3.16xlarge
+    - p3.2xlarge
+    - p3.8xlarge
+    - r5.12xlarge
+    - r5.16xlarge
+    - r5.24xlarge
+    - r5.2xlarge
+    - r5.4xlarge
+    - r5.8xlarge
+    - r5.large
+    - r5.xlarge
+    - t3.2xlarge
+    - t3.large
+    - t3.medium
+    - t3.micro
+    - t3.nano
+    - t3.small
+    - t3.xlarge
+    valuesListDelimiter: ','
+  - description: |-
+      Should the job restart the instance after successful change?
+      Note: If the change step is unsuccessful the instance will remain stopped.
+    enforced: true
+    label: Restart Instance
+    name: start-instance
+    required: true
+    value: 'Yes'
+    values:
+    - 'Yes'
+    - 'No'
+    valuesListDelimiter: ','
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - configuration:
+        region: ${node.region}
+      description: stop-instance
+      nodeStep: true
+      type: aws-vm-stop-step
+    - configuration:
+        script: "#!/bin/bash\n\nINSTANCE_ID=${node.instanceId}\nNEW_INSTANCE_TYPE=${option.new-instance-type}\n\
+          REGION=${node.region}\nSHUTDOWNTIMER=30\n\necho \"Changing size on $INSTANCE_ID\
+          \ to $NEW_INSTANCE_TYPE\"\n\n# Function to check if the instance is stopped\n\
+          check_instance_stopped() {\n    state=$(aws ec2 describe-instances --instance-ids\
+          \ $INSTANCE_ID --region $REGION --query 'Reservations[0].Instances[0].State.Name'\
+          \ --output text)\n    echo $state\n}\n\n# Function to check if the new instance\
+          \ type is supported\ncheck_instance_type_supported() {\n    if ! aws ec2\
+          \ describe-instance-type-offerings --location-type availability-zone --filters\
+          \ Name=instance-type,Values=$NEW_INSTANCE_TYPE --region $REGION --query\
+          \ 'InstanceTypeOfferings[0]' --output text &> /dev/null; then\n        echo\
+          \ \"Error: Instance type $NEW_INSTANCE_TYPE is not supported in the region\
+          \ $REGION\"\n        exit 1\n    fi\n}\n\n# Main script execution\n\n# First\
+          \ check if the instance is stopped\necho \"Checking if the instance is stopped...\"\
+          \nstate=$(check_instance_stopped)\nif [ \"$state\" != \"stopped\" ]; then\n\
+          \    echo \"Instance is not stopped (current state: $state). Waiting $SHUTDOWNTIMER\
+          \ seconds...\"\n    sleep $SHUTDOWNTIMER\n    \n    # Second check\n   \
+          \ state=$(check_instance_stopped)\n    if [ \"$state\" != \"stopped\" ];\
+          \ then\n        echo \"Error: Instance $INSTANCE_ID is still not in a stopped\
+          \ state after waiting (current state: $state)\"\n        exit 1\n    fi\n\
+          fi\n\necho \"Instance is stopped. Proceeding with instance type change.\"\
+          \n\n# Check if the new instance type is supported\necho \"Checking if the\
+          \ new instance type is supported...\"\ncheck_instance_type_supported\n\n\
+          # Change the instance type\necho \"Changing instance type to $NEW_INSTANCE_TYPE...\"\
+          \nif aws ec2 modify-instance-attribute --instance-id $INSTANCE_ID --instance-type\
+          \ \"{\\\"Value\\\": \\\"$NEW_INSTANCE_TYPE\\\"}\" --region $REGION; then\n\
+          \    echo \"Instance type successfully changed to $NEW_INSTANCE_TYPE\"\n\
+          else\n    echo \"Error: Failed to change instance type\"\n    exit 1\nfi"
+      description: change-instance-size
+      nodeStep: true
+      type: nixy-local-node-step
+    - configuration:
+        region: ${node.region}
+      description: restart-instance
+      nodeStep: true
+      type: aws-vm-start-step
+    keepgoing: false
+    pluginConfig:
+      WorkflowStrategy:
+        ruleset:
+          rules: |-
+            [*] run-in-sequence
+            [restart-instance] if:option.start-instance==Yes
+    strategy: ruleset
+  tags: 'aws,finops'
+  uuid: de28b8ff-d636-4318-be91-00ee3cc7961f
