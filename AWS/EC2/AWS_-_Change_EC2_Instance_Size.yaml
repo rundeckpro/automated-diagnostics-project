@@ -8,13 +8,13 @@
     - Optionally starts the instance after successful change.
 
     Requirements:
-    For detailed requirements see the corresponding solutions page in our docs at:  [https://docs.rundeck.com/learning/solutions](https://docs.rundeck.com/learning/solutions)
+    For detailed requirements see the corresponding solutions page in our docs at:  [https://docs.rundeck.com/learning/solutions](https://docs.rundeck.com/learning/solutions/)
     - AWS CLI on your runner
     - AWS EC2 Node Source configured with "Show only Running instances" set to "No"
     - Sufficient rights in AWS to change EC2 instances
   executionEnabled: true
   group: Cost Management/AWS
-  id: de28b8ff-d636-4318-be91-00ee3cc7961f
+  id: 00bc80bf-c937-4844-bdd2-0dc450d92fb2
   loglevel: INFO
   name: AWS - Change EC2 Instance Size
   nodeFilterEditable: false
@@ -145,4 +145,4 @@
             [restart-instance] if:option.start-instance==Yes
     strategy: ruleset
   tags: 'aws,finops'
-  uuid: de28b8ff-d636-4318-be91-00ee3cc7961f
+  uuid: 00bc80bf-c937-4844-bdd2-0dc450d92fb2
