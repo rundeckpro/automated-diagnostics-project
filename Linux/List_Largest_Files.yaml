@@ -1,0 +1,59 @@
+- defaultTab: nodes
+  description: |
+    List the largest files by file size in the current directory and its subdirectories.
+
+    ## Assumptions
+    - Job assumes the node is Linux endpoint with `du`, `sort`, and `head` installed.
+    - Default start directory is the Runner Execution folder, or home folder of authenticated user on remote nodes.
+
+    ## Notes
+    - No nodes are selected by default.  Change Target Nodes and select the endpoint to run against.
+    - The job can take a long time to run if the directory has a lot of files in it.
+  executionEnabled: true
+  group: Storage Management/Linux
+  id: 95948fd9-373f-4071-abba-dc350e32587d
+  loglevel: INFO
+  name: List Largest Files
+  nodeFilterEditable: true
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: .*
+  nodesSelectedByDefault: false
+  options:
+  - description: This is the path where the scan will start.  The default is the current
+      execution directory `.`.
+    label: Start Directory
+    name: start-directory
+    required: true
+    value: .
+  - description: 'Choose how many results should be returned in the list.  Some drop
+      down options are provided, but any number can be provided.'
+    label: Number of Results
+    name: number-of-results
+    required: true
+    value: '10'
+    values:
+    - '10'
+    - '20'
+    - '50'
+    - '100'
+    - '200'
+    valuesListDelimiter: ','
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - description: List Largest Files
+      exec: find ${option.start-directory} -type f -exec du -ah {} + | sort -rh |
+        head -n ${option.number-of-results}
+    keepgoing: false
+    strategy: node-first
+  tags: 'linux,storage-management'
+  uuid: 95948fd9-373f-4071-abba-dc350e32587d
