@@ -1,0 +1,75 @@
+- defaultTab: output
+  description: |-
+    Use this job to execute a PostgreSQL stored procedure.
+
+    This job will:
+    - Connect to a specified PostgreSQL database.
+    - Execute the provided stored procedure with optional arguments.
+
+    ### Prerequisites
+
+    - The `psql` command must be installed on the same machine as the Enterprise Runner and be available in the default path.
+    - The password should be provided securely, preferably using a Key Storage entry for production environments.
+
+    _Note: Ensure that the stored procedure exists in the target database and that the specified user has the necessary execution permissions._
+  executionEnabled: true
+  group: Database Management/PostgreSQL
+  id: e4d9245d-0950-4a75-9bd4-36ac6dc8d673
+  loglevel: INFO
+  name: Execute a PostgreSQL Stored Procedure
+  nodeFilterEditable: true
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: 'tags: "RUNNER"'
+  nodesSelectedByDefault: false
+  options:
+  - label: Database Host Name
+    name: db_host
+    required: true
+    value: 127.0.0.1
+  - description: The name of the database where the stored procedure resides.
+    label: Database Name
+    name: db_name
+    required: true
+    value: testdb
+  - label: Database User Name
+    name: db_user
+    required: true
+    value: postgres
+  - description: 'Provide the password for the database user. For production, use
+      a Key Storage entry.'
+    label: Login Password
+    name: db_password
+    required: true
+    secure: true
+    valueExposed: true
+  - description: Specify the name of the stored procedure to execute.
+    label: Stored Procedure Name
+    name: stored_procedure
+    required: true
+  - description: (Optional) Comma-separated list of arguments for the stored procedure.
+    label: Stored Procedure Arguments
+    name: procedure_args
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - description: Check if psql is available before attempting to execute the stored
+        procedure.
+      errorhandler:
+        exec: echo "psql command may not be installed."
+      exec: psql --version
+    - description: Execute Stored Procedure
+      exec: PGPASSWORD="${option.db_password}" psql  -h ${option.db_host}  -U ${option.db_user}  -d
+        ${option.db_name}  -c '"SELECT ${option.stored_procedure}(${option.procedure_args});"'
+    keepgoing: false
+    strategy: node-first
+  tags: 'database,postgres,stored_procedure'
+  uuid: e4d9245d-0950-4a75-9bd4-36ac6dc8d673
