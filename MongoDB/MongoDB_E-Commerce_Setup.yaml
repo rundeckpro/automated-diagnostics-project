@@ -1,0 +1,266 @@
+- defaultTab: nodes
+  description: |-
+    Sets up a complete e-commerce database with products, customers, and orders
+
+    ## PreRequisites
+    - Must have MongoDB running and accessible from your Enterprise Runner.
+    - Example based on MongoDB version 8.0.
+    - `admin` user available with access to create new database and collections.
+    - Save password for `admin` at `keys/mongodb` in KeyStorage or adjust steps for where the passwords exists.
+  executionEnabled: true
+  group: MongoDB
+  id: mongodb-ecommerce-setup
+  loglevel: INFO
+  name: MongoDB E-Commerce Setup
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: 'tags: "RUNNER"'
+  nodesSelectedByDefault: false
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - configuration:
+        mongoCommand: |-
+          {
+            "dropDatabase": 1
+          }
+        mongoDatabase: ecommerce_db
+        mongoHost: mongodb
+        mongoType: MongoDB
+        mongoUser: admin
+        outputMode: RELAXED
+        passwordStoragePath: keys/mongodb
+      description: Drop existing database if exists
+      nodeStep: true
+      type: mongodb-nodestep
+    - configuration:
+        mongoCommand: |-
+          {
+            "create": "products"
+          }
+        mongoDatabase: ecommerce_db
+        mongoHost: mongodb
+        mongoType: MongoDB
+        mongoUser: admin
+        outputMode: RELAXED
+        passwordStoragePath: keys/mongodb
+      description: Create Products Collection
+      nodeStep: true
+      type: mongodb-nodestep
+    - configuration:
+        mongoCommand: |-
+          {
+            "insert": "products",
+            "documents": [
+              {
+                "name": "Laptop",
+                "price": 999.99,
+                "category": "Electronics",
+                "stock": 50,
+                "specifications": {
+                  "brand": "TechBrand",
+                  "model": "Pro2024",
+                  "ram": "16GB",
+                  "storage": "512GB SSD"
+                }
+              },
+              {
+                "name": "Smartphone",
+                "price": 699.99,
+                "category": "Electronics",
+                "stock": 100,
+                "specifications": {
+                  "brand": "MobileX",
+                  "model": "X12",
+                  "ram": "8GB",
+                  "storage": "256GB"
+                }
+              },
+              {
+                "name": "Coffee Maker",
+                "price": 79.99,
+                "category": "Appliances",
+                "stock": 30,
+                "specifications": {
+                  "brand": "HomeBrew",
+                  "model": "CM100",
+                  "capacity": "12 cups"
+                }
+              }
+            ]
+          }
+        mongoDatabase: ecommerce_db
+        mongoHost: mongodb
+        mongoType: MongoDB
+        mongoUser: admin
+        outputMode: RELAXED
+        passwordStoragePath: keys/mongodb
+      description: Insert Products
+      nodeStep: true
+      type: mongodb-nodestep
+    - configuration:
+        mongoCommand: |-
+          {
+            "create": "customers"
+          }
+        mongoDatabase: ecommerce_db
+        mongoHost: mongodb
+        mongoType: MongoDB
+        mongoUser: admin
+        outputMode: RELAXED
+        passwordStoragePath: keys/mongodb
+      description: Create Customers Collection
+      nodeStep: true
+      type: mongodb-nodestep
+    - configuration:
+        mongoCommand: |-
+          {
+            "insert": "customers",
+            "documents": [
+              {
+                "firstName": "John",
+                "lastName": "Doe",
+                "email": "john.doe@email.com",
+                "address": {
+                  "street": "123 Main St",
+                  "city": "Boston",
+                  "state": "MA",
+                  "zipCode": "02108"
+                },
+                "phoneNumber": "555-0123"
+              },
+              {
+                "firstName": "Jane",
+                "lastName": "Smith",
+                "email": "jane.smith@email.com",
+                "address": {
+                  "street": "456 Oak Ave",
+                  "city": "Chicago",
+                  "state": "IL",
+                  "zipCode": "60601"
+                },
+                "phoneNumber": "555-0124"
+              }
+            ]
+          }
+        mongoDatabase: ecommerce_db
+        mongoHost: mongodb
+        mongoType: MongoDB
+        mongoUser: admin
+        outputMode: RELAXED
+        passwordStoragePath: keys/mongodb
+      description: Insert Customers
+      nodeStep: true
+      type: mongodb-nodestep
+    - configuration:
+        mongoCommand: |-
+          {
+            "create": "orders"
+          }
+        mongoDatabase: ecommerce_db
+        mongoHost: mongodb
+        mongoType: MongoDB
+        mongoUser: admin
+        outputMode: RELAXED
+        passwordStoragePath: keys/mongodb
+      description: Create Orders Collection
+      nodeStep: true
+      type: mongodb-nodestep
+    - configuration:
+        mongoCommand: |-
+          {
+            "createIndexes": "products",
+            "indexes": [
+              {
+                "key": { "name": 1 },
+                "name": "idx_product_name"
+              },
+              {
+                "key": { "category": 1 },
+                "name": "idx_product_category"
+              }
+            ]
+          }
+        mongoDatabase: ecommerce_db
+        mongoHost: mongodb
+        mongoType: MongoDB
+        mongoUser: admin
+        outputMode: RELAXED
+        passwordStoragePath: keys/mongodb
+      description: Create Product Indexes
+      nodeStep: true
+      type: mongodb-nodestep
+    - configuration:
+        mongoCommand: |-
+          {
+            "createIndexes": "customers",
+            "indexes": [
+              {
+                "key": { "email": 1 },
+                "name": "idx_customer_email",
+                "unique": true
+              }
+            ]
+          }
+        mongoDatabase: ecommerce_db
+        mongoHost: mongodb
+        mongoType: MongoDB
+        mongoUser: admin
+        outputMode: RELAXED
+        passwordStoragePath: keys/mongodb
+      description: Create Customer Indexes
+      nodeStep: true
+      type: mongodb-nodestep
+    - configuration:
+        mongoCommand: |-
+          {
+            "createIndexes": "orders",
+            "indexes": [
+              {
+                "key": { "orderId": 1 },
+                "name": "idx_order_id",
+                "unique": true
+              },
+              {
+                "key": { "customerId": 1 },
+                "name": "idx_customer_id"
+              }
+            ]
+          }
+        mongoDatabase: ecommerce_db
+        mongoHost: mongodb
+        mongoType: MongoDB
+        mongoUser: admin
+        outputMode: RELAXED
+        passwordStoragePath: keys/mongodb
+      description: Create Order Indexes
+      nodeStep: true
+      type: mongodb-nodestep
+    - configuration:
+        mongoCommand: |-
+          {
+            "find": "products",
+            "limit": 1
+          }
+        mongoDatabase: ecommerce_db
+        mongoHost: mongodb
+        mongoType: MongoDB
+        mongoUser: admin
+        outputMode: RELAXED
+        passwordStoragePath: keys/mongodb
+      description: Verify Products
+      nodeStep: true
+      type: mongodb-nodestep
+    keepgoing: false
+    strategy: node-first
+  tags: mongodb
+  uuid: mongodb-ecommerce-setup
